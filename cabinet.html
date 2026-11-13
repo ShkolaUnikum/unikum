@@ -1,0 +1,1457 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Личный кабинет — Уникум</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#410EAD">
+<link rel="icon" type="image/png" href="img/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Tektur:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+/* ============ ТОКЕНЫ — те же, что на сайте ============ */
+:root{
+  --ink:#5B1AB5;--deep:#22075A;--night-c:#410EAD;
+  --sun:#FF5FA8;--yellow:#FFDE3B;--mint:#2FC79A;--coral:#FF8A3D;--cyan:#3FE0F0;--lilac:#B48CFF;
+  --paper:#F5EEFF;--card:#fff;--text:#1F0B42;--muted:#6A5A8E;--line:rgba(65,14,173,.12);
+  --r:20px;--display:"Tektur",system-ui,sans-serif;--mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  --glow:0 24px 50px -24px rgba(65,14,173,.45),0 0 0 1px rgba(65,14,173,.06);
+  --night:radial-gradient(60% 70% at 80% 30%,#5A1BD0 0%,rgba(90,27,208,0) 70%),radial-gradient(50% 60% at 10% 70%,#4C12C2 0%,rgba(76,18,194,0) 70%),#410EAD;
+  --sparkles:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='640' height='420'%3E%3Cg opacity='.8'%3E%3Cpath fill='%23FFDE3B' d='M60 40h8v8h8v8h-8v8h-8v-8h-8v-8h8z'/%3E%3Cpath fill='%23FF8CC2' d='M420 70h10v10h10v10h-10v10h-10v-10h-10v-10h10z'/%3E%3Cpath fill='%2385F0FF' d='M250 300h8v8h8v8h-8v8h-8v-8h-8v-8h8z'/%3E%3Cpath fill='%23C9A8FF' d='M570 250h10v10h10v10h-10v10h-10v-10h-10v-10h10z'/%3E%3Crect fill='%23FFDE3B' x='520' y='370' width='10' height='10'/%3E%3Crect fill='%23FFDE3B' x='150' y='200' width='7' height='7'/%3E%3C/g%3E%3C/svg%3E");
+  color-scheme:light;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--text);font:400 14px/1.55 var(--mono);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img,svg{display:block;max-width:100%}
+a{color:inherit}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+h1,h2,h3{font-family:var(--display);margin:0;line-height:1.1;text-wrap:balance}
+h2{font-size:22px;text-transform:uppercase;letter-spacing:.01em}
+h3{font-size:16px}
+p{margin:0}
+[hidden]{display:none!important}
+:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* ============ КНОПКИ — как на сайте ============ */
+.btn{position:relative;overflow:hidden;isolation:isolate;display:inline-flex;align-items:center;justify-content:center;gap:10px;border:0;border-radius:14px;padding:13px 20px;
+  font:700 14px/1 var(--display);text-transform:uppercase;letter-spacing:.04em;text-decoration:none;color:#fff;white-space:nowrap;
+  background:linear-gradient(135deg,#FF72B3 0%,#FF3D94 50%,#C82A92 100%);text-shadow:0 1px 0 rgba(120,10,80,.25);
+  box-shadow:0 12px 26px -12px rgba(255,79,158,.75),inset 0 1px 0 rgba(255,255,255,.45),inset 0 -3px 0 rgba(120,10,80,.22);
+  transition:transform .2s cubic-bezier(.3,1.4,.5,1),box-shadow .2s,filter .2s}
+.btn::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.35) 50%,transparent 70%);transform:translateX(-120%);transition:transform .6s ease}
+.btn:hover{transform:translateY(-2px);filter:saturate(1.1)}
+.btn:hover::before{transform:translateX(120%)}
+.btn:active{transform:translateY(1px)}
+.btn[disabled]{filter:grayscale(.6);opacity:.55;cursor:not-allowed;transform:none}
+.btn--ghost{background:#fff;color:var(--ink);text-shadow:none;box-shadow:inset 0 0 0 2px rgba(91,26,181,.22)}
+.btn--ghost:hover{box-shadow:inset 0 0 0 2px var(--ink),0 14px 26px -16px rgba(65,14,173,.55)}
+.btn--ghost::before{background:linear-gradient(110deg,transparent 30%,rgba(91,26,181,.08) 50%,transparent 70%)}
+.btn--sm{padding:10px 14px;font-size:12px;border-radius:11px}
+.btn--block{width:100%}
+.link{background:none;border:0;padding:0;color:var(--ink);font-weight:700;text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:3px;text-decoration-color:rgba(91,26,181,.3)}
+.link:hover{text-decoration-color:var(--sun)}
+
+/* ============ ВХОД ============ */
+.login{min-height:100vh;min-height:100dvh;position:relative;overflow:hidden;background:var(--sparkles) 0 0/640px auto,var(--night);color:#fff;display:grid;align-items:center;
+  padding-block:max(32px,env(safe-area-inset-top)) 140px;padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
+.login::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:64px 64px;-webkit-mask:linear-gradient(#000,transparent 75%);mask:linear-gradient(#000,transparent 75%);pointer-events:none}
+.login__in{position:relative;z-index:1;width:min(1080px,100%);margin-inline:auto;display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}
+.login__brand{display:flex;flex-direction:column;gap:22px}
+.login__logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.login__logo .b{height:52px;width:auto}.login__logo .w{height:22px;width:auto}
+.login__title{font-size:clamp(32px,4.6vw,54px);text-transform:uppercase;line-height:1.02}
+.login__title em{font-style:normal;color:var(--yellow);position:relative;white-space:nowrap}
+.login__title em::after{content:"";position:absolute;left:0;right:-4%;bottom:-10px;height:14px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 24' preserveAspectRatio='none'%3E%3Cpath d='M4 18 C 70 4, 190 2, 296 12' fill='none' stroke='%23FF5FA8' stroke-width='7' stroke-linecap='round'/%3E%3C/svg%3E") center/100% 100% no-repeat}
+.login__perks{list-style:none;margin:0;padding:0;display:grid;gap:12px;color:#E9E1FF;max-width:44ch}
+.login__perks li{display:flex;gap:12px;align-items:flex-start}
+.login__perks i{flex:none;display:grid;place-items:center;width:30px;height:30px;border-radius:10px;background:rgba(255,255,255,.12);box-shadow:inset 0 0 0 1px rgba(255,255,255,.18);font-style:normal}
+.login__star{position:absolute;right:-84px;top:-104px;width:220px;opacity:.95;border-radius:50%;-webkit-mask:radial-gradient(circle,#000 52%,transparent 70%);mask:radial-gradient(circle,#000 52%,transparent 70%);pointer-events:none}
+.lcard{position:relative;background:#fff;color:var(--text);border-radius:26px;padding:34px 32px 28px;box-shadow:0 40px 80px -30px rgba(10,0,40,.7),0 0 0 1px rgba(255,255,255,.4),0 0 60px -10px rgba(255,95,168,.45)}
+.lcard h1{font-size:24px;text-transform:uppercase}
+.lcard__sub{color:var(--muted);margin:8px 0 22px}
+.seg{display:grid;grid-template-columns:1fr 1fr;background:var(--paper);border-radius:14px;padding:4px;margin-bottom:18px}
+.seg button{border:0;background:none;border-radius:11px;padding:10px;font-weight:700;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:#fff;color:var(--ink);box-shadow:0 6px 14px -8px rgba(65,14,173,.45)}
+.field{display:grid;gap:6px;margin-bottom:14px}
+.field > span{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.input{width:100%;border:2px solid var(--line);background:#FBF8FF;border-radius:13px;padding:13px 14px;outline:0;transition:border-color .15s,box-shadow .15s,background .15s}
+.input:focus{border-color:var(--ink);background:#fff;box-shadow:0 0 0 4px rgba(91,26,181,.12)}
+.input[aria-invalid="true"]{border-color:#E5366B;box-shadow:0 0 0 4px rgba(229,54,107,.12)}
+.pass{position:relative}
+.pass .input{padding-right:52px}
+.pass button{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:40px;height:40px;border:0;background:none;border-radius:10px;color:var(--muted)}
+.pass button:hover{background:var(--paper);color:var(--ink)}
+.err{color:#D42A60;font-size:12.5px;min-height:18px;margin:-6px 0 8px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:-2px 0 18px}
+.check{display:inline-flex;align-items:center;gap:8px;cursor:pointer;font-size:13px}
+.check input{width:18px;height:18px;accent-color:var(--ink)}
+.lcard__or{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:12px;margin:18px 0 14px}
+.lcard__or::before,.lcard__or::after{content:"";flex:1;height:1px;background:var(--line)}
+.lcard__foot{margin-top:18px;padding-top:16px;border-top:1px dashed var(--line);font-size:13px;color:var(--muted);text-align:center}
+.demo-note:empty{display:none}
+.demo-note{margin-top:12px;font-size:12px;color:var(--muted);background:#FFF8D6;border-radius:12px;padding:10px 12px;line-height:1.45}
+.login__waves{position:absolute;left:0;right:0;bottom:-2px;width:100%;height:150px;pointer-events:none}
+
+/* ============ КАБИНЕТ ============ */
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:#410EAD;z-index:60}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:#410EAD;color:#fff;border-bottom:1px solid rgba(255,255,255,.12)}
+.top__in{display:flex;align-items:center;gap:18px;height:68px;width:min(1240px,100%);margin-inline:auto;padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
+.top .logo{display:flex;align-items:center;gap:9px;text-decoration:none;flex:none}
+.top .logo .b{height:42px;width:auto}.top .logo .w{height:18px;width:auto}
+.top__tag{font:700 11px/1 var(--display);text-transform:uppercase;letter-spacing:.08em;padding:7px 10px;border-radius:999px;background:rgba(255,255,255,.12);color:#E9E1FF}
+.kid{margin-left:auto;display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.1);border-radius:14px;padding:6px 12px 6px 6px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.14)}
+.kid__ava{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;font:800 14px/1 var(--display);color:var(--deep);background:linear-gradient(135deg,var(--yellow),#FFB02E)}
+.kid{position:relative}.kid select{position:absolute;inset:0;width:100%;opacity:0;cursor:pointer}
+.kid b{display:block;font-size:13px;line-height:1.2}.kid small{display:block;font-size:11px;color:#CFC2FF;line-height:1.2}
+.coinpill{display:flex;align-items:center;gap:7px;font-weight:700;padding:8px 12px;border-radius:12px;background:rgba(255,222,59,.14);color:var(--yellow);box-shadow:inset 0 0 0 1px rgba(255,222,59,.3)}
+.me{display:flex;align-items:center;gap:8px;border:0;background:none;padding:4px;border-radius:12px;color:#fff}
+.me:hover{background:rgba(255,255,255,.1)}
+.me__ava{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;font:800 14px/1 var(--display);background:linear-gradient(135deg,#FF84BF,#D9389C)}
+.layout{width:min(1240px,100%);margin-inline:auto;display:grid;grid-template-columns:230px minmax(0,1fr);gap:28px;padding:28px max(16px,env(safe-area-inset-right)) 60px max(16px,env(safe-area-inset-left))}
+.side{position:sticky;top:96px;align-self:start;display:grid;gap:4px}
+.side a{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;text-decoration:none;font-weight:500;color:var(--muted);transition:background .15s,color .15s}
+.side a svg{width:20px;height:20px;flex:none}
+.side a:hover{background:#fff;color:var(--ink)}
+.side a[aria-current="page"]{background:#fff;color:var(--ink);font-weight:700;box-shadow:var(--glow)}
+.side a[aria-current="page"] svg{color:var(--sun)}
+.side a .cnt{margin-left:auto;min-width:22px;height:22px;padding:0 6px;border-radius:999px;display:grid;place-items:center;font-size:11px;font-weight:700;color:#fff;background:var(--sun)}
+.side__help{margin-top:18px;padding:16px;border-radius:var(--r);background:#fff;box-shadow:var(--glow);font-size:13px;color:var(--muted);display:grid;gap:10px}
+.side__help b{color:var(--text);font-family:var(--display);font-size:14px}
+.side__out{margin-top:6px;color:#C0326F!important}
+
+.view{display:grid;gap:22px;min-width:0;animation:in .35s ease}
+@keyframes in{from{opacity:0;transform:translateY(8px)}}
+.vhead{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.vhead h1{font-size:clamp(24px,3vw,32px);text-transform:uppercase}
+.vhead p{color:var(--muted);margin-top:6px}
+.card{background:var(--card);border-radius:var(--r);box-shadow:var(--glow);padding:22px;min-width:0}
+.card__h{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+.card__h a,.card__h button{font-size:13px}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+.grid-main{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:22px}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;font-size:11.5px;font-weight:700;white-space:nowrap}
+.pill--new{background:#FFE6F1;color:#C0256E}
+.pill--wait{background:#FFF4CC;color:#8A6400}
+.pill--ok{background:#DBF7EE;color:#0E7A5A}
+.pill--muted{background:var(--paper);color:var(--muted)}
+.pill--lilac{background:#EDE3FF;color:var(--ink)}
+
+/* следующий урок */
+.next{position:relative;overflow:hidden;border-radius:24px;padding:26px 28px;color:#fff;background:var(--sparkles) 0 0/520px auto,var(--night);box-shadow:0 30px 60px -30px rgba(65,14,173,.8)}
+.next__star{position:absolute;right:-30px;bottom:-40px;width:210px;border-radius:50%;-webkit-mask:radial-gradient(circle,#000 50%,transparent 70%);mask:radial-gradient(circle,#000 50%,transparent 70%);opacity:.9;pointer-events:none}
+.next__hello{font:700 13px/1 var(--display);text-transform:uppercase;letter-spacing:.08em;color:var(--yellow)}
+.next h2{font-size:clamp(22px,3vw,30px);margin:12px 0 6px;max-width:20ch;position:relative}
+.next__meta{display:flex;gap:10px 18px;flex-wrap:wrap;color:#DCD0FF;margin:10px 0 20px;position:relative}
+.next__meta span{display:inline-flex;align-items:center;gap:7px}
+.next__meta svg{width:16px;height:16px}
+.timer{display:flex;gap:8px;margin-bottom:22px;position:relative}
+.timer div{min-width:62px;padding:10px 8px;border-radius:14px;text-align:center;background:rgba(255,255,255,.1);box-shadow:inset 0 0 0 1px rgba(255,255,255,.16)}
+.timer b{display:block;font:800 26px/1 var(--display)}
+.timer small{font-size:10.5px;color:#CFC2FF;text-transform:uppercase;letter-spacing:.06em}
+.next__act{display:flex;gap:10px;flex-wrap:wrap;position:relative}
+.next .btn--ghost{background:rgba(255,255,255,.12);color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.35)}
+
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.stat{background:#fff;border-radius:var(--r);box-shadow:var(--glow);padding:18px;display:grid;gap:4px;position:relative;overflow:hidden}
+.stat b{font:800 30px/1 var(--display);color:var(--ink)}
+.stat span{color:var(--muted);font-size:12.5px}
+.stat i{position:absolute;right:14px;top:14px;width:34px;height:34px;border-radius:11px;display:grid;place-items:center;font-style:normal}
+.stat i svg{width:18px;height:18px}
+.bar{height:8px;border-radius:999px;background:var(--paper);overflow:hidden;margin-top:8px}
+.bar > span{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--ink),var(--sun))}
+
+/* списки */
+.list{display:grid;gap:10px}
+.item{display:flex;gap:14px;align-items:center;padding:14px;border-radius:16px;background:#FBF8FF;box-shadow:inset 0 0 0 1px var(--line);min-width:0}
+.item__main{flex:1;min-width:0}
+.item__main b{display:block;line-height:1.35}
+.item__main small{color:var(--muted);display:block;margin-top:2px}
+.date{flex:none;width:56px;padding:8px 0;border-radius:14px;text-align:center;background:#fff;box-shadow:0 6px 14px -8px rgba(65,14,173,.4),inset 0 0 0 1px var(--line)}
+.date b{display:block;font:800 22px/1 var(--display);color:var(--ink)}
+.date small{display:block;font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-top:3px}
+.date--past{opacity:.65}
+.teacher{display:flex;gap:14px;align-items:center}
+.teacher__ava{width:56px;height:56px;border-radius:18px;flex:none;display:grid;place-items:center;font:800 20px/1 var(--display);color:#fff;background:linear-gradient(135deg,var(--lilac),var(--ink))}
+.quote{margin-top:14px;padding:14px 16px;border-radius:16px;background:var(--paper);position:relative;font-size:13.5px}
+.quote small{display:block;color:var(--muted);margin-top:6px}
+
+/* задания */
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tabs button{border:0;border-radius:12px;padding:9px 14px;background:#fff;color:var(--muted);font-weight:700;box-shadow:inset 0 0 0 1px var(--line)}
+.tabs button[aria-pressed="true"]{background:var(--ink);color:#fff;box-shadow:0 8px 18px -10px rgba(65,14,173,.8)}
+.hw{display:grid;gap:12px}
+.hw__top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.hw__top small{color:var(--muted)}
+.hw__task{color:var(--muted)}
+.hw__send{display:flex;gap:10px;flex-wrap:wrap}
+.hw__send .input{flex:1;min-width:200px;padding:11px 14px}
+.stars{color:var(--yellow);letter-spacing:2px;font-size:16px;text-shadow:0 1px 0 #C99A00}
+.stars s{color:#E2D9F5;text-decoration:none;text-shadow:none}
+.reward{display:inline-flex;align-items:center;gap:6px;font-weight:700;color:#8A6400}
+
+/* прогресс */
+.road{display:grid;grid-template-columns:repeat(var(--cols,6),minmax(0,1fr));gap:10px;position:relative}
+.road::before{content:"";position:absolute;left:8%;right:8%;top:30px;height:4px;border-radius:4px;background:repeating-linear-gradient(90deg,#D9CCF5 0 10px,transparent 10px 18px)}
+.node{position:relative;display:grid;justify-items:center;gap:8px;text-align:center;font-size:12px}
+.node__dot{width:62px;height:62px;border-radius:20px;display:grid;place-items:center;font:800 13px/1 var(--display);background:#fff;color:var(--muted);box-shadow:inset 0 0 0 2px #E2D9F5}
+.node--done .node__dot{background:linear-gradient(135deg,#4FE0B5,#16A57E);color:#fff;box-shadow:0 10px 20px -10px rgba(22,165,126,.9)}
+.node--now .node__dot{background:linear-gradient(135deg,#FF72B3,#C82A92);color:#fff;box-shadow:0 0 0 5px rgba(255,95,168,.2),0 14px 26px -10px rgba(255,79,158,.9);animation:pulse 2s infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 10px rgba(255,95,168,.08),0 14px 26px -10px rgba(255,79,158,.9)}}
+.node b{font-size:12.5px;line-height:1.25}
+.node small{color:var(--muted);font-size:11px}
+.lessons{display:grid;gap:8px;counter-reset:l}
+.lesson{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;font-size:13.5px}
+.lesson i{flex:none;width:28px;height:28px;border-radius:9px;display:grid;place-items:center;font-style:normal;font-weight:700;font-size:12px;background:var(--paper);color:var(--muted)}
+.lesson--done i{background:#DBF7EE;color:#0E7A5A}
+.lesson--now{background:#FFF0F7;box-shadow:inset 0 0 0 1.5px rgba(255,95,168,.4)}
+.lesson--now i{background:var(--sun);color:#fff}
+.skills{display:grid;gap:14px}
+.skill{display:grid;gap:4px}
+.skill div{display:flex;justify-content:space-between;font-size:13px}
+.badges{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:12px}
+.badge{display:grid;justify-items:center;gap:8px;text-align:center;padding:16px 10px;border-radius:18px;background:#FBF8FF;box-shadow:inset 0 0 0 1px var(--line);font-size:12px}
+.badge span{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;font-size:26px;background:linear-gradient(135deg,#FFF1A8,#FFC93B);box-shadow:0 10px 18px -10px rgba(201,140,0,.9)}
+.badge--off{opacity:.5;filter:grayscale(1)}
+.badge b{font-size:12.5px;line-height:1.25}
+
+/* отсутствие, заморозка, журнал */
+.pill--ice{background:#E3F4FF;color:#1C6FA8}
+.next__note{position:relative;margin:0 0 18px;padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.1);color:#F3EDFF;box-shadow:inset 0 0 0 1px rgba(255,255,255,.18);max-width:60ch}
+.freeze{display:flex;align-items:center;gap:14px;padding:16px 18px;border-radius:var(--r);background:linear-gradient(135deg,#EAF7FF,#F3ECFF);box-shadow:inset 0 0 0 1.5px #BFE3FA;flex-wrap:wrap}
+.freeze > div{flex:1;min-width:200px}
+.freeze b{display:block;font-family:var(--display);font-size:16px}
+.freeze small{color:var(--muted)}
+.freeze__ic{flex:none;width:44px;height:44px;border-radius:14px;display:grid;place-items:center;font-size:22px;background:#fff;color:#1C6FA8;box-shadow:0 8px 16px -10px rgba(28,111,168,.6)}
+.dlg__form{display:grid;gap:12px;margin-top:16px}
+.dlg__form .field{margin:0}
+.dlg__form textarea{resize:vertical;min-height:64px}
+.dlg__hint{font-size:12.5px;color:var(--muted)}
+.dlg__form .err{margin:0;min-height:0}
+.reasons{display:flex;flex-wrap:wrap;gap:8px}
+.reason input{position:absolute;opacity:0;pointer-events:none}
+.reason span{display:inline-block;padding:9px 13px;border-radius:12px;background:var(--paper);font-size:13px;font-weight:700;color:var(--ink);cursor:pointer;box-shadow:inset 0 0 0 1.5px transparent;transition:background .15s,box-shadow .15s}
+.reason input:checked + span{background:#fff;box-shadow:inset 0 0 0 2px var(--sun)}
+.reason input:focus-visible + span{outline:3px solid var(--yellow);outline-offset:2px}
+.fr__sum{margin:0;padding:10px 12px;border-radius:12px;background:#EAF7FF;color:#1C4F75;font-size:13px}
+.fr__sum:empty{display:none}
+.jmonth{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:18px 0 6px}
+.jmonth:first-child{margin-top:0}
+.jrow{display:grid;grid-template-columns:34px 100px minmax(0,1fr) auto;gap:12px;align-items:center;padding:11px 4px;border-top:1px solid var(--line)}
+.jmonth + .jrow{border-top:0}
+.jrow__n{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;font-size:12px;font-weight:700;background:var(--paper);color:var(--muted)}
+.jrow__d{font-size:13px;color:var(--muted)}
+.jrow__t{min-width:0}
+.jrow__t b{display:block;font-size:13.5px;line-height:1.35}
+.jrow__t small{color:var(--muted);font-size:12px}
+
+/* оплата */
+.payhero{display:grid;grid-template-columns:auto minmax(0,1fr);gap:26px;align-items:center;padding:26px 28px;border-radius:24px;color:#fff;background:var(--sparkles) 0 0/520px auto,var(--night);box-shadow:0 30px 60px -30px rgba(65,14,173,.8)}
+.payhero h2{font-size:clamp(22px,3vw,30px);margin:12px 0 8px}
+.payhero p{color:#DCD0FF;max-width:60ch}
+.payhero p b{color:#fff}
+.ring{--p:60;width:136px;height:136px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--yellow) calc(var(--p)*1%),rgba(255,255,255,.14) 0);position:relative;flex:none}
+.ring::before{content:"";position:absolute;inset:12px;border-radius:50%;background:#4513B8}
+.ring div{position:relative;text-align:center}
+.ring b{display:block;font:800 38px/1 var(--display);color:#fff}
+.ring small{color:#CFC2FF;font-size:11.5px}
+.paygrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.paygrid .stat > span:first-child{font-size:11px;text-transform:uppercase;letter-spacing:.06em;font-weight:700}
+.stat b.sm{font-size:17px;line-height:1.25}
+.item--on{background:#F6F0FF;box-shadow:inset 0 0 0 2px rgba(91,26,181,.35)}
+.paymark{flex:none;width:28px;height:28px;border-radius:9px;display:grid;place-items:center;font-weight:700;background:#fff;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line)}
+.item--on .paymark{background:var(--ink);color:#fff;box-shadow:none}
+
+/* мастер-классы */
+.mc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px}
+.mc{display:grid;align-content:start;text-align:left;padding:0;border:0;border-radius:var(--r);background:#fff;box-shadow:var(--glow);overflow:hidden;transition:transform .2s,box-shadow .2s}
+.mc:hover{transform:translateY(-4px);box-shadow:0 30px 50px -24px rgba(65,14,173,.55)}
+.mc__cover{position:relative;display:block;aspect-ratio:16/9;max-width:100%;background:var(--paper);overflow:hidden}
+.mc__cover img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+.mc:hover .mc__cover img{transform:scale(1.05)}
+.mc__play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:54px;height:54px;border-radius:50%;display:grid;place-items:center;color:#fff;background:linear-gradient(135deg,#FF72B3,#C82A92);box-shadow:0 10px 26px -6px rgba(255,79,158,.9),0 0 0 6px rgba(255,255,255,.25)}
+.mc__play svg{margin-left:3px}
+.mc__tag{position:absolute;left:10px;top:10px;padding:5px 9px;border-radius:999px;font-size:11px;font-weight:700;background:rgba(255,255,255,.92);color:#0E7A5A}
+.mc__tag--new{background:var(--yellow);color:var(--deep)}
+.mc__dur{position:absolute;right:10px;bottom:10px;padding:4px 8px;border-radius:8px;font-size:11.5px;font-weight:700;color:#fff;background:rgba(20,5,60,.75)}
+.mc__body{display:grid;gap:5px;padding:14px 16px 18px}
+.mc__body small{font-size:11px;text-transform:uppercase;letter-spacing:.06em;font-weight:700;color:var(--sun)}
+.mc__body b{font-family:var(--display);font-size:16px;line-height:1.25}
+.mc__body span{color:var(--muted);font-size:13px}
+dialog.dlg--wide{width:min(820px,calc(100% - 32px))}
+.dlg--wide .dlg{padding:0}
+.dlg--wide video{display:block;width:100%;aspect-ratio:16/9;background:#000}
+.vid__poster{position:relative;aspect-ratio:16/9;background:var(--deep)}
+.vid__poster img{width:100%;height:100%;object-fit:cover;opacity:.45}
+.vid__poster div{position:absolute;inset:0;background:rgba(20,5,60,.55);display:grid;place-content:center;justify-items:center;gap:8px;padding:20px;text-align:center;color:#fff}
+.vid__poster b{font-family:var(--display);font-size:20px}
+.vid__poster small{color:#DCD0FF}
+.vid__info{display:flex;gap:16px;align-items:flex-start;justify-content:space-between;padding:20px 24px 24px}
+.vid__info p{margin-top:6px}
+
+/* доп. курсы */
+.xc-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+.xc{border-radius:24px;background:#fff;box-shadow:var(--glow);overflow:hidden;display:grid;grid-template-rows:auto 1fr}
+.xc__head{position:relative;overflow:hidden;display:flex;align-items:center;gap:16px;padding:26px;color:#fff;background:var(--sparkles) 0 0/420px auto,linear-gradient(135deg,var(--c1),var(--c2))}
+.xc__head span{font-size:46px;line-height:1;filter:drop-shadow(0 6px 12px rgba(0,0,0,.25))}
+.xc__head h2{font-size:24px}
+.xc__body{display:grid;gap:14px;align-content:start;padding:22px 24px 26px}
+.xc__body p{color:var(--muted)}
+.xc__body ul{margin:0;padding:0;list-style:none;display:grid;gap:6px;font-size:13.5px}
+.xc__body li::before{content:"✓ ";color:var(--mint);font-weight:700}
+.xc__body small{color:var(--muted);text-align:center}
+
+/* «Ещё» на телефоне */
+.item.item--link{text-decoration:none;color:inherit;flex-wrap:nowrap}
+.item--link .item__main{flex:1 1 auto}
+.item--link:hover{box-shadow:inset 0 0 0 2px var(--ink)}
+.more__ic{flex:none;width:42px;height:42px;border-radius:13px;display:grid;place-items:center;background:#fff;color:var(--ink);box-shadow:0 6px 14px -8px rgba(65,14,173,.4)}
+
+/* профиль */
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 16px}
+.switch{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0;border-top:1px solid var(--line);cursor:pointer}
+.switch:first-of-type{border-top:0}
+.switch small{display:block;color:var(--muted)}
+.switch input{appearance:none;flex:none;width:46px;height:26px;border-radius:999px;background:#DCD2F0;position:relative;cursor:pointer;transition:background .2s}
+.switch input::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 2px 4px rgba(0,0,0,.2);transition:transform .2s}
+.switch input:checked{background:linear-gradient(135deg,#FF72B3,#C82A92)}
+.switch input:checked::after{transform:translateX(20px)}
+
+/* диалог и тост */
+dialog{border:0;padding:0;border-radius:24px;width:min(480px,calc(100% - 32px));box-shadow:0 40px 80px -30px rgba(10,0,40,.7);color:var(--text)}
+dialog::backdrop{background:rgba(25,5,70,.55);backdrop-filter:blur(4px)}
+.dlg{padding:26px}
+.dlg h2{font-size:20px;margin-bottom:6px}
+.dlg p{color:var(--muted)}
+.slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;margin:18px 0 20px}
+.slots button{border:0;border-radius:12px;padding:11px 8px;background:var(--paper);font-size:13px;font-weight:700;color:var(--ink);box-shadow:inset 0 0 0 1.5px transparent}
+.slots button small{display:block;font-weight:400;color:var(--muted);font-size:11.5px}
+.slots button[aria-pressed="true"]{background:#fff;box-shadow:inset 0 0 0 2px var(--sun)}
+.dlg__act{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);opacity:0;z-index:100;max-width:calc(100% - 32px);padding:13px 18px;border-radius:14px;background:var(--deep);color:#fff;font-size:13.5px;box-shadow:0 20px 40px -16px rgba(10,0,40,.7);transition:opacity .25s,transform .25s;pointer-events:none}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+/* нижнее меню для телефона */
+.tabbar{display:none}
+
+/* ============ АДАПТИВ ============ */
+@media (max-width:1080px){
+  .grid-main{grid-template-columns:1fr}
+  .stats,.paygrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:900px){
+  .login__in{grid-template-columns:1fr;gap:28px;max-width:520px}
+  .login__perks,.login__star{display:none}
+  .login__title{font-size:clamp(28px,8vw,40px)}
+  .layout{grid-template-columns:1fr;padding-top:20px;padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}
+  .side{display:none}
+  .top__tag,.coinpill{display:none}
+  .tabbar{display:grid;grid-template-columns:repeat(5,1fr);position:fixed;left:0;right:0;bottom:0;z-index:50;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);
+    box-shadow:0 -10px 30px -16px rgba(65,14,173,.45);padding:6px max(8px,env(safe-area-inset-right)) calc(6px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-left))}
+  .tabbar a{position:relative;display:grid;justify-items:center;gap:3px;padding:7px 2px;border-radius:12px;text-decoration:none;font-size:10.5px;font-weight:700;color:var(--muted)}
+  .tabbar svg{width:22px;height:22px}
+  .tabbar a[aria-current="page"]{color:var(--ink);background:#F3ECFF}
+  .tabbar a[aria-current="page"] svg{color:var(--sun)}
+  .tabbar .cnt{position:absolute;top:3px;left:calc(50% + 6px);min-width:17px;height:17px;padding:0 4px;border-radius:999px;display:grid;place-items:center;font-size:10px;color:#fff;background:var(--sun)}
+  .road{grid-template-columns:repeat(3,minmax(0,1fr));row-gap:22px}
+  .road::before{display:none}
+}
+@media (max-width:640px){
+  .grid2,.form-grid,.xc-grid{grid-template-columns:1fr}
+  .payhero{grid-template-columns:1fr;justify-items:center;text-align:center;padding:24px 20px}
+  .vid__info{flex-direction:column;padding:16px 18px 20px}
+  .jrow{grid-template-columns:30px minmax(0,1fr);row-gap:4px}
+  .jrow__d{grid-column:2}
+  .jrow__t{grid-column:2}
+  .jrow .pill{grid-column:2;justify-self:start}
+  .lcard{padding:26px 20px 22px;border-radius:22px}
+  .next{padding:22px 20px}
+  .next__star{width:150px;right:-40px;bottom:-50px;opacity:.6}
+  .next__act .btn{flex:1 1 100%}
+  .timer div{min-width:0;flex:1}
+  .card{padding:18px}
+  .bal{grid-template-columns:1fr;justify-items:center;text-align:center}
+  .kid{padding-right:8px}
+  .kid div{display:none}
+  .top .logo .w{display:none}
+  .stat b{font-size:26px}
+  .item{flex-wrap:wrap}
+  .item__main{flex:1 1 calc(100% - 70px)}
+  .item > .btn,.item > .pill{margin-left:70px}
+  .item > .pill + .btn{margin-left:0}
+  .hw__send .btn{width:100%}
+}
+@media (max-width:360px){
+  .stats{grid-template-columns:1fr}
+  .timer b{font-size:22px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<!-- Иконки -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-home" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18"/></g></symbol>
+  <symbol id="i-hw" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8.5 15l2 2 4-4"/></g></symbol>
+  <symbol id="i-prog" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/></g></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path fill="currentColor" d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></g></symbol>
+  <symbol id="i-pay" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2.5" y="5" width="19" height="14" rx="3"/><path d="M2.5 10h19M6.5 15h4"/></g></symbol>
+  <symbol id="i-more" viewBox="0 0 24 24"><g fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></g></symbol>
+  <symbol id="i-journal" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="17" rx="3"/><path d="M9 2.5v3M15 2.5v3M8 11l1.5 1.5L12 10M8 16.5l1.5 1.5L12 15.5M14.5 11.5H17M14.5 17H17"/></g></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></g></symbol>
+  <symbol id="i-out" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3M10 17l5-5-5-5M15 12H4"/></g></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></g></symbol>
+  <symbol id="i-video" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="2.5" y="6" width="13" height="12" rx="3"/><path d="m15.5 10.5 6-3.5v10l-6-3.5z"/></g></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></g></symbol>
+  <symbol id="i-coin" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="#FFDE3B"/><circle cx="12" cy="12" r="6" fill="none" stroke="#C99A00" stroke-width="2"/></symbol>
+  <symbol id="i-fire" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2s5 4.5 5 10a5 5 0 0 1-10 0c0-2 1-3.5 1-3.5S9 11 11 11c0-4 1-9 1-9z"/></symbol>
+</svg>
+
+<!-- ===================== ВХОД ===================== -->
+<section class="login" id="login" hidden>
+  <div class="login__in">
+    <div class="login__brand">
+      <a class="login__logo" href="index.html" aria-label="Уникум — на главную"><img class="b" src="img/logo-brain.png" alt=""><img class="w" src="img/logo-word.png" alt="Уникум"></a>
+      <h2 class="login__title">Личный кабинет<br><em>Уникума</em></h2>
+      <ul class="login__perks">
+        <li><i>📅</i><span>Расписание уроков и ссылка на занятие в один клик</span></li>
+        <li><i>🧩</i><span>Домашние задания и отзывы преподавателя на каждый проект</span></li>
+        <li><i>🏆</i><span>Прогресс по курсу, достижения и монетки за старание</span></li>
+        <li><i>💬</i><span>Связь с преподавателем и куратором в один клик</span></li>
+      </ul>
+    </div>
+    <div class="lcard">
+      <img class="login__star" src="img/star-face.jpg" alt="">
+      <!-- обычный вход -->
+      <div id="signIn">
+        <h1>Вход</h1>
+        <p class="lcard__sub">Один кабинет для всей семьи — родителя и ученика</p>
+        <form id="loginForm" novalidate>
+          <label class="field"><span>Логин</span>
+            <input class="input" id="lLogin" name="login" autocomplete="username" autocapitalize="none" spellcheck="false" required></label>
+          <label class="field"><span>Пароль</span>
+            <span class="pass"><input class="input" id="lPass" name="password" type="password" autocomplete="current-password" placeholder="Ваш пароль" required>
+            <button type="button" class="eye" data-eye="lPass" aria-label="Показать пароль"><svg width="20" height="20"><use href="#i-eye"/></svg></button></span></label>
+          <p class="err" id="lErr" role="alert"></p>
+          <div class="row">
+            <label class="check"><input type="checkbox" id="lRemember" checked> Запомнить меня</label>
+            <button type="button" class="link" id="forgot">Забыли пароль?</button>
+          </div>
+          <button class="btn btn--block" type="submit" id="loginBtn">Войти <span aria-hidden="true">→</span></button>
+        </form>
+        <div class="lcard__or">или</div>
+        <button class="btn btn--ghost btn--block" type="button" id="demoBtn">Посмотреть демо-кабинет</button>
+        <p class="demo-note" id="modeNote"></p>
+        <p class="lcard__foot">Ещё не учитесь у нас? <a class="link" href="index.html#trial">Запишитесь на бесплатный урок</a></p>
+      </div>
+      <!-- новый пароль: по ссылке из письма-приглашения или «Забыли пароль?» -->
+      <div id="setPass" hidden>
+        <h1 id="setPassTitle">Новый пароль</h1>
+        <p class="lcard__sub" id="setPassSub">Придумайте пароль для входа в кабинет.</p>
+        <form id="setPassForm" novalidate>
+          <label class="field"><span>Пароль</span>
+            <span class="pass"><input class="input" id="np1" type="password" autocomplete="new-password" placeholder="Не меньше 8 символов" required>
+            <button type="button" class="eye" data-eye="np1" aria-label="Показать пароль"><svg width="20" height="20"><use href="#i-eye"/></svg></button></span></label>
+          <label class="field"><span>Ещё раз</span>
+            <input class="input" id="np2" type="password" autocomplete="new-password" required></label>
+          <p class="err" id="npErr" role="alert"></p>
+          <button class="btn btn--block" type="submit" id="npBtn">Сохранить и войти <span aria-hidden="true">→</span></button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <svg class="login__waves" viewBox="0 0 1440 150" preserveAspectRatio="none" aria-hidden="true">
+    <defs><linearGradient id="lw" x1="0" x2="1"><stop offset="0" stop-color="#9B4DFF"/><stop offset=".55" stop-color="#E25BD8"/><stop offset="1" stop-color="#8E4BFF"/></linearGradient></defs>
+    <path d="M0 60 C 240 10 480 110 720 60 S 1200 10 1440 50 V150 H0z" fill="#7A2CF2" opacity=".45"/>
+    <path d="M0 95 C 300 50 560 140 820 90 S 1260 60 1440 92 V150 H0z" fill="url(#lw)" opacity=".7"/>
+    <path d="M0 95 C 300 50 560 140 820 90 S 1260 60 1440 92" fill="none" stroke="#FFB3F0" stroke-width="2.5"/>
+    <path d="M0 128 C 340 100 700 150 1000 122 S 1320 112 1440 124 V150 H0z" fill="#F5EEFF"/>
+  </svg>
+</section>
+
+<!-- ===================== КАБИНЕТ ===================== -->
+<div id="app" hidden>
+  <header class="top">
+    <div class="top__in">
+      <a class="logo" href="index.html" aria-label="Уникум — на сайт"><img class="b" src="img/logo-brain.png" alt=""><img class="w" src="img/logo-word.png" alt="Уникум"></a>
+      <span class="top__tag">Личный кабинет</span>
+      <label class="kid" title="Ученик"><span class="kid__ava" id="kidAva">?</span><div><b id="kidName"></b><small id="kidCourse"></small></div><select id="kidSel" aria-label="Выбрать ученика" hidden></select></label>
+      <span class="coinpill" title="Монетки за задания"><svg width="18" height="18"><use href="#i-coin"/></svg><span id="coinTop">0</span></span>
+      <a class="me" href="#profile" aria-label="Профиль"><span class="me__ava" id="meAva">А</span></a>
+    </div>
+  </header>
+
+  <div class="layout">
+    <nav class="side" aria-label="Разделы кабинета" id="side"></nav>
+    <main id="view" class="view" tabindex="-1"></main>
+  </div>
+  <nav class="tabbar" aria-label="Разделы кабинета" id="tabbar"></nav>
+</div>
+
+<dialog id="dlg"><div class="dlg" id="dlgBody"></div></dialog>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script>
+/* =====================================================================
+   ЛИЧНЫЙ КАБИНЕТ «УНИКУМ»
+
+   ▸ НАСТРОЙКА. Вставьте сюда данные проекта Supabase
+     (Supabase → Project Settings → API): Project URL и ключ «anon public».
+     Пока поля пустые, кабинет работает в демо-режиме.
+     Ключ anon можно публиковать: доступ к данным защищён правилами базы (schema.sql).
+   ===================================================================== */
+const CONFIG={
+  url:'',   // например 'https://abcdefgh.supabase.co'
+  key:''    // длинный ключ anon public
+};
+
+/* ---------- режим работы ---------- */
+const AUTH_LINK=(location.hash.match(/type=(recovery|invite|signup|magiclink)/)||[])[1]||''; // ссылка из письма
+const REAL=!!(CONFIG.url&&CONFIG.key&&window.supabase);
+const KEY='unikum-cabinet', REM='unikum-remember';
+const ls={
+  get(k){try{return localStorage.getItem(k)}catch(e){return null}},
+  set(k,v){try{localStorage.setItem(k,v)}catch(e){}},
+  del(k){try{localStorage.removeItem(k)}catch(e){}}
+};
+const store={
+  get(){try{return JSON.parse(ls.get(KEY))||{}}catch(e){return {}}},
+  set(v){ls.set(KEY,JSON.stringify(v))}
+};
+// «Запомнить меня»: сессию храним в localStorage, иначе — только до закрытия вкладки
+const sessStore={
+  getItem(k){try{return localStorage.getItem(k)??sessionStorage.getItem(k)}catch(e){return null}},
+  setItem(k,v){try{(ls.get(REM)==='0'?sessionStorage:localStorage).setItem(k,v)}catch(e){}},
+  removeItem(k){try{localStorage.removeItem(k);sessionStorage.removeItem(k)}catch(e){}}
+};
+const sb=REAL?supabase.createClient(CONFIG.url,CONFIG.key,{auth:{storage:sessStore,persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}}):null;
+let MODE=null; // 'real' | 'demo' — в каком режиме открыт кабинет сейчас
+
+function wait(ms){return new Promise(r=>setTimeout(r,ms))}
+
+/* ---------- справочники ---------- */
+/* Программы — как на сайте (Junior / Middle / High). Число в модуле — его доля в курсе:
+   при курсе на 180 занятий модули растягиваются пропорционально. */
+const PROGRAMS={
+  Junior:{age:'6–8 лет',modules:[['ScratchJr','Простые игры и мультики',4],['Scratch','Анимации и игры',12],['Minecraft','Строим кодом',7],['Tinkercad','3D-моделирование',8],['Roblox Studio','Первая игра на Lua',12]]},
+  Middle:{age:'9–11 лет',modules:[['Scratch','Игры с меню и уровнями',8],['Roblox Studio','Игры на Lua',9],['JavaScript','Браузерные игры',8],['Blender','3D-модели и сцены',10],['Unity · C#','3D-игры на Unity',16],['HTML/CSS','Первый сайт',10]]},
+  High:{age:'12–15 лет',modules:[['Python','Программы и 2D-игры',16],['Web','Сайты на HTML, CSS, JS',14],['Unity · C#','Профессиональный геймдев',18],['Java · Android','Мобильные приложения',10],['Git','Командная разработка',4]]}
+};
+/* Варианты обучения (на сайте не показываются) */
+const PLANS={
+  y1:{t:'1 год',n:40},
+  y2:{t:'2 года',n:80},
+  y3:{t:'3 года',n:120},
+  y2i:{t:'2 года индивидуально',n:80,solo:true}
+};
+/* Способы оплаты: от них зависит, сколько занятий открыто в кабинете */
+const PAYS={
+  full:{t:'Перевод на расчётный счёт школы',full:true,d:'Курс оплачен целиком — все занятия открыты сразу.'},
+  bank:{t:'Банковская рассрочка',full:true,d:'Банк оплатил школе весь курс, поэтому все занятия открыты сразу. Ежемесячные платежи вы вносите в банк по его графику.'},
+  internal:{t:'Внутренняя рассрочка школы',full:false,d:'Занятия открываются по мере оплаты: каждый платёж открывает следующую часть курса.'}
+};
+const REASONS=['Болезнь','Семейные обстоятельства','Поездка или отпуск','Школа: контрольные, олимпиады','Другое'];
+const FREEZE_MAX=31; // заморозка — не больше 1 месяца
+const planOf=st=>PLANS[st.plan]||PLANS.y2;
+const payOf=st=>PAYS[st.payment]||PAYS.full;
+const openUpTo=st=>payOf(st).full?st.total:Math.min(st.total,st.paidLessons||0); // последнее открытое занятие
+const isLocked=(st,l)=>l.n>openUpTo(st);
+function modulesOf(st){
+  const base=(PROGRAMS[st.program]||PROGRAMS.Middle).modules, sum=base.reduce((a,m)=>a+m[2],0);
+  // распределяем занятия курса по модулям пропорционально (метод наибольших остатков)
+  const raw=base.map(m=>m[2]*st.total/sum), cnt=raw.map(Math.floor);
+  let left=st.total-cnt.reduce((a,b)=>a+b,0);
+  raw.map((r,i)=>[r-Math.floor(r),i]).sort((a,b)=>b[0]-a[0]).slice(0,left).forEach(([,i])=>cnt[i]++);
+  let from=1;
+  return base.map((m,i)=>{const o={tech:m[0],title:m[1],count:cnt[i],from,to:from+cnt[i]-1};from+=cnt[i];return o});
+}
+const ACHIEVE=[
+  {k:'first',e:'🚀',t:'Первый проект',d:'Сдал первое задание'},
+  {k:'scratch',e:'🎮',t:'Геймдизайнер',d:'Прошёл модуль Scratch'},
+  {k:'streak5',e:'🔥',t:'5 недель подряд',d:'Без пропусков'},
+  {k:'stars3',e:'⭐',t:'Звёздный код',d:'3 задания на 5 звёзд'},
+  {k:'lua',e:'🧠',t:'Lua-мастер',d:'Прошёл модуль Roblox'},
+  {k:'defense',e:'🏆',t:'Защита проекта',d:'Защитить итоговый проект'}
+];
+const CURATOR_TG='https://t.me/'; // ЗАМЕНИТЕ на Telegram куратора
+
+/* =====================================================================
+   ДЕМО-ДАННЫЕ (когда Supabase не подключён или нажата «Посмотреть демо»)
+   ===================================================================== */
+const DEMO_BLENDER=['Интерфейс Blender и навигация','Примитивы и режим редактирования','Экструзия и модификаторы','Low-poly дерево и камни',
+  'Low-poly домик','Материалы и текстуры','Свет и камера','Рендер в Eevee','Сцена «Лесная поляна»','Анимация по ключевым кадрам',
+  'Персонаж и анимация ходьбы','Экспорт модели в Unity','Итоговая сцена и защита'];
+const DEMO_FROM=34;   // курс Middle на 80 занятий: Scratch 11 + Roblox 12 + JavaScript 10 → Blender с 34-го занятия
+const DEMO_DONE=40;   // пройдено 40 из 80 — половина курса
+const demoTopic=n=>DEMO_BLENDER[n-DEMO_FROM]||('Занятие '+n);
+const DEMO_HW=[
+  {id:'h40',lesson:40,title:'Ночной домик',task:'Поставь в сцену с домиком три источника света — луна, окно и фонарь — и настрой камеру. Пришли ссылку на рендер.',status:'todo'},
+  {id:'h39',lesson:39,title:'Разноцветный робот',task:'Раскрась робота из примитивов: минимум 4 материала, один — металлический.',status:'wait'},
+  {id:'h38',lesson:38,title:'Мой домик',task:'Смоделируй low-poly домик с крышей, окнами и дверью.',status:'ok',stars:5,coins:30,comment:'Аккуратная сетка и приятные пропорции — так держать!'},
+  {id:'h37',lesson:37,title:'Осенний лес',task:'Сделай три разных low-poly дерева и пару камней.',status:'ok',stars:4,coins:20,comment:'Деревья получились разными. Попробуй добавить больше оттенков листвы.'},
+  {id:'h36',lesson:36,title:'Космолёт',task:'Собери симметричный космический корабль с модификатором «Зеркало».',status:'ok',stars:5,coins:20,comment:'Классный дизайн и чистая симметрия!'}
+];
+const DEMO_MISSED={17:{reason:'Болезнь',makeupDone:true},29:{reason:'Поездка или отпуск'}};
+function demoLessons(){
+  // 40 занятий в год — одно занятие в неделю, по субботам в 17:00: 40 прошедших и 6 следующих
+  const now=new Date(),base=new Date(now);base.setHours(17,0,0,0);
+  const days=[];
+  for(let i=-7*45;i<60;i++){const d=new Date(base);d.setDate(d.getDate()+i);if(d.getDay()===6)days.push(d)}
+  const past=days.filter(d=>d<=now).slice(-DEMO_DONE), fut=days.filter(d=>d>now).slice(0,6);
+  const ms=modulesOf({program:'Middle',total:PLANS.y2.n});
+  return past.concat(fut).map((d,i)=>{const n=i+1, m=ms.find(x=>n>=x.from&&n<=x.to), miss=DEMO_MISSED[n];
+    return {id:'l'+n,n,title:m.tech==='Blender'?demoTopic(n):`${m.title}: занятие ${n-m.from+1}`,course:m.tech,date:d,
+      status:n>DEMO_DONE?'planned':miss?'missed':'done',meet:'',record:n<=DEMO_DONE?'#':'',dur:90,
+      absence:miss?{reason:miss.reason,comment:'',makeup:!!miss.makeupDone,makeupDone:!!miss.makeupDone}:null}});
+}
+function demoState(){
+  const d=store.get().demo||{};
+  const lessons=demoLessons().map(l=>Object.assign(l,d.abs&&l.id in d.abs?{absence:d.abs[l.id]}:{}));
+  const fr=d.freeze?{id:'f1',from:new Date(d.freeze.from),to:new Date(d.freeze.to),reason:d.freeze.reason,status:d.freeze.status}:null;
+  const homework=DEMO_HW.map(h=>Object.assign({},h,{lessonTitle:demoTopic(h.lesson)},d.hw&&d.hw[h.id]||{}));
+  const child=Object.assign({name:'Миша',birth:'2016-04-12'},d.child||{});
+  const topics={};DEMO_BLENDER.forEach((t,i)=>topics[DEMO_FROM+i]=t);
+  return {
+    parent:Object.assign({name:'Анна',phone:'+7 900 000-00-00',email:'mail@example.ru'},d.parent||{}),
+    notify:Object.assign({lesson:true,hw:true,news:false},d.notify||{}),
+    students:[{id:'s1',name:child.name,birth:child.birth,program:'Middle',plan:'y2',total:PLANS.y2.n,before:0,freeze:fr,
+      payment:'bank',paidLessons:PLANS.y2.n,nextPay:null,
+      coins:340,streak:5,teacher:{name:'Мария Викторовна',role:'Преподаватель Blender и Unity',tg:'https://t.me/'},
+      skills:[['Алгоритмы и логика',78],['3D-моделирование',64],['JavaScript',72],['Геймдизайн',70]],
+      achievements:['first','scratch','streak5','lua'],topics,lessons,homework}],
+    masterclasses:DEMO_MC.map(m=>Object.assign({},m,{seen:!!(d.seen&&d.seen[m.id])})),
+    requests:d.requests||{}
+  };
+}
+const DEMO_MC=[
+  {id:'m1',title:'Своя игра за 30 минут',desc:'Собираем в Scratch простую аркаду: герой, враги, очки и уровень сложности.',tag:'Игры',min:32,cover:'img/game.jpg',isNew:true},
+  {id:'m2',title:'Как думает нейросеть',desc:'Объясняем на котиках, как компьютер учится узнавать картинки, и пробуем обучить модель сами.',tag:'Нейросети',min:24,cover:'img/why-idea.jpg',isNew:true},
+  {id:'m3',title:'3D-модель за вечер',desc:'Делаем в Blender low-poly сцену с домиком, деревьями и светом заката.',tag:'3D',min:45,cover:'img/courses/high-unity.jpg'},
+  {id:'m4',title:'Пиксель-арт для игры',desc:'Рисуем персонажа и анимацию бега в стиле ретро-игр.',tag:'Дизайн',min:41,cover:'img/game-ninja.jpg'},
+  {id:'m5',title:'Робот на JavaScript',desc:'Пишем браузерную игру, где робот собирает батарейки и обходит препятствия.',tag:'Игры',min:28,cover:'img/game-robot.jpg'},
+  {id:'m6',title:'Не бойся ошибок',desc:'Как искать и исправлять баги: приёмы, которыми пользуются настоящие разработчики.',tag:'Навыки',min:18,cover:'img/learn-bugs.jpg'}
+];
+/* Дополнительные курсы */
+const EXTRA=[
+  {id:'english',e:'🇬🇧',t:'Английский язык',d:'Разговорная практика, игры и лексика из мира технологий. Помогает читать документацию и понимать код, в котором всё по-английски.',li:['онлайн с преподавателем','можно совмещать с основным курсом'],c1:'#3FB6FF',c2:'#5B1AB5'},
+  {id:'ai',e:'🤖',t:'Нейросети',d:'Как устроен искусственный интеллект и как работать с ним с пользой и безопасно: пишем запросы, создаём картинки и музыку, собираем своего чат-бота.',li:['онлайн с преподавателем','проекты в портфолио'],c1:'#FF5FA8',c2:'#7A2CF2'}
+];
+function demoSave(patch){const s=store.get();s.demo=Object.assign(s.demo||{},patch);store.set(s)}
+
+/* =====================================================================
+   API — одинаковый набор действий для демо и для Supabase
+   ===================================================================== */
+const ERR={
+  'Invalid login credentials':'Неверная почта или пароль',
+  'Email not confirmed':'Почта ещё не подтверждена — откройте письмо-приглашение от школы',
+  'User not found':'Такой почты нет среди учеников школы'
+};
+function human(e){
+  const m=(e&&(e.message||e.error_description))||String(e||'');
+  if(ERR[m])return ERR[m];
+  if(/rate limit|too many/i.test(m))return 'Слишком много попыток. Подождите минуту и попробуйте снова';
+  if(/fetch|network/i.test(m))return 'Нет связи с сервером. Проверьте интернет';
+  if(/password should be|weak/i.test(m))return 'Пароль слишком простой: не меньше 8 символов';
+  return m||'Что-то пошло не так. Попробуйте ещё раз';
+}
+const must=r=>{if(r.error)throw r.error;return r.data};
+
+const API={
+  async login(login,pass){
+    if(MODE==='demo'){await wait(400);return}
+    must(await sb.auth.signInWithPassword({email:loginToEmail(login),password:pass}));
+  },
+  async logout(){if(MODE==='real')await sb.auth.signOut()},
+  async resetPassword(email){
+    must(await sb.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname}));
+  },
+  async setPassword(p){must(await sb.auth.updateUser({password:p}))},
+  async load(){
+    if(MODE==='demo')return demoState();
+    const uid=must(await sb.auth.getUser()).user.id;
+    const [p,st,mc,rq]=await Promise.all([
+      sb.from('profiles').select('*').eq('id',uid).maybeSingle(),
+      sb.from('students').select('*').order('created_at'),
+      sb.from('masterclasses').select('*').order('published_at',{ascending:false}),
+      sb.from('extra_requests').select('course')
+    ]);
+    const prof=must(p)||{}, studs=must(st)||[], mcs=must(mc)||[], reqs=must(rq)||[];
+    const ids=studs.map(s=>s.id);
+    let lessons=[],hw=[],frz=[];
+    if(ids.length){
+      const today=new Date().toISOString().slice(0,10);
+      const [l,h,f]=await Promise.all([
+        sb.from('lessons').select('*').in('student_id',ids).order('starts_at'),
+        sb.from('homework').select('*').in('student_id',ids).order('lesson_n',{ascending:false}),
+        sb.from('freezes').select('*').in('student_id',ids).in('status',['requested','approved']).gte('ends_on',today).order('starts_on')
+      ]);
+      lessons=must(l)||[];hw=must(h)||[];frz=must(f)||[];
+    }
+    return {
+      parent:{name:prof.parent_name||'',phone:prof.phone||'',email:prof.email||''},
+      notify:Object.assign({lesson:true,hw:true,news:false},prof.notify||{}),
+      students:studs.map(s=>({id:s.id,name:s.name,birth:s.birth||'',program:s.program,plan:s.plan,total:(PLANS[s.plan]||PLANS.y2).n,
+        payment:s.payment,paidLessons:s.paid_lessons||0,nextPay:s.next_payment_date?{date:new Date(s.next_payment_date+'T12:00:00'),lessons:s.next_payment_lessons||0}:null,
+        before:s.lessons_before||0,coins:s.coins,streak:s.streak_weeks,topics:{},
+        teacher:{name:s.teacher_name,role:s.teacher_role,tg:s.teacher_tg||CURATOR_TG},
+        skills:Array.isArray(s.skills)?s.skills:[],achievements:s.achievements||[],
+        lessons:lessons.filter(l=>l.student_id===s.id).map(l=>({id:l.id,n:l.n,title:l.title,course:l.course||'',
+          date:new Date(l.starts_at),dur:l.duration_min||90,status:l.status,meet:l.meet_url||'',record:l.record_url||'',
+          absence:l.absence_reason?{reason:l.absence_reason,comment:l.absence_comment||'',makeup:!!l.wants_makeup,makeupDone:!!l.makeup_done}:null})),
+        freeze:(()=>{const f=frz.find(x=>x.student_id===s.id);return f?{id:f.id,from:new Date(f.starts_on+'T00:00:00'),to:new Date(f.ends_on+'T23:59:59'),reason:f.reason||'',status:f.status}:null})(),
+        homework:hw.filter(h=>h.student_id===s.id).map(h=>({id:h.id,lesson:h.lesson_n,lessonTitle:h.lesson_title,title:h.title,task:h.task,
+          status:h.status,url:h.url||'',stars:h.stars||0,coins:h.coins||0,comment:h.comment||''}))})),
+      masterclasses:mcs.map(m=>({id:m.id,title:m.title,desc:m.description||'',tag:m.tag||'',min:m.duration_min||0,cover:m.cover_url||'img/star-face.jpg',video:m.video_url||'',
+        isNew:Date.now()-new Date(m.published_at).getTime()<14*86400000,seen:!!ls.get('mc-seen-'+m.id)})),
+      requests:Object.fromEntries(reqs.map(r=>[r.course,true]))
+    };
+  },
+  async submitHomework(id,url){
+    if(MODE==='demo'){const d=store.get().demo||{};const hw=d.hw||{};hw[id]={status:'wait',url};demoSave({hw});return}
+    must(await sb.rpc('submit_homework',{hw_id:id,work_url:url}));
+  },
+  async reportAbsence(id,a){
+    if(MODE==='demo'){const d=store.get().demo||{};const v=d.abs||{};v[id]=a;demoSave({abs:v});await wait(300);return}
+    must(await sb.rpc('report_absence',{l_id:id,reason:a.reason,comment:a.comment||null,makeup:!!a.makeup}));
+  },
+  async cancelAbsence(id){
+    if(MODE==='demo'){const d=store.get().demo||{};const v=d.abs||{};delete v[id];demoSave({abs:v});await wait(200);return}
+    must(await sb.rpc('cancel_absence',{l_id:id}));
+  },
+  async requestFreeze(stId,from,to,reason){
+    const f=from.toISOString().slice(0,10),t=to.toISOString().slice(0,10);
+    if(MODE==='demo'){demoSave({freeze:{from:from.toISOString(),to:to.toISOString(),reason,status:'requested'}});await wait(300);return {id:'f1'}}
+    const id=must(await sb.rpc('request_freeze',{st_id:stId,start_on:f,end_on:t,why:reason}));
+    return {id};
+  },
+  async cancelFreeze(id){
+    if(MODE==='demo'){demoSave({freeze:null});await wait(200);return}
+    must(await sb.rpc('cancel_freeze',{f_id:id}));
+  },
+  async saveProfile(parent,notify){
+    if(MODE==='demo'){demoSave({parent,notify});return}
+    const uid=must(await sb.auth.getUser()).user.id;
+    must(await sb.from('profiles').update({parent_name:parent.name,phone:parent.phone,notify}).eq('id',uid));
+  },
+  async saveStudent(id,name,birth){
+    if(MODE==='demo'){demoSave({child:{name,birth}});return}
+    must(await sb.rpc('update_student',{st_id:id,st_name:name,st_birth:birth||null}));
+  },
+  async requestExtra(course,studentId){
+    if(MODE==='demo'){const d=store.get().demo||{};const r=d.requests||{};r[course]=true;demoSave({requests:r});await wait(300);return}
+    must(await sb.rpc('request_extra_course',{course_key:course,st_id:studentId||null}));
+  },
+  markSeen(id){
+    if(MODE==='demo'){const d=store.get().demo||{};const v=d.seen||{};v[id]=true;demoSave({seen:v});return}
+    ls.set('mc-seen-'+id,'1');
+  },
+  async changePassword(p){
+    if(MODE==='demo'){await wait(300);return}
+    must(await sb.auth.updateUser({password:p}));
+  }
+};
+
+/* ---------- утилиты ---------- */
+const $=s=>document.querySelector(s);
+const $$=s=>document.querySelectorAll(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const safeUrl=u=>/^https?:\/\//i.test(u||'')?u:'';
+const MON=['янв','фев','мар','апр','мая','июн','июл','авг','сен','окт','ноя','дек'];
+const MONG=['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+const WD=['вс','пн','вт','ср','чт','пт','сб'];
+const WDF=['воскресенье','понедельник','вторник','среда','четверг','пятница','суббота'];
+const t2=d=>String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
+const dShort=d=>`${d.getDate()} ${MON[d.getMonth()]}`;
+const dLong=d=>`${d.getDate()} ${MON[d.getMonth()]}, ${WDF[d.getDay()]}`;
+const plural=(n,a,b,c)=>{n=Math.abs(n)%100;const n1=n%10;return n>10&&n<20?c:n1>1&&n1<5?b:n1===1?a:c};
+const icon=(id,s=20)=>`<svg width="${s}" height="${s}" aria-hidden="true"><use href="#${id}"/></svg>`;
+function age(b){if(!b)return '';const d=new Date(b),n=new Date();let a=n.getFullYear()-d.getFullYear();if(n<new Date(n.getFullYear(),d.getMonth(),d.getDate()))a--;return isNaN(a)?'':a}
+const initials=s=>(String(s||'?').trim().split(/\s+/).map(w=>w[0]).join('').slice(0,2)||'?').toUpperCase();
+let toastT;
+function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('on');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('on'),3600)}
+function openUrl(u){const a=document.createElement('a');a.href=u;a.target='_blank';a.rel='noopener';document.body.appendChild(a);a.click();a.remove()}
+
+/* ---------- состояние ---------- */
+let S=null, cur=0;
+const stu=()=>S&&S.students[cur];
+const isPast=l=>l.status!=='planned'||l.date.getTime()+l.dur*60000<Date.now();
+const upcoming=st=>st.lessons.filter(l=>!isPast(l)).sort((a,b)=>a.date-b.date);
+const pastL=st=>st.lessons.filter(isPast).sort((a,b)=>b.date-a.date);
+const doneCount=st=>Math.min(st.total,st.before+st.lessons.filter(l=>l.status==='done'||l.status==='missed').length);
+const isFrozen=(st,l)=>!!(st.freeze&&l.date>=st.freeze.from&&l.date<=st.freeze.to);
+const dDay=d=>`${d.getDate()} ${MONG[d.getMonth()]}`;
+const pctOf=st=>Math.min(100,Math.round(doneCount(st)/Math.max(1,st.total)*100));
+function curModule(st){const ms=modulesOf(st),d=doneCount(st);return ms.find(m=>d<m.to)||ms[ms.length-1]}
+const courseName=st=>`${st.program||'Middle'} · ${planOf(st).t}`;
+const todoCount=()=>stu()?stu().homework.filter(h=>h.status==='todo').length:0;
+function courseLessons(st){ // занятия текущего модуля
+  const m=curModule(st), d=doneCount(st), list=[];
+  for(let n=m.from;n<=m.to;n++){const l=st.lessons.find(x=>x.n===n);list.push({n,title:st.topics[n]||(l&&l.title)||'Занятие '+n,done:n<=d})}
+  return list;
+}
+
+/* ---------- навигация ---------- */
+const ROUTES=[
+  {id:'home',t:'Главная',i:'i-home',tab:1},
+  {id:'schedule',t:'Расписание',s:'Уроки',i:'i-cal',tab:1},
+  {id:'journal',t:'Журнал посещений',i:'i-journal'},
+  {id:'homework',t:'Задания',i:'i-hw',tab:1},
+  {id:'progress',t:'Прогресс',i:'i-prog'},
+  {id:'masterclasses',t:'Мастер-классы',s:'Видео',i:'i-play',tab:1},
+  {id:'extra',t:'Доп. курсы',i:'i-spark'},
+  {id:'pay',t:'Оплата',i:'i-pay'},
+  {id:'profile',t:'Профиль',i:'i-user'},
+  {id:'more',t:'Ещё',i:'i-more',hidden:1}
+];
+function renderNav(curId){
+  const cnt=todoCount(), tg=stu()?stu().teacher.tg:CURATOR_TG;
+  const newMc=S&&S.masterclasses?S.masterclasses.filter(m=>m.isNew&&!m.seen).length:0;
+  const badge=r=>r.id==='homework'&&cnt?`<span class="cnt">${cnt}</span>`:r.id==='masterclasses'&&newMc?`<span class="cnt">${newMc}</span>`:'';
+  const a=(r,mob,on)=>`<a href="#${r.id}" ${on?'aria-current="page"':''}>${icon(r.i,mob?22:20)}<span>${mob&&r.s||r.t}</span>${badge(r)}</a>`;
+  $('#side').innerHTML=ROUTES.filter(r=>!r.hidden).map(r=>a(r,false,r.id===curId)).join('')+
+    `<div class="side__help"><b>Нужна помощь?</b>Куратор ответит в Telegram с 9:00 до 21:00.<a class="btn btn--ghost btn--sm" href="${esc(safeUrl(tg)||CURATOR_TG)}" target="_blank" rel="noopener">Написать куратору</a></div>
+     <a href="#logout" class="side__out">${icon('i-out')}<span>${MODE==='demo'?'Выйти из демо':'Выйти'}</span></a>`;
+  // на телефоне: 4 главных раздела + «Ещё»
+  const tabs=ROUTES.filter(r=>r.tab), inTabs=tabs.some(r=>r.id===curId);
+  $('#tabbar').innerHTML=tabs.map(r=>a(r,true,r.id===curId)).join('')+a(ROUTES.find(r=>r.id==='more'),true,!inTabs);
+}
+function route(){
+  if(!S)return;
+  const id=(location.hash||'#home').slice(1);
+  if(id==='logout'){logout();return}
+  const r=ROUTES.find(x=>x.id===id)||ROUTES[0];
+  renderNav(r.id);
+  const v=$('#view');
+  v.style.animation='none';v.offsetHeight;v.style.animation='';
+  window.scrollTo(0,0);
+  const free=['profile','more','masterclasses','extra'].includes(r.id);
+  v.innerHTML=(stu()||free)?VIEWS[r.id]():emptyView();
+  (stu()||free)&&BIND[r.id]&&BIND[r.id]();
+  document.title=r.t+' — Личный кабинет Уникум';
+  r.id==='home'&&stu()?startTimer():stopTimer();
+}
+function emptyView(){
+  return `<div class="card" style="text-align:center;padding:40px 22px;display:grid;gap:12px;justify-items:center">
+    <span style="font-size:44px">🛠️</span><h2>Кабинет почти готов</h2>
+    <p style="color:var(--muted);max-width:46ch">Куратор ещё не добавил ученика и расписание. Обычно это занимает один рабочий день. Если долго ничего не появляется — напишите нам.</p>
+    <a class="btn btn--sm" href="${CURATOR_TG}" target="_blank" rel="noopener">Написать куратору</a></div>`;
+}
+
+/* ---------- экраны ---------- */
+function lessonItem(l,first){
+  const st=stu(), a=l.absence;
+  let right;
+  if(isLocked(st,l))right='<a class="pill pill--muted" href="#pay">🔒 Откроется после оплаты</a>';
+  else if(isFrozen(st,l))right=`<span class="pill pill--ice">❄ Заморозка${st.freeze.status==='requested'?' · на рассмотрении':''}</span>`;
+  else if(a)right=`<span class="pill pill--wait">Не придёт · ${esc(a.reason)}</span><button class="btn btn--ghost btn--sm" data-unabs="${esc(l.id)}">Отменить</button>`;
+  else right=`${first?'<span class="pill pill--new">Следующий</span>':''}<button class="btn btn--ghost btn--sm" data-abs="${esc(l.id)}">Не смогу присутствовать</button>`;
+  return `<div class="item"><div class="date"><b>${l.date.getDate()}</b><small>${MON[l.date.getMonth()]}, ${WD[l.date.getDay()]}</small></div>
+    <div class="item__main"><b>Урок ${l.n}. ${esc(l.title)}</b><small>${t2(l.date)} · ${esc(l.course)}${a&&a.makeup?' · хотим отработать':''}</small></div>${right}</div>`;
+}
+function attText(l){
+  if(l.status==='missed')return l.absence&&l.absence.makeupDone?'пропуск отработан':'пропуск'+(l.absence?' · '+esc(l.absence.reason.toLowerCase()):'');
+  return l.status==='done'?'был на уроке ✓':'ждём отметку преподавателя';
+}
+function attPill(l){
+  if(l.status==='done')return '<span class="pill pill--ok">✓ Был</span>';
+  if(l.status==='missed')return l.absence&&l.absence.makeupDone?'<span class="pill pill--lilac">↺ Отработано</span>':`<span class="pill pill--wait">Пропуск${l.absence?' · '+esc(l.absence.reason):''}</span>`;
+  return '<span class="pill pill--muted">Нет отметки</span>';
+}
+function freezeBanner(st){
+  const f=st.freeze;if(!f)return '';
+  return `<section class="freeze"><span class="freeze__ic">❄</span><div><b>Заморозка с ${dDay(f.from)} по ${dDay(f.to)}</b>
+    <small>${f.status==='approved'?'Подтверждена куратором. Занятия в эти дни не проводятся и переносятся на после заморозки.':'Заявка на рассмотрении — куратор подтвердит её и пересчитает расписание.'}${f.reason?' Причина: '+esc(f.reason)+'.':''}</small></div>
+    ${f.status==='requested'?`<button class="btn btn--ghost btn--sm" data-unfreeze>Отменить заявку</button>`:''}</section>`;
+}
+function hello(){const h=new Date().getHours();return h<6?'Доброй ночи':h<12?'Доброе утро':h<18?'Добрый день':'Добрый вечер'}
+
+const VIEWS={
+home(){
+  const st=stu(), up=upcoming(st), next=up[0], hw=st.homework.filter(h=>h.status!=='ok').slice(0,4);
+  const last=st.homework.find(h=>h.status==='ok'&&h.comment);
+  const done=doneCount(st), pct=pctOf(st), mod=curModule(st), inMod=Math.max(0,done-mod.from+1);
+  const who=S.parent.name||'';
+  return `
+  <div class="next">
+    <img class="next__star" src="img/star-face.jpg" alt="">
+    <span class="next__hello">${hello()}${who?', '+esc(who):''}!</span>
+    ${next?`<h2>Урок ${next.n}. ${esc(next.title)}</h2>
+    <div class="next__meta"><span>${icon('i-cal',16)} ${dLong(next.date)}</span><span>${icon('i-clock',16)} ${t2(next.date)} — ${next.dur} минут</span>${st.teacher.name?`<span>${icon('i-user',16)} ${esc(st.teacher.name)}</span>`:''}</div>
+    <div class="timer" id="timer" aria-label="До урока осталось"></div>
+    ${isFrozen(st,next)?`<p class="next__note">❄ Это занятие попадает в заморозку с ${dDay(st.freeze.from)} по ${dDay(st.freeze.to)}.</p>`
+    :next.absence?`<p class="next__note">Вы предупредили, что ${esc(st.name)} не сможет присутствовать: ${esc(next.absence.reason.toLowerCase())}.${next.absence.makeup?' Куратор предложит время для отработки.':' Запись урока появится в расписании.'}</p>
+    <div class="next__act"><button class="btn btn--ghost" data-unabs="${esc(next.id)}">Всё-таки придём</button></div>`
+    :`<div class="next__act">
+      <button class="btn" id="joinBtn">${isLocked(st,next)?'🔒 Открыть после оплаты':icon('i-video',18)+' Подключиться к уроку'}</button>
+      ${isLocked(st,next)?'':`<button class="btn btn--ghost" data-abs="${esc(next.id)}">Не смогу присутствовать</button>`}
+    </div>`}`:`<h2>Новых уроков пока нет</h2><p style="position:relative;color:#DCD0FF">Куратор добавит расписание следующего курса.</p>`}
+  </div>
+  ${freezeBanner(st)}
+  <div class="stats">
+    <div class="stat"><i style="background:#EDE3FF;color:var(--ink)">${icon('i-prog',18)}</i><b>${done}/${st.total}</b><span>${plural(st.total,'занятия','занятий','занятий')} курса пройдено</span><div class="bar"><span style="width:${pct}%"></span></div></div>
+    <div class="stat"><i style="background:#DBF7EE;color:#0E7A5A">${icon('i-hw',18)}</i><b>${st.homework.filter(h=>h.status==='ok').length}</b><span>${plural(st.homework.filter(h=>h.status==='ok').length,'задание проверено','задания проверено','заданий проверено')}</span></div>
+    <div class="stat"><i style="background:#FFF6CC">${icon('i-coin',18)}</i><b>${st.coins}</b><span>${plural(st.coins,'монетка','монетки','монеток')} за задания</span></div>
+    <div class="stat"><i style="background:#FFEBDD;color:var(--coral)">${icon('i-fire',18)}</i><b>${st.streak}</b><span>${plural(st.streak,'неделя','недели','недель')} без пропусков</span></div>
+  </div>
+  <div class="grid-main">
+    <section class="card">
+      <div class="card__h"><h2>Задания</h2><a class="link" href="#homework">Все задания</a></div>
+      <div class="list">${hw.length?hw.map(h=>`
+        <div class="item"><div class="item__main"><b>${esc(h.title)}</b><small>Урок ${h.lesson}${h.lessonTitle?' · '+esc(h.lessonTitle):''}</small></div>
+        ${h.status==='todo'?'<span class="pill pill--new">Нужно сделать</span>':'<span class="pill pill--wait">На проверке</span>'}</div>`).join(''):'<p style="color:var(--muted)">Все задания сданы — отличная работа! 🎉</p>'}
+      </div>
+      <div class="card__h" style="margin:22px 0 14px"><h2>Ближайшие уроки</h2><a class="link" href="#schedule">Расписание</a></div>
+      <div class="list">${up.slice(1,4).map(l=>lessonItem(l)).join('')||'<p style="color:var(--muted)">Пока не запланированы.</p>'}</div>
+    </section>
+    <div style="display:grid;gap:22px;align-content:start">
+      <section class="card">
+        <div class="teacher"><span class="teacher__ava">${esc(initials(st.teacher.name))}</span><div><h3>${esc(st.teacher.name||'Преподаватель')}</h3><small style="color:var(--muted)">${esc(st.teacher.role)}</small></div></div>
+        ${last?`<div class="quote">«${esc(last.comment)}»<small>Отзыв на задание «${esc(last.title)}»</small></div>`:''}
+        <a class="btn btn--ghost btn--block" style="margin-top:14px" href="${esc(safeUrl(st.teacher.tg)||CURATOR_TG)}" target="_blank" rel="noopener">Написать преподавателю</a>
+      </section>
+      <section class="card">
+        <div class="card__h"><h2>Курс</h2><a class="link" href="#progress">Прогресс</a></div>
+        <h3>${esc(courseName(st))}</h3>
+        <p style="color:var(--muted);font-size:13px;margin-top:4px">${st.total} ${plural(st.total,'занятие','занятия','занятий')} · ${(PROGRAMS[st.program]||PROGRAMS.Middle).modules.length} модулей</p>
+        <div class="bar" style="height:10px;margin-top:12px"><span style="width:${pct}%"></span></div>
+        <p style="margin-top:10px;font-size:13px"><b>${pct}% курса</b> <span style="color:var(--muted)">· ${done} из ${st.total}</span></p>
+        <p style="color:var(--muted);margin-top:8px;font-size:13px">${done>=st.total?'Курс пройден — поздравляем! 🎉':`Сейчас модуль <b style="color:var(--text)">${esc(mod.tech)}</b> — ${esc(mod.title)}: пройдено ${inMod} из ${mod.count}.`}</p>
+      </section>
+    </div>
+  </div>`;
+},
+schedule(){
+  const st=stu(), fut=upcoming(st), past=pastL(st).slice(0,5);
+  return `
+  <div class="vhead"><div><h1>Расписание</h1><p>Время указано по часовому поясу вашего устройства. Если ребёнок не сможет прийти — предупредите заранее.</p></div>
+  ${st.freeze?'':`<button class="btn btn--ghost btn--sm" data-freeze>❄ Заморозить обучение</button>`}</div>
+  ${freezeBanner(st)}
+  <section class="card"><div class="card__h"><h2>Предстоящие</h2></div><div class="list">${fut.map((l,i)=>lessonItem(l,i===0)).join('')||'<p style="color:var(--muted)">Новых уроков пока нет.</p>'}</div></section>
+  <section class="card"><div class="card__h"><h2>Прошедшие</h2><a class="link" href="#journal">Весь журнал посещений</a></div><div class="list">${past.map(l=>`
+    <div class="item"><div class="date date--past"><b>${l.date.getDate()}</b><small>${MON[l.date.getMonth()]}</small></div>
+    <div class="item__main"><b>Урок ${l.n}. ${esc(l.title)}</b><small>${WDF[l.date.getDay()]}, ${t2(l.date)} · ${attText(l)}</small></div>
+    <button class="btn btn--ghost btn--sm" data-rec="${esc(l.id)}">${icon('i-video',16)} Запись</button></div>`).join('')||'<p style="color:var(--muted)">Здесь появятся прошедшие уроки и их записи.</p>'}</div></section>`;
+},
+journal(){
+  const st=stu(), past=pastL(st);
+  const att=past.filter(l=>l.status==='done').length, miss=past.filter(l=>l.status==='missed');
+  const made=miss.filter(l=>l.absence&&l.absence.makeupDone).length, valid=miss.filter(l=>l.absence).length;
+  const rate=past.length?Math.round((att+made)/past.length*100):100;
+  return `
+  <div class="vhead"><div><h1>Журнал посещений</h1><p>Все прошедшие занятия ${esc(st.name)}: где был, что пропустил и что отработал.</p></div>
+  <div class="tabs" id="jTabs" role="group" aria-label="Фильтр"><button aria-pressed="true" data-f="all">Все</button><button aria-pressed="false" data-f="done">Был</button><button aria-pressed="false" data-f="missed">Пропуски</button></div></div>
+  <div class="stats">
+    <div class="stat"><i style="background:#DBF7EE;color:#0E7A5A">✓</i><b>${att}</b><span>${plural(att,'занятие посещено','занятия посещено','занятий посещено')}</span></div>
+    <div class="stat"><i style="background:#FFF4CC;color:#8A6400">!</i><b>${miss.length}</b><span>${plural(miss.length,'пропуск','пропуска','пропусков')}${valid?`, ${valid} с предупреждением`:''}</span></div>
+    <div class="stat"><i style="background:#EDE3FF;color:var(--ink)">↺</i><b>${made}</b><span>${plural(made,'пропуск отработан','пропуска отработано','пропусков отработано')}</span></div>
+    <div class="stat"><i style="background:#FFE6F1;color:#C0256E">%</i><b>${rate}%</b><span>посещаемость</span><div class="bar"><span style="width:${rate}%"></span></div></div>
+  </div>
+  ${st.before?`<p style="color:var(--muted);font-size:13px">Занятия 1–${st.before} прошли до подключения личного кабинета и в журнал не попали.</p>`:''}
+  <section class="card"><div id="jList"></div></section>`;
+},
+homework(){
+  return `
+  <div class="vhead"><div><h1>Домашние задания</h1><p>За каждое проверенное задание — монетки. Их можно обменять на бонусы школы.</p></div>
+  <div class="tabs" id="hwTabs" role="group" aria-label="Фильтр заданий">
+    <button aria-pressed="true" data-f="all">Все</button><button aria-pressed="false" data-f="todo">Сделать</button><button aria-pressed="false" data-f="wait">На проверке</button><button aria-pressed="false" data-f="ok">Проверено</button></div></div>
+  <div class="list" id="hwList" style="gap:16px"></div>`;
+},
+progress(){
+  const st=stu(), done=doneCount(st), pct=pctOf(st), ms=modulesOf(st), mod=curModule(st);
+  const cl=courseLessons(st), nextI=cl.findIndex(l=>!l.done);
+  const finished=ms.filter(m=>done>=m.to);
+  // длинный модуль показываем окном вокруг текущего занятия
+  const a=Math.max(0,(nextI<0?cl.length:nextI)-3), b=Math.min(cl.length,a+9);
+  const lessonRow=(l,i)=>`<div class="lesson ${l.done?'lesson--done':i===nextI?'lesson--now':''}"><i>${l.done?'✓':l.n}</i><span>${esc(l.title)}</span>${i===nextI?'<span class="pill pill--new" style="margin-left:auto">следующее</span>':''}</div>`;
+  return `
+  <div class="vhead"><div><h1>Прогресс</h1><p>Ученик: ${esc(st.name)} · курс ${esc(courseName(st))}, ${st.total} ${plural(st.total,'занятие','занятия','занятий')}.</p></div></div>
+  <section class="card">
+    <div class="card__h"><h2>Курс ${esc(st.program||'Middle')}</h2><span class="pill pill--lilac">${done} из ${st.total} · ${pct}%</span></div>
+    <div class="bar" style="height:12px;margin:0 0 22px"><span style="width:${pct}%"></span></div>
+    <div class="road" style="--cols:${ms.length}">${ms.map(m=>{const s=done>=m.to?'done':m.from===mod.from?'now':'';const mp=Math.round(Math.max(0,done-m.from+1)/m.count*100);
+      return `<div class="node ${s?'node--'+s:''}"><span class="node__dot">${s==='done'?'✓':s==='now'?mp+'%':'🔒'}</span><b>${esc(m.tech)}</b><small>${esc(m.title)}<br>${m.count} ${plural(m.count,'занятие','занятия','занятий')}</small></div>`}).join('')}</div>
+  </section>
+  <div class="grid2">
+    <section class="card"><div class="card__h"><h2>${esc(mod.tech)}</h2><span class="pill pill--muted">${Math.max(0,done-mod.from+1)} из ${mod.count}</span></div>
+      <p style="color:var(--muted);font-size:13px;margin:-4px 0 12px">Модуль ${ms.findIndex(m=>m.from===mod.from)+1} из ${ms.length} · занятия ${mod.from}–${mod.to} курса</p>
+      <div class="lessons">
+        ${a>0?`<div class="lesson lesson--done"><i>✓</i><span>Занятия ${cl[0].n}–${cl[a-1].n} пройдены</span></div>`:''}
+        ${cl.slice(a,b).map((l,k)=>lessonRow(l,a+k)).join('')}
+        ${b<cl.length?`<div class="lesson"><i>…</i><span>Ещё ${cl.length-b} ${plural(cl.length-b,'занятие','занятия','занятий')} до конца модуля</span></div>`:''}
+      </div>
+    </section>
+    <div style="display:grid;gap:22px;align-content:start">
+      <section class="card"><div class="card__h"><h2>Навыки</h2></div><div class="skills">
+        ${st.skills.length?st.skills.map(([t,p])=>`<div class="skill"><div><span>${esc(t)}</span><b>${+p||0}%</b></div><div class="bar" style="margin:0"><span style="width:${Math.min(100,+p||0)}%"></span></div></div>`).join(''):'<p style="color:var(--muted)">Преподаватель оценит навыки после первого модуля.</p>'}
+      </div>${st.skills.length?'<p style="color:var(--muted);font-size:12.5px;margin-top:14px">Оценку обновляет преподаватель после каждого модуля.</p>':''}</section>
+      <section class="card"><div class="card__h"><h2>Сертификаты</h2></div>
+        <div class="list">${finished.length?finished.map(m=>`<div class="item"><span style="font-size:28px">📜</span><div class="item__main"><b>${esc(m.tech)} · ${esc(m.title)}</b><small>модуль пройден · ${m.count} ${plural(m.count,'занятие','занятия','занятий')}</small></div><button class="btn btn--ghost btn--sm" data-cert>Получить</button></div>`).join(''):'<p style="color:var(--muted)">Сертификат появится после первого пройденного модуля.</p>'}</div>
+      </section>
+    </div>
+  </div>
+  <section class="card"><div class="card__h"><h2>Достижения</h2><span class="pill pill--muted">${ACHIEVE.filter(a=>st.achievements.includes(a.k)).length} из ${ACHIEVE.length}</span></div>
+    <div class="badges">${ACHIEVE.map(a=>`<div class="badge ${st.achievements.includes(a.k)?'':'badge--off'}"><span>${a.e}</span><b>${a.t}</b><small style="color:var(--muted)">${a.d}</small></div>`).join('')}</div>
+  </section>`;
+},
+pay(){
+  const st=stu(), pl=planOf(st), pay=payOf(st), done=doneCount(st), open=openUpTo(st), left=Math.max(0,st.total-done);
+  const months=Math.max(1,Math.round(left/4.35)); // при занятиях раз в неделю
+  const end=new Date();end.setDate(end.getDate()+left*7);
+  const full=pay.full, np=st.nextPay;
+  return `
+  <div class="vhead"><div><h1>Оплата</h1><p>Ваш тариф, способ оплаты и доступ к занятиям.</p></div></div>
+  <section class="payhero">
+    <div class="ring" style="--p:${Math.round(open/Math.max(1,st.total)*100)}"><div><b>${open}</b><small>из ${st.total}<br>открыто</small></div></div>
+    <div class="payhero__txt">
+      <span class="pill ${full?'pill--ok':'pill--wait'}">${full?'✓ Оплачено полностью':'Оплата частями'}</span>
+      <h2>${full?'Курс полностью доступен':`Открыто ${open} из ${st.total} ${plural(st.total,'занятия','занятий','занятий')}`}</h2>
+      <p>${full?`Все ${st.total} ${plural(st.total,'занятие','занятия','занятий')} курса ${esc(courseName(st))} открыты.`:`Занятия ${open+1}–${st.total} откроются после следующих платежей.`}
+      У вас осталось <b>${left} ${plural(left,'занятие','занятия','занятий')}</b> — это примерно <b>${months} ${plural(months,'месяц','месяца','месяцев')}</b> учёбы.</p>
+    </div>
+  </section>
+  <div class="paygrid">
+    <div class="stat"><span>Тариф</span><b class="sm">${esc(pl.t)}</b><span>${st.total} ${plural(st.total,'занятие','занятия','занятий')}${pl.solo?' с преподавателем один на один':' в группе'}</span></div>
+    <div class="stat"><span>Способ оплаты</span><b class="sm">${esc(pay.t)}</b></div>
+    <div class="stat"><span>Пройдено</span><b>${done}</b><span>${plural(done,'занятие','занятия','занятий')}</span><div class="bar"><span style="width:${pctOf(st)}%"></span></div></div>
+    <div class="stat"><span>Осталось</span><b>${left}</b><span>${plural(left,'занятие','занятия','занятий')} · до ~${MONG[end.getMonth()]} ${end.getFullYear()}</span></div>
+  </div>
+  <div class="grid2">
+    <section class="card"><div class="card__h"><h2>Как открываются занятия</h2></div>
+      <p style="color:var(--muted)">${esc(pay.d)}</p>
+      ${!full&&np?`<div class="quote" style="margin-top:16px"><b>Следующий платёж — ${np.date.getDate()} ${MONG[np.date.getMonth()]}</b><small>откроет ещё ${np.lessons} ${plural(np.lessons,'занятие','занятия','занятий')}</small></div>`:''}
+      ${!full?'<button class="btn btn--block" style="margin-top:16px" data-paynow>Оплатить следующий платёж</button>':''}
+      <p style="color:var(--muted);font-size:12.5px;margin-top:14px">Занятия раз в неделю; каникулы и переносы могут сдвинуть дату окончания.</p>
+    </section>
+    <section class="card"><div class="card__h"><h2>Способы оплаты</h2></div>
+      <div class="list">${Object.entries(PAYS).map(([k,x])=>`<div class="item ${k===st.payment?'item--on':''}"><span class="paymark">${k===st.payment?'✓':''}</span><div class="item__main"><b>${esc(x.t)}</b><small>${x.full?'все занятия открываются сразу':'занятия открываются по мере оплаты'}</small></div>${k===st.payment?'<span class="pill pill--lilac">ваш</span>':''}</div>`).join('')}</div>
+    </section>
+  </div>
+  <section class="card"><div class="card__h"><h2>Документы</h2></div>
+    <div class="item"><span style="font-size:26px">📄</span><div class="item__main"><b>Договор, чеки и справка для налогового вычета</b><small>Пришлём по запросу в течение одного рабочего дня</small></div><a class="btn btn--ghost btn--sm" href="${CURATOR_TG}" target="_blank" rel="noopener">Запросить</a></div>
+  </section>`;
+},
+masterclasses(){
+  const list=S.masterclasses||[];
+  const tags=['Все',...new Set(list.map(m=>m.tag).filter(Boolean))];
+  return `
+  <div class="vhead"><div><h1>Мастер-классы</h1><p>Видеоуроки от преподавателей «Уникума». Смотрите в любое время и сколько угодно раз.</p></div>
+  ${tags.length>2?`<div class="tabs" id="mcTabs" role="group" aria-label="Темы">${tags.map((t,i)=>`<button aria-pressed="${i===0}" data-t="${esc(t)}">${esc(t)}</button>`).join('')}</div>`:''}</div>
+  <div class="mc-grid" id="mcGrid">${list.length?'':'<p style="color:var(--muted)">Скоро здесь появятся первые мастер-классы.</p>'}</div>`;
+},
+extra(){
+  const rq=S.requests||{};
+  return `
+  <div class="vhead"><div><h1>Дополнительные курсы</h1><p>Можно проходить вместе с основным курсом. Оставьте заявку — куратор расскажет о расписании и стоимости.</p></div></div>
+  <div class="xc-grid">${EXTRA.map(x=>`<article class="xc">
+    <div class="xc__head" style="--c1:${x.c1};--c2:${x.c2}"><span>${x.e}</span><h2>${esc(x.t)}</h2></div>
+    <div class="xc__body"><p>${esc(x.d)}</p><ul>${x.li.map(li=>`<li>${esc(li)}</li>`).join('')}</ul>
+    ${rq[x.id]?'<button class="btn btn--ghost btn--block" disabled>✓ Заявка отправлена</button><small>Куратор свяжется с вами в ближайшее время.</small>':`<button class="btn btn--block" data-extra="${x.id}">Оставить заявку</button>`}</div>
+  </article>`).join('')}</div>`;
+},
+more(){
+  const items=ROUTES.filter(r=>!r.tab&&!r.hidden);
+  return `<div class="vhead"><div><h1>Ещё</h1></div></div>
+  <div class="list">${items.map(r=>`<a class="item item--link" href="#${r.id}"><span class="more__ic">${icon(r.i,22)}</span><div class="item__main"><b>${r.t}</b></div><span aria-hidden="true">→</span></a>`).join('')}
+  <a class="item item--link" href="#logout"><span class="more__ic" style="color:#C0326F">${icon('i-out',22)}</span><div class="item__main"><b style="color:#C0326F">${MODE==='demo'?'Выйти из демо':'Выйти'}</b></div></a></div>`;
+},
+profile(){
+  const p=S.parent,c=stu(),n=S.notify;
+  return `
+  <div class="vhead"><div><h1>Профиль</h1><p>Контакты нужны, чтобы присылать напоминания об уроках и отзывы преподавателя.</p></div><a class="btn btn--ghost btn--sm" href="#logout">${icon('i-out',16)} Выйти</a></div>
+  <form id="profForm" class="grid2" novalidate>
+    <section class="card"><div class="card__h"><h2>Родитель</h2></div>
+      <label class="field"><span>Имя</span><input class="input" name="pname" value="${esc(p.name)}" autocomplete="given-name" required></label>
+      <div class="form-grid">
+        <label class="field"><span>Телефон</span><input class="input" name="phone" type="tel" value="${esc(p.phone)}" autocomplete="tel"></label>
+        <label class="field"><span>Почта для входа</span><input class="input" name="email" type="email" value="${esc(p.email)}" readonly title="Почту для входа меняет куратор"></label>
+      </div>
+      ${c?`<div class="card__h" style="margin-top:10px"><h2>Ученик</h2></div>
+      <div class="form-grid">
+        <label class="field"><span>Имя</span><input class="input" name="cname" value="${esc(c.name)}" required></label>
+        <label class="field"><span>Дата рождения</span><input class="input" name="birth" type="date" value="${esc(c.birth)}"></label>
+      </div>`:''}
+    </section>
+    <div style="display:grid;gap:22px;align-content:start">
+      <section class="card"><div class="card__h"><h2>Уведомления</h2></div>
+        <label class="switch"><span>Напоминать об уроке<small>за час до начала, в Telegram и по SMS</small></span><input type="checkbox" name="n_lesson" ${n.lesson?'checked':''}></label>
+        <label class="switch"><span>Новые задания и отзывы<small>когда преподаватель проверил работу</small></span><input type="checkbox" name="n_hw" ${n.hw?'checked':''}></label>
+        <label class="switch"><span>Новости школы<small>интенсивы, конкурсы и акции</small></span><input type="checkbox" name="n_news" ${n.news?'checked':''}></label>
+      </section>
+      <section class="card"><div class="card__h"><h2>Пароль</h2></div>
+        <label class="field"><span>Новый пароль</span><input class="input" name="pass" type="password" autocomplete="new-password" placeholder="Не меньше 8 символов"></label>
+      </section>
+      <button class="btn" type="submit" id="profSave">Сохранить изменения</button>
+    </div>
+  </form>`;
+}
+};
+
+/* ---------- обработчики экранов ---------- */
+async function busy(btn,fn){btn.disabled=true;try{await fn()}catch(e){toast(human(e))}finally{btn.disabled=false}}
+const BIND={
+home(){
+  const b=$('#joinBtn');if(!b)return;
+  b.onclick=()=>{
+    const next=upcoming(stu())[0];if(!next)return;
+    if(isLocked(stu(),next))return location.hash='pay';
+    const mins=(next.date-new Date())/60000;
+    if(mins>15)return toast('Ссылка на урок станет активной за 15 минут до начала.');
+    if(safeUrl(next.meet))return openUrl(next.meet);
+    toast(MODE==='demo'?'В демо-кабинете ссылки на урок нет.':'Ссылку на урок пришлёт преподаватель. Если её нет — напишите куратору.');
+  };
+},
+homework(){
+  let f='all';
+  const draw=()=>{
+    const st=stu();
+    $('#hwList').innerHTML=st.homework.filter(h=>f==='all'||h.status===f).map(h=>{
+      const pill={todo:'<span class="pill pill--new">Нужно сделать</span>',wait:'<span class="pill pill--wait">На проверке</span>',ok:'<span class="pill pill--ok">Проверено</span>'}[h.status]||'';
+      const u=safeUrl(h.url);
+      return `<article class="card hw">
+        <div class="hw__top"><div><small>Урок ${h.lesson}${h.lessonTitle?' · '+esc(h.lessonTitle):''}</small><h3 style="margin-top:4px">${esc(h.title)}</h3></div>${pill}</div>
+        ${h.task?`<p class="hw__task">${esc(h.task)}</p>`:''}
+        ${h.status==='todo'?`<form class="hw__send" data-hw="${esc(h.id)}"><label class="sr" for="u_${esc(h.id)}">Ссылка на проект</label><input class="input" id="u_${esc(h.id)}" placeholder="Ссылка на проект (Roblox, Scratch, Google Диск…)" required><button class="btn btn--sm">Сдать задание</button></form>`:''}
+        ${h.status==='wait'?`<p style="font-size:13px;color:#8A6400">Преподаватель проверит работу до следующего урока.${u?` Ссылка: <a class="link" href="${esc(u)}" target="_blank" rel="noopener">${esc(u)}</a>`:''}</p>`:''}
+        ${h.status==='ok'?`<div class="quote" style="margin:0"><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:${h.comment?6:0}px">${h.stars?`<span class="stars" aria-label="${h.stars} из 5">${'★'.repeat(h.stars)}<s>${'★'.repeat(5-h.stars)}</s></span>`:'<span>Проверено ✓</span>'}${h.coins?`<span class="reward">${icon('i-coin',16)} +${h.coins}</span>`:''}</div>${h.comment?`«${esc(h.comment)}»<small>${esc(stu().teacher.name)}</small>`:''}</div>`:''}
+      </article>`;}).join('')||'<p style="color:var(--muted)">Здесь пока пусто.</p>';
+    $$('[data-hw]').forEach(fm=>fm.onsubmit=e=>{
+      e.preventDefault();
+      const inp=fm.querySelector('input');let v=inp.value.trim();
+      if(v.length<4){inp.setAttribute('aria-invalid','true');inp.focus();toast('Вставьте ссылку на проект');return}
+      if(!/^https?:\/\//i.test(v))v='https://'+v;
+      busy(fm.querySelector('button'),async()=>{
+        await API.submitHomework(fm.dataset.hw,v);
+        const h=stu().homework.find(x=>String(x.id)===fm.dataset.hw);Object.assign(h,{status:'wait',url:v});
+        toast('Задание отправлено преподавателю 🚀');renderNav('homework');draw();
+      });
+    });
+  };
+  $$('#hwTabs button').forEach(b=>b.onclick=()=>{f=b.dataset.f;$$('#hwTabs button').forEach(x=>x.setAttribute('aria-pressed',x===b));draw()});
+  draw();
+},
+progress(){$$('[data-cert]').forEach(b=>b.onclick=()=>toast('Напишите куратору — пришлём сертификат в PDF.'))},
+journal(){
+  let f='all';
+  const MONN=['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
+  const draw=()=>{
+    const list=pastL(stu()).filter(l=>f==='all'||l.status===f);
+    let html='',cur='';
+    list.forEach(l=>{
+      const m=MONN[l.date.getMonth()]+' '+l.date.getFullYear();
+      if(m!==cur){html+=`<h3 class="jmonth">${m}</h3>`;cur=m}
+      html+=`<div class="jrow"><span class="jrow__n">${l.n}</span><span class="jrow__d">${l.date.getDate()} ${MON[l.date.getMonth()]}, ${WD[l.date.getDay()]}</span>
+        <span class="jrow__t"><b>${esc(l.title)}</b><small>${esc(l.course)}${l.absence&&l.absence.comment?' · '+esc(l.absence.comment):''}</small></span>${attPill(l)}</div>`;
+    });
+    $('#jList').innerHTML=html||'<p style="color:var(--muted)">Здесь пока пусто.</p>';
+  };
+  $$('#jTabs button').forEach(b=>b.onclick=()=>{f=b.dataset.f;$$('#jTabs button').forEach(x=>x.setAttribute('aria-pressed',x===b));draw()});
+  draw();
+},
+pay(){$$('[data-paynow]').forEach(b=>b.onclick=()=>toast('Онлайн-оплата скоро заработает. Пока оплатить можно по реквизитам — их пришлёт куратор.'))},
+masterclasses(){
+  let tag='Все';
+  const draw=()=>{
+    const list=(S.masterclasses||[]).filter(m=>tag==='Все'||m.tag===tag);
+    if(!list.length)return;
+    $('#mcGrid').innerHTML=list.map(m=>`<button class="mc" type="button" data-mc="${esc(m.id)}">
+      <span class="mc__cover"><img src="${esc(m.cover)}" alt="" loading="lazy"><span class="mc__play">${icon('i-play',22)}</span>
+      ${m.isNew&&!m.seen?'<span class="mc__tag mc__tag--new">Новое</span>':''}${m.seen?'<span class="mc__tag">✓ Просмотрено</span>':''}${m.min?`<span class="mc__dur">${m.min} мин</span>`:''}</span>
+      <span class="mc__body">${m.tag?`<small>${esc(m.tag)}</small>`:''}<b>${esc(m.title)}</b><span>${esc(m.desc)}</span></span></button>`).join('');
+  };
+  $$('#mcTabs button').forEach(b=>b.onclick=()=>{tag=b.dataset.t;$$('#mcTabs button').forEach(x=>x.setAttribute('aria-pressed',x===b));draw()});
+  $('#mcGrid').onclick=e=>{const c=e.target.closest('[data-mc]');if(c)openVideo(S.masterclasses.find(m=>String(m.id)===c.dataset.mc),draw)};
+  draw();
+},
+extra(){
+  $$('[data-extra]').forEach(b=>b.onclick=()=>busy(b,async()=>{
+    await API.requestExtra(b.dataset.extra,stu()&&stu().id);
+    S.requests=Object.assign(S.requests||{},{[b.dataset.extra]:true});
+    toast('Заявка отправлена — куратор свяжется с вами ✓');route();
+  }));
+},
+profile(){
+  $('#profForm').onsubmit=e=>{
+    e.preventDefault();
+    const f=e.target, v=n=>f.elements[n]?f.elements[n].value.trim():'';
+    if(!v('pname')){toast('Заполните имя родителя');return}
+    if(stu()&&!v('cname')){toast('Заполните имя ученика');return}
+    if(v('pass')&&v('pass').length<8){f.elements.pass.setAttribute('aria-invalid','true');toast('Пароль — не меньше 8 символов');return}
+    busy($('#profSave'),async()=>{
+      const parent={name:v('pname'),phone:v('phone'),email:S.parent.email};
+      const notify={lesson:f.elements.n_lesson.checked,hw:f.elements.n_hw.checked,news:f.elements.n_news.checked};
+      await API.saveProfile(parent,notify);S.parent=parent;S.notify=notify;
+      if(stu()&&(v('cname')!==stu().name||v('birth')!==(stu().birth||''))){await API.saveStudent(stu().id,v('cname'),v('birth'));Object.assign(stu(),{name:v('cname'),birth:v('birth')})}
+      if(v('pass')){await API.changePassword(v('pass'));f.elements.pass.value=''}
+      fillTop();toast('Изменения сохранены ✓');
+    });
+  };
+}
+};
+
+/* «не смогу присутствовать», заморозка и записи */
+document.addEventListener('click',e=>{
+  const t=e.target.closest('[data-abs],[data-unabs],[data-freeze],[data-unfreeze],[data-rec]');if(!t)return;
+  if(t.dataset.abs)return openAbsence(t.dataset.abs);
+  if(t.dataset.unabs)return busy(t,async()=>{const l=stu().lessons.find(x=>String(x.id)===t.dataset.unabs);await API.cancelAbsence(l.id);l.absence=null;toast('Отлично, ждём на уроке!');route()});
+  if('freeze' in t.dataset)return openFreeze();
+  if('unfreeze' in t.dataset)return busy(t,async()=>{await API.cancelFreeze(stu().freeze.id);stu().freeze=null;toast('Заявка на заморозку отменена');route()});
+  if(t.dataset.rec){const l=stu().lessons.find(x=>String(x.id)===t.dataset.rec);safeUrl(l&&l.record)?openUrl(l.record):toast('Запись этого урока ещё не загружена.')}
+});
+function reasonChips(name){
+  return `<div class="reasons" role="radiogroup" aria-label="Причина">${REASONS.map(r=>`<label class="reason"><input type="radio" name="${name}" value="${esc(r)}"><span>${esc(r)}</span></label>`).join('')}</div>`;
+}
+function openAbsence(id){
+  const st=stu(), l=st.lessons.find(x=>String(x.id)===id);if(!l)return;
+  $('#dlgBody').innerHTML=`<h2>Не смогу присутствовать</h2><p>Урок ${l.n} · ${dLong(l.date)}, ${t2(l.date)}. Выберите причину — преподаватель и куратор получат уведомление.</p>
+    <form id="absForm" class="dlg__form" novalidate>
+      ${reasonChips('reason')}
+      <label class="field"><span>Комментарий</span><textarea class="input" name="comment" rows="2" maxlength="300" placeholder="Необязательно. Для «Другое» — коротко опишите причину"></textarea></label>
+      <label class="check"><input type="checkbox" name="makeup" checked> Хотим отработать занятие — куратор предложит удобное время</label>
+      <p class="dlg__hint">Запись урока появится в расписании. Нужна пауза дольше? <button type="button" class="link" id="toFreeze">Заморозить обучение до 1 месяца</button></p>
+      <p class="err" id="absErr" role="alert"></p>
+      <div class="dlg__act"><button class="btn btn--ghost btn--sm" type="button" id="dlgNo">Отмена</button><button class="btn btn--sm" type="submit" id="dlgOk">Отправить</button></div>
+    </form>`;
+  const f=$('#absForm');
+  $('#dlgNo').onclick=()=>$('#dlg').close();
+  $('#toFreeze').onclick=()=>{$('#dlg').close();openFreeze()};
+  f.onchange=()=>{$('#absErr').textContent=''};
+  f.onsubmit=e=>{
+    e.preventDefault();
+    const reason=(f.querySelector('input[name=reason]:checked')||{}).value, comment=f.elements.comment.value.trim();
+    if(!reason){$('#absErr').textContent='Выберите причину';return}
+    if(reason==='Другое'&&!comment){$('#absErr').textContent='Напишите коротко, что случилось';f.elements.comment.focus();return}
+    busy($('#dlgOk'),async()=>{
+      const a={reason,comment,makeup:f.elements.makeup.checked,makeupDone:false};
+      await API.reportAbsence(l.id,a);l.absence=a;$('#dlg').close();
+      toast('Спасибо, что предупредили! Преподаватель в курсе.');route();
+    });
+  };
+  $('#dlg').showModal();
+}
+function openFreeze(){
+  const st=stu();
+  if(st.freeze)return toast('У вас уже есть заморозка — сначала отмените её');
+  const today=new Date();today.setHours(0,0,0,0);
+  const iso=d=>new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10);
+  const maxStart=new Date(today);maxStart.setDate(maxStart.getDate()+60);
+  const tomorrow=new Date(today);tomorrow.setDate(tomorrow.getDate()+1);
+  const DUR=[[7,'1 неделя'],[14,'2 недели'],[21,'3 недели'],[FREEZE_MAX,'1 месяц']];
+  $('#dlgBody').innerHTML=`<h2>❄ Заморозка обучения</h2><p>Можно приостановить занятия на срок до 1 месяца. Занятия на время заморозки не проводятся и переносятся на после неё.</p>
+    <form id="frForm" class="dlg__form" novalidate>
+      <label class="field"><span>С какого числа</span><input class="input" type="date" name="from" value="${iso(tomorrow)}" min="${iso(tomorrow)}" max="${iso(maxStart)}" required></label>
+      <div class="field"><span>На сколько</span><div class="slots" role="radiogroup" aria-label="Срок" style="margin:0">${DUR.map(([d,t],i)=>`<button type="button" data-days="${d}" aria-pressed="${i===1}">${t}</button>`).join('')}</div></div>
+      <p class="fr__sum" id="frSum"></p>
+      <div class="field"><span>Причина</span>${reasonChips('freason')}</div>
+      <label class="field"><span>Комментарий</span><textarea class="input" name="comment" rows="2" maxlength="300" placeholder="Необязательно"></textarea></label>
+      <p class="err" id="frErr" role="alert"></p>
+      <div class="dlg__act"><button class="btn btn--ghost btn--sm" type="button" id="dlgNo">Отмена</button><button class="btn btn--sm" type="submit" id="dlgOk">Отправить заявку</button></div>
+    </form>`;
+  const f=$('#frForm');let days=14;
+  const range=()=>{const a=new Date(f.elements.from.value+'T00:00:00');const b=new Date(a);b.setDate(b.getDate()+days-1);b.setHours(23,59,59);return [a,b]};
+  const sum=()=>{
+    if(!f.elements.from.value){$('#frSum').textContent='';return}
+    const [a,b]=range(), n=st.lessons.filter(l=>l.status==='planned'&&l.date>=a&&l.date<=b).length;
+    $('#frSum').innerHTML=`С <b>${dDay(a)}</b> по <b>${dDay(b)}</b> · ${n?`${n} ${plural(n,'занятие перенесётся','занятия перенесутся','занятий перенесутся')}`:'по расписанию занятий в эти дни нет'}`;
+  };
+  $$('#frForm [data-days]').forEach(b=>b.onclick=()=>{days=+b.dataset.days;$$('#frForm [data-days]').forEach(x=>x.setAttribute('aria-pressed',x===b));sum()});
+  f.elements.from.oninput=sum;sum();
+  $('#dlgNo').onclick=()=>$('#dlg').close();
+  f.onsubmit=e=>{
+    e.preventDefault();
+    const reason=(f.querySelector('input[name=freason]:checked')||{}).value, comment=f.elements.comment.value.trim();
+    if(!f.elements.from.value){$('#frErr').textContent='Выберите дату начала';return}
+    const [a,b]=range();
+    if(a<tomorrow||a>maxStart){$('#frErr').textContent='Дата начала — с завтрашнего дня и не позже чем через 2 месяца';return}
+    if(days>FREEZE_MAX){$('#frErr').textContent='Заморозка — не больше 1 месяца';return}
+    if(!reason){$('#frErr').textContent='Выберите причину';return}
+    if(reason==='Другое'&&!comment){$('#frErr').textContent='Напишите коротко причину';return}
+    const why=reason+(comment?': '+comment:'');
+    busy($('#dlgOk'),async()=>{
+      const r=await API.requestFreeze(st.id,a,b,why);
+      st.freeze={id:r.id,from:a,to:b,reason:why,status:'requested'};$('#dlg').close();
+      toast('Заявка на заморозку отправлена куратору ❄');route();
+    });
+  };
+  $('#dlg').showModal();
+}
+$('#dlg').addEventListener('click',e=>{if(e.target===e.currentTarget)e.currentTarget.close()});
+$('#dlg').addEventListener('close',()=>{$('#dlg').classList.remove('dlg--wide');const v=$('#dlg video');if(v)v.pause();$('#dlgBody').innerHTML=''});
+const isFile=u=>/\.(mp4|webm|mov|m4v)(\?|$)/i.test(u)||/\/storage\/v1\/object\//.test(u);
+function openVideo(m,redraw){
+  if(!m)return;
+  const u=safeUrl(m.video);
+  let media;
+  if(u&&isFile(u))media=`<video controls autoplay playsinline preload="metadata" poster="${esc(m.cover)}" src="${esc(u)}"></video>`;
+  else media=`<div class="vid__poster"><img src="${esc(m.cover)}" alt=""><div>${u?`<button class="btn" type="button" id="vidOpen">${icon('i-play',18)} Смотреть видео</button>`:'<b>Видео скоро появится здесь</b><small>Мы загружаем мастер-класс — загляните чуть позже.</small>'}</div></div>`;
+  $('#dlg').classList.add('dlg--wide');
+  $('#dlgBody').innerHTML=`${media}<div class="vid__info"><div><h2>${esc(m.title)}</h2><p>${esc(m.desc)}</p></div><button class="btn btn--ghost btn--sm" type="button" id="dlgNo">Закрыть</button></div>`;
+  $('#dlgNo').onclick=()=>$('#dlg').close();
+  const o=$('#vidOpen');if(o)o.onclick=()=>openUrl(u);
+  $('#dlg').showModal();
+  if(u&&!m.seen){m.seen=true;API.markSeen(m.id);redraw&&redraw();renderNav('masterclasses')}
+}
+
+/* таймер до урока */
+let timerI;
+function startTimer(){
+  stopTimer();
+  const tick=()=>{
+    const el=$('#timer');if(!el)return stopTimer();
+    const next=upcoming(stu())[0];if(!next)return;
+    let s=Math.max(0,Math.floor((next.date-new Date())/1000));
+    const d=Math.floor(s/86400);s%=86400;const h=Math.floor(s/3600);s%=3600;const m=Math.floor(s/60);
+    el.innerHTML=[[d,plural(d,'день','дня','дней')],[h,plural(h,'час','часа','часов')],[m,'мин']].map(([n,t])=>`<div><b>${n}</b><small>${t}</small></div>`).join('');
+  };
+  tick();timerI=setInterval(tick,20000);
+}
+function stopTimer(){clearInterval(timerI)}
+
+/* ---------- шапка ---------- */
+function fillTop(){
+  const st=stu();
+  $('#kidName').textContent=st?st.name:'Ученик';$('#kidAva').textContent=st?initials(st.name).slice(0,1):'?';
+  const a=st?age(st.birth):'';$('#kidCourse').textContent=st?(st.program||'Middle')+(a!==''?` · ${a} ${plural(a,'год','года','лет')}`:''):'скоро появится';
+  $('#meAva').textContent=initials(S.parent.name||S.parent.email).slice(0,1);
+  $('#coinTop').textContent=st?st.coins:0;
+  const sel=$('#kidSel');
+  sel.hidden=S.students.length<2;
+  sel.innerHTML=S.students.map((s,i)=>`<option value="${i}" ${i===cur?'selected':''}>${esc(s.name)}</option>`).join('');
+}
+$('#kidSel').onchange=e=>{cur=+e.target.value;ls.set('unikum-kid',cur);fillTop();route()};
+
+/* ---------- вход / выход ---------- */
+function showLogin(view){
+  $('#app').hidden=true;$('#login').hidden=false;stopTimer();
+  $('#signIn').hidden=view==='setpass';$('#setPass').hidden=view!=='setpass';
+  document.title='Личный кабинет — Уникум';
+}
+async function enter(mode){
+  MODE=mode;
+  try{S=await API.load()}catch(e){
+    if(mode==='real'){toast(human(e));await sb.auth.signOut().catch(()=>{});showLogin();return}
+    throw e;
+  }
+  cur=Math.min(+ls.get('unikum-kid')||0,Math.max(0,S.students.length-1));
+  $('#login').hidden=true;$('#app').hidden=false;
+  if(!location.hash||/access_token|type=/.test(location.hash))history.replaceState(null,'',location.pathname+'#home');
+  fillTop();route();
+}
+async function logout(){
+  const wasDemo=MODE==='demo';
+  try{await API.logout()}catch(e){}
+  if(wasDemo){const s=store.get();delete s.demoOn;store.set(s)}
+  MODE=null;S=null;
+  history.replaceState(null,'',location.pathname);
+  showLogin();
+  toast(wasDemo?'Вы вышли из демо-кабинета':'Вы вышли из кабинета');
+}
+
+// режим на экране входа
+if(REAL){
+  $('#modeNote').innerHTML='Логин и пароль выдаёт школа после записи на курс. Если их нет или вы их забыли — <a class="link" href="'+CURATOR_TG+'" target="_blank" rel="noopener">напишите куратору</a>.';
+}else{
+  $('#modeNote').innerHTML='<b>Демо-режим.</b> Сервер с учётными записями ещё не подключён, поэтому подойдут любой логин и пароль от 4 символов. Данные в кабинете — пример.';
+}
+
+$$('[data-eye]').forEach(b=>b.onclick=()=>{const p=document.getElementById(b.dataset.eye),show=p.type==='password';p.type=show?'text':'password';b.setAttribute('aria-label',show?'Скрыть пароль':'Показать пароль')});
+['#lLogin','#lPass','#np1','#np2'].forEach(s=>$(s).addEventListener('input',e=>{e.target.removeAttribute('aria-invalid');$('#lErr').textContent='';$('#npErr').textContent=''}));
+const isMail=v=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+const STAFF_DEMO={login:'adminTest',pass:'adminTest'}; // демо-вход в админку (только без подключённого сервера)
+const LOGIN_DOMAIN='unikum.local'; // логин «ivanov» = учётная запись ivanov@unikum.local в Supabase
+function loginToEmail(l){l=l.trim().toLowerCase();return l.includes('@')?l:l+'@'+LOGIN_DOMAIN}
+
+$('#forgot').onclick=async()=>{
+  $('#lErr').textContent='';
+  const l=$('#lLogin').value.trim();
+  // письмо со ссылкой можно отправить, только если вход по настоящей почте
+  if(!REAL||!isMail(l))return toast('Напишите куратору в Telegram — он поможет восстановить пароль.');
+  busy($('#forgot'),async()=>{await API.resetPassword(l);toast('Письмо со ссылкой отправлено. Проверьте почту (и папку «Спам»).')});
+};
+
+$('#loginForm').onsubmit=e=>{
+  e.preventDefault();
+  const l=$('#lLogin').value.trim(),p=$('#lPass').value;
+  // ДЕМО: тестовый вход сотрудника школы ведёт в админку.
+  // В рабочей версии роль сотрудника проверяет сервер, а этот блок удаляется.
+  if(!REAL&&l===STAFF_DEMO.login&&p===STAFF_DEMO.pass){
+    const st=$('#lRemember').checked?localStorage:sessionStorage;
+    try{st.setItem('unikum-admin-auth','1')}catch(err){}
+    location.href='admin.html';return;
+  }
+  if(REAL){
+    if(l.length<3){$('#lLogin').setAttribute('aria-invalid','true');$('#lErr').textContent='Введите логин';$('#lLogin').focus();return}
+    if(p.length<6){$('#lPass').setAttribute('aria-invalid','true');$('#lErr').textContent='Пароль — не меньше 6 символов';$('#lPass').focus();return}
+  }else{
+    if(l.length<3){$('#lLogin').setAttribute('aria-invalid','true');$('#lErr').textContent='Введите логин';$('#lLogin').focus();return}
+    if(p.length<4){$('#lPass').setAttribute('aria-invalid','true');$('#lErr').textContent='Пароль — не меньше 4 символов';$('#lPass').focus();return}
+  }
+  ls.set(REM,$('#lRemember').checked?'1':'0');
+  const btn=$('#loginBtn');btn.disabled=true;btn.firstChild.textContent='Входим… ';
+  (async()=>{
+    try{
+      MODE=REAL?'real':'demo';
+      await API.login(l,p);
+      if(!REAL){const s=store.get();s.demoOn=$('#lRemember').checked;store.set(s);demoSession=true}
+      await enter(MODE);
+    }catch(err){MODE=null;$('#lErr').textContent=human(err)}
+    finally{btn.disabled=false;btn.firstChild.textContent='Войти '}
+  })();
+};
+let demoSession=false; // демо-вход без «Запомнить меня» живёт до перезагрузки
+$('#demoBtn').onclick=async()=>{
+  if(REAL&&sb)await sb.auth.signOut().catch(()=>{});
+  demoSession=true;await enter('demo');
+};
+
+// новый пароль по ссылке из письма
+$('#setPassForm').onsubmit=e=>{
+  e.preventDefault();
+  const a=$('#np1').value,b=$('#np2').value;
+  if(a.length<8){$('#np1').setAttribute('aria-invalid','true');$('#npErr').textContent='Пароль — не меньше 8 символов';return}
+  if(a!==b){$('#np2').setAttribute('aria-invalid','true');$('#npErr').textContent='Пароли не совпадают';return}
+  busy($('#npBtn'),async()=>{
+    try{await API.setPassword(a)}catch(err){$('#npErr').textContent=human(err);return}
+    toast('Пароль сохранён ✓');await enter('real');
+  });
+};
+
+window.addEventListener('hashchange',()=>{if(S)route()});
+
+/* ---------- старт ---------- */
+(async()=>{
+  if(REAL){
+    sb.auth.onAuthStateChange((ev)=>{
+      if(ev==='PASSWORD_RECOVERY')openSetPass('recovery');
+      if(ev==='SIGNED_OUT'&&MODE==='real'){MODE=null;S=null;showLogin()}
+    });
+    const {data}=await sb.auth.getSession();
+    if(data.session&&AUTH_LINK&&AUTH_LINK!=='magiclink')return openSetPass(AUTH_LINK);
+    if(data.session)return enter('real');
+    if(/error_description=/.test(location.hash)){
+      const msg=decodeURIComponent((location.hash.match(/error_description=([^&]+)/)||[])[1]||'').replace(/\+/g,' ');
+      history.replaceState(null,'',location.pathname);showLogin();
+      $('#lErr').textContent=/expired|invalid/i.test(msg)?'Ссылка из письма устарела. Нажмите «Забыли пароль?», чтобы получить новую.':msg;
+      return;
+    }
+  }
+  if(store.get().demoOn)return enter('demo');
+  showLogin();
+})();
+function openSetPass(kind){
+  MODE='real';
+  $('#setPassTitle').textContent=kind==='invite'||kind==='signup'?'Добро пожаловать!':'Новый пароль';
+  $('#setPassSub').textContent=kind==='invite'||kind==='signup'?'Вас пригласили в личный кабинет «Уникума». Придумайте пароль — он понадобится для входа.':'Придумайте новый пароль для входа в кабинет.';
+  history.replaceState(null,'',location.pathname);
+  showLogin('setpass');$('#np1').focus();
+}
+</script>
+</body>
+</html>

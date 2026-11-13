@@ -1,0 +1,902 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Админка — Уникум</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#2A0A73">
+<link rel="icon" type="image/png" href="img/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Tektur:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+/* ============ ТОКЕНЫ (как в кабинете и на сайте) ============ */
+:root{
+  --ink:#5B1AB5;--deep:#22075A;--sun:#FF5FA8;--yellow:#FFDE3B;--mint:#2FC79A;--coral:#FF8A3D;--sky:#3FB6FF;
+  --bg:#F5F1FC;--card:#fff;--text:#1F0B42;--muted:#6A5A8E;--line:rgba(65,14,173,.12);--soft:#FBF8FF;
+  --r:16px;--display:"Tektur",system-ui,sans-serif;--mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  --glow:0 18px 40px -26px rgba(65,14,173,.5),0 0 0 1px rgba(65,14,173,.07);
+  color-scheme:light;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:400 13px/1.5 var(--mono);-webkit-font-smoothing:antialiased}
+img,svg{display:block;max-width:100%}
+a{color:inherit}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+h1,h2,h3{font-family:var(--display);margin:0;line-height:1.15;text-wrap:balance}
+h1{font-size:26px;text-transform:uppercase}
+h2{font-size:17px;text-transform:uppercase;letter-spacing:.01em}
+h3{font-size:15px}
+p{margin:0}
+[hidden]{display:none!important}
+:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+
+/* кнопки */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:11px;padding:10px 14px;white-space:nowrap;
+  font:700 12px/1 var(--display);text-transform:uppercase;letter-spacing:.04em;color:#fff;text-decoration:none;
+  background:linear-gradient(135deg,#FF72B3,#FF3D94 50%,#C82A92);box-shadow:0 10px 20px -12px rgba(255,79,158,.8),inset 0 1px 0 rgba(255,255,255,.4);transition:transform .15s,filter .15s}
+.btn:hover{transform:translateY(-1px);filter:saturate(1.1)}
+.btn[disabled]{opacity:.5;cursor:not-allowed;transform:none}
+.btn--ghost{background:#fff;color:var(--ink);box-shadow:inset 0 0 0 1.5px rgba(91,26,181,.25)}
+.btn--ghost:hover{box-shadow:inset 0 0 0 1.5px var(--ink)}
+.btn--ok{background:linear-gradient(135deg,#4FE0B5,#16A57E);box-shadow:0 10px 20px -12px rgba(22,165,126,.9)}
+.btn--danger{background:#fff;color:#C0326F;box-shadow:inset 0 0 0 1.5px rgba(192,50,111,.35)}
+.btn--xs{padding:7px 10px;font-size:11px;border-radius:9px}
+.link{background:none;border:0;padding:0;color:var(--ink);font-weight:700;text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(91,26,181,.3)}
+
+/* каркас */
+.shell{display:grid;grid-template-columns:236px minmax(0,1fr);min-height:100vh}
+.side{position:sticky;top:0;height:100vh;overflow:auto;display:flex;flex-direction:column;gap:4px;padding:18px 12px;color:#E9E1FF;
+  background:radial-gradient(60% 50% at 80% 10%,#5A1BD0 0%,transparent 70%),linear-gradient(#36108F,#22075A)}
+.side__logo{display:flex;align-items:center;gap:9px;padding:4px 8px 16px;text-decoration:none}
+.side__logo img{height:36px;width:auto}
+.side__logo span{font:800 15px/1 var(--display);text-transform:uppercase;color:#fff}
+.side__logo small{display:block;font:500 10px/1.2 var(--mono);color:#B9A8EE;text-transform:none;letter-spacing:0;margin-top:3px}
+.nav a{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;text-decoration:none;font-weight:500;color:#D7CBFF}
+.nav a svg{width:18px;height:18px;flex:none}
+.nav a:hover{background:rgba(255,255,255,.08);color:#fff}
+.nav a[aria-current="page"]{background:#fff;color:var(--ink);font-weight:700}
+.nav a[aria-current="page"] svg{color:var(--sun)}
+.nav .cnt{margin-left:auto;min-width:20px;height:20px;padding:0 6px;border-radius:999px;display:grid;place-items:center;font-size:10.5px;font-weight:700;color:#fff;background:var(--sun)}
+.side__foot{margin-top:auto;padding:12px;border-radius:14px;background:rgba(255,255,255,.07);font-size:11.5px;color:#C8BBF5;display:grid;gap:8px}
+.side__foot a{color:#fff}
+.main{min-width:0;display:flex;flex-direction:column}
+.top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:12px;padding:12px max(20px,env(safe-area-inset-right)) 12px 24px;background:rgba(245,241,252,.9);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top__menu{display:none;width:40px;height:40px;border:0;border-radius:11px;background:#fff;box-shadow:var(--glow)}
+.search{flex:1;max-width:460px;position:relative}
+.search input{width:100%;border:0;border-radius:12px;padding:11px 14px 11px 38px;background:#fff;box-shadow:var(--glow);outline:0}
+.search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--muted)}
+.who{margin-left:auto;display:flex;align-items:center;gap:10px}
+.who label{font-size:11px;color:var(--muted)}
+.who select{border:0;border-radius:11px;padding:9px 30px 9px 12px;background:#fff;box-shadow:var(--glow);font-weight:700;color:var(--ink)}
+.demo{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:6px 9px;border-radius:999px;background:#FFF1A8;color:#7A5A00}
+.content{padding:24px max(20px,env(safe-area-inset-right)) 60px 24px;display:grid;gap:20px;align-content:start;animation:in .3s ease}
+@keyframes in{from{opacity:0;transform:translateY(6px)}}
+.vhead{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.vhead p{color:var(--muted);margin-top:6px;max-width:70ch}
+.card{background:var(--card);border-radius:var(--r);box-shadow:var(--glow);padding:18px;min-width:0}
+.card__h{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.kpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px}
+.kpi{background:#fff;border-radius:var(--r);box-shadow:var(--glow);padding:16px;text-decoration:none;display:grid;gap:2px;transition:transform .15s}
+a.kpi:hover{transform:translateY(-2px)}
+.kpi b{font:800 28px/1.1 var(--display);color:var(--ink)}
+.kpi span{color:var(--muted);font-size:12px}
+.kpi--warn b{color:#C0256E}
+.pill{display:inline-flex;align-items:center;gap:5px;padding:4px 9px;border-radius:999px;font-size:11px;font-weight:700;white-space:nowrap}
+.p-ok{background:#DBF7EE;color:#0E7A5A}.p-wait{background:#FFF4CC;color:#8A6400}.p-new{background:#FFE6F1;color:#C0256E}
+.p-mute{background:#EEE8FA;color:var(--muted)}.p-lilac{background:#EDE3FF;color:var(--ink)}.p-ice{background:#E3F4FF;color:#1C6FA8}.p-bad{background:#FFE1E1;color:#B3261E}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tabs button{border:0;border-radius:10px;padding:8px 12px;background:#fff;color:var(--muted);font-weight:700;box-shadow:inset 0 0 0 1px var(--line)}
+.tabs button[aria-pressed="true"]{background:var(--ink);color:#fff;box-shadow:none}
+.tabs .cnt{display:inline-grid;place-items:center;min-width:18px;height:18px;margin-left:6px;padding:0 5px;border-radius:999px;font-size:10px;background:var(--sun);color:#fff}
+
+/* таблица */
+.tbl-wrap{overflow-x:auto;border-radius:var(--r);background:#fff;box-shadow:var(--glow)}
+table{width:100%;border-collapse:collapse;min-width:880px}
+th{position:sticky;top:0;text-align:left;font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:700;padding:12px 12px;background:#FCFAFF;border-bottom:1px solid var(--line)}
+td{padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:middle}
+tr:last-child td{border-bottom:0}
+tbody tr{cursor:pointer;transition:background .12s}
+tbody tr:hover{background:#FAF6FF}
+td small{display:block;color:var(--muted);font-size:11.5px}
+td:first-child small{white-space:nowrap}
+.filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.filters select{border:0;border-radius:10px;padding:8px 26px 8px 10px;background:#fff;box-shadow:var(--glow)}
+.empty{padding:28px;text-align:center;color:var(--muted)}
+
+/* формы */
+.field{display:grid;gap:5px}
+.field > span{font-size:10.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.input,.field select,.field textarea{width:100%;border:1.5px solid var(--line);background:var(--soft);border-radius:11px;padding:10px 12px;outline:0}
+.input:focus,.field select:focus,.field textarea:focus{border-color:var(--ink);background:#fff}
+.input[aria-invalid="true"]{border-color:#E5366B}
+.fgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.fgrid .wide{grid-column:1/-1}
+.err{color:#D42A60;font-size:12px;min-height:16px}
+.check{display:inline-flex;align-items:center;gap:8px;cursor:pointer}
+.check input{width:17px;height:17px;accent-color:var(--ink)}
+
+/* боковая карточка клиента */
+.drawer{position:fixed;inset:0;z-index:40;display:flex;justify-content:flex-end;background:rgba(25,5,70,.4);backdrop-filter:blur(3px)}
+.drawer__in{width:min(560px,100%);height:100%;overflow:auto;background:var(--bg);box-shadow:-30px 0 60px -30px rgba(10,0,40,.6);animation:slide .25s ease;padding:0 0 40px}
+@keyframes slide{from{transform:translateX(40px);opacity:.4}}
+.drawer__head{position:sticky;top:0;z-index:2;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:20px 22px;color:#fff;background:radial-gradient(60% 80% at 90% 0%,#5A1BD0,transparent 70%),#410EAD}
+.drawer__head small{color:#CFC2FF}
+.drawer__head h2{font-size:20px;margin-top:4px}
+.x{flex:none;width:36px;height:36px;border:0;border-radius:10px;background:rgba(255,255,255,.14);color:#fff;font-size:18px}
+.drawer__body{padding:18px 22px;display:grid;gap:16px}
+.kv{display:grid;grid-template-columns:130px minmax(0,1fr);gap:8px 12px;font-size:12.5px}
+.kv dt{color:var(--muted)}
+.kv dd{margin:0;font-weight:500;overflow-wrap:anywhere}
+.access{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:14px;border-radius:14px;background:var(--soft);box-shadow:inset 0 0 0 1px var(--line)}
+.access code{font:700 13px var(--mono);padding:4px 8px;border-radius:8px;background:#fff;box-shadow:inset 0 0 0 1px var(--line)}
+.kid{display:grid;gap:10px;padding:14px;border-radius:14px;background:#fff;box-shadow:var(--glow)}
+.bar{height:7px;border-radius:999px;background:#EEE6FB;overflow:hidden}
+.bar span{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--ink),var(--sun))}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+
+/* диалог */
+dialog{border:0;padding:0;border-radius:20px;width:min(560px,calc(100% - 24px));box-shadow:0 40px 80px -30px rgba(10,0,40,.7);color:var(--text)}
+dialog::backdrop{background:rgba(25,5,70,.5);backdrop-filter:blur(3px)}
+.dlg{padding:22px;display:grid;gap:14px}
+.dlg > p{color:var(--muted)}
+.dlg__act{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
+.msg{white-space:pre-wrap;padding:14px;border-radius:14px;background:#F3FBF8;box-shadow:inset 0 0 0 1px #BFEBDD;font-size:12.5px}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg label{position:relative}
+.seg input{position:absolute;opacity:0}
+.seg span{display:inline-block;padding:8px 12px;border-radius:10px;background:var(--soft);font-weight:700;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line);cursor:pointer}
+.seg input:checked + span{background:#fff;box-shadow:inset 0 0 0 2px var(--sun)}
+.seg input:focus-visible + span{outline:3px solid var(--yellow)}
+
+/* группы и журнал */
+.groups{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
+.group{display:grid;gap:10px;text-align:left;border:0;padding:16px;border-radius:var(--r);background:#fff;box-shadow:var(--glow);transition:transform .15s}
+.group:hover{transform:translateY(-2px)}
+.group__top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.group__meta{color:var(--muted);font-size:12px;display:grid;gap:2px}
+.att{display:grid;gap:8px}
+.att__row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;padding:10px 12px;border-radius:12px;background:var(--soft);box-shadow:inset 0 0 0 1px var(--line)}
+.att__row small{display:block;color:var(--muted)}
+.tog{display:flex;border-radius:10px;overflow:hidden;box-shadow:inset 0 0 0 1.5px var(--line)}
+.tog button{border:0;padding:8px 12px;background:#fff;font-weight:700;color:var(--muted)}
+.tog button[aria-pressed="true"].y{background:#DBF7EE;color:#0E7A5A}
+.tog button[aria-pressed="true"].n{background:#FFE6F1;color:#C0256E}
+
+/* заявки, задания */
+.list{display:grid;gap:10px}
+.item{display:flex;gap:12px;align-items:center;flex-wrap:wrap;padding:14px;border-radius:14px;background:#fff;box-shadow:var(--glow)}
+.item__main{flex:1 1 260px;min-width:0}
+.item__main b{display:block}
+.item__main small{display:block;color:var(--muted);margin-top:2px}
+.stars{display:flex;gap:2px}
+.stars button{border:0;background:none;padding:2px;font-size:20px;line-height:1;color:#E2D9F5}
+.stars button.on{color:#F5B700}
+
+/* журнал действий */
+.log{display:grid}
+.log__row{display:grid;grid-template-columns:120px 170px minmax(0,1fr);gap:12px;padding:10px 4px;border-bottom:1px solid var(--line);font-size:12.5px}
+.log__row time{color:var(--muted)}
+.log__row .src{font-weight:700}
+.src--b24{color:#2FA8E0}
+
+/* интеграции */
+.b24{display:flex;align-items:center;gap:14px}
+.b24__logo{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;color:#fff;font:800 15px var(--display);background:linear-gradient(135deg,#2FC7F7,#1E88E5)}
+.map{width:100%;border-collapse:collapse;min-width:0}
+.map td{padding:9px 8px;border-bottom:1px solid var(--line);font-size:12.5px;cursor:default}
+.map tr:hover{background:none}
+.arrow{color:var(--muted);text-align:center}
+
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);opacity:0;z-index:100;max-width:calc(100% - 32px);padding:12px 16px;border-radius:12px;background:var(--deep);color:#fff;font-size:13px;box-shadow:0 20px 40px -16px rgba(10,0,40,.7);transition:.25s;pointer-events:none}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+/* адаптив */
+@media (max-width:1180px){.kpis{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:900px){
+  .shell{grid-template-columns:1fr}
+  .side{position:fixed;inset:0 auto 0 0;z-index:50;width:260px;transform:translateX(-105%);transition:transform .25s;box-shadow:30px 0 60px -30px rgba(0,0,0,.6)}
+  .side.open{transform:none}
+  .top__menu{display:grid;place-items:center;flex:none}
+  .top{padding-left:max(16px,env(safe-area-inset-left))}
+  .content{padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
+  .grid2{grid-template-columns:1fr}
+  .who label,.demo{display:none}
+}
+@media (max-width:600px){
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .fgrid{grid-template-columns:1fr}
+  .kv{grid-template-columns:1fr;gap:2px 0}.kv dd{margin-bottom:6px}
+  .log__row{grid-template-columns:1fr;gap:2px}
+  .search{max-width:none}
+  .who select{max-width:150px}
+  h1{font-size:22px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-dash" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="3" width="7.5" height="9" rx="2"/><rect x="13.5" y="3" width="7.5" height="5.5" rx="2"/><rect x="3" y="15" width="7.5" height="6" rx="2"/><rect x="13.5" y="11.5" width="7.5" height="9.5" rx="2"/></g></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M18.5 14.5a6.5 6.5 0 0 1 3 5.5"/></g></symbol>
+  <symbol id="i-group" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18M8 15l2 2 4-4"/></g></symbol>
+  <symbol id="i-inbox" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 13l3-8h12l3 8v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M3 13h5l1.5 3h5L16 13h5"/></g></symbol>
+  <symbol id="i-hw" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8.5 15l2 2 4-4"/></g></symbol>
+  <symbol id="i-pay" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2.5" y="5" width="19" height="14" rx="3"/><path d="M2.5 10h19M6.5 15h4"/></g></symbol>
+  <symbol id="i-plug" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 2v5M15 2v5M6 7h12v4a6 6 0 0 1-12 0zM12 17v5"/></g></symbol>
+  <symbol id="i-log" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></g></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></g></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+</svg>
+
+<div class="shell">
+  <aside class="side" id="side">
+    <a class="side__logo" href="#dash"><img src="img/logo-brain.png" alt=""><span>Уникум<small>админка школы</small></span></a>
+    <nav class="nav" id="nav" aria-label="Разделы"></nav>
+    <div class="side__foot"><span>Прототип на демо-данных. Изменения хранятся только в этом браузере.</span><button class="link" style="color:#fff;text-align:left" id="resetDemo">Сбросить демо-данные</button><a href="cabinet.html" target="_blank" rel="noopener">Открыть кабинет клиента →</a><button class="link" style="color:#FFB3D9;text-align:left" id="logout">Выйти из админки</button></div>
+  </aside>
+  <div class="main">
+    <header class="top">
+      <button class="top__menu" id="menuBtn" aria-label="Меню"><svg width="20" height="20"><use href="#i-menu"/></svg></button>
+      <label class="search"><svg><use href="#i-search"/></svg><input id="q" type="search" placeholder="Поиск: родитель, ребёнок, телефон, логин, сделка" autocomplete="off"></label>
+      <div class="who"><span class="demo">демо</span><label for="roleSel">Вы вошли как</label>
+        <select id="roleSel">
+          <option value="admin">Администратор</option>
+          <option value="manager">Менеджер · Светлана</option>
+          <option value="curator">Куратор · Елена</option>
+          <option value="teacher">Преподаватель · Мария В.</option>
+        </select></div>
+    </header>
+    <main class="content" id="view" tabindex="-1"></main>
+  </div>
+</div>
+
+<div class="drawer" id="drawer" hidden><div class="drawer__in" id="drawerIn" role="dialog" aria-modal="true"></div></div>
+<dialog id="dlg"><div class="dlg" id="dlgBody"></div></dialog>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* ДЕМО-проверка входа: без него — на страницу входа (cabinet.html, логин adminTest).
+   В рабочей версии вход сотрудника проверяет сервер. */
+(function(){let ok=false;try{ok=sessionStorage.getItem('unikum-admin-auth')==='1'||localStorage.getItem('unikum-admin-auth')==='1'}catch(e){}
+  if(!ok){document.documentElement.style.display='none';location.replace('cabinet.html')}})();
+</script>
+<script>
+/* =====================================================================
+   АДМИНКА «УНИКУМ» — прототип на демо-данных.
+   Всё хранится в localStorage этого браузера. В рабочей версии те же действия
+   будут обращаться к серверу школы, а сервер — к базе, Битрикс24, SMS и Telegram.
+   ===================================================================== */
+const CABINET_URL='https://shkolaunikum.github.io/unikum/cabinet.html';
+const KEY='unikum-admin-v1';
+
+/* ---------- справочники (как в кабинете) ---------- */
+const PLANS={y1:{t:'1 год',n:40},y2:{t:'2 года',n:80},y3:{t:'3 года',n:120},y2i:{t:'2 года индивидуально',n:80}};
+const PAYS={full:{t:'Перевод на р/с',full:true},bank:{t:'Банковская рассрочка',full:true},internal:{t:'Внутренняя рассрочка',full:false}};
+const PROGRAMS=['Junior','Middle','High'];
+const REASONS=['Болезнь','Семейные обстоятельства','Поездка или отпуск','Школа: контрольные, олимпиады','Другое'];
+const EXTRA={english:'Английский язык',ai:'Нейросети'};
+const ROLES={
+  admin:{t:'Администратор',name:'Администратор',routes:['dash','clients','groups','requests','homework','payments','integrations','log']},
+  manager:{t:'Менеджер',name:'Светлана (менеджер)',routes:['dash','clients','requests','payments','log']},
+  curator:{t:'Куратор',name:'Елена (куратор)',routes:['dash','clients','groups','requests']},
+  teacher:{t:'Преподаватель',name:'Мария Викторовна',routes:['dash','groups','homework']}
+};
+const ROUTES=[
+  {id:'dash',t:'Сводка',i:'i-dash'},{id:'clients',t:'Клиенты',i:'i-users'},{id:'groups',t:'Группы и журнал',i:'i-group'},
+  {id:'requests',t:'Заявки',i:'i-inbox'},{id:'homework',t:'Проверка заданий',i:'i-hw'},{id:'payments',t:'Рассрочки',i:'i-pay'},
+  {id:'integrations',t:'Битрикс24',i:'i-plug'},{id:'log',t:'Журнал действий',i:'i-log'}
+];
+
+/* ---------- демо-данные ---------- */
+const DAY=86400000;
+const iso=d=>new Date(d).toISOString();
+function nextWeekday(wd,time,shift=0){ // ближайший день недели wd (0 — вс) в указанное время
+  const [h,m]=time.split(':').map(Number);const d=new Date();d.setHours(h,m,0,0);
+  let add=(wd-d.getDay()+7)%7;if(add===0&&d<new Date())add=7;d.setDate(d.getDate()+add+shift*7);return d;
+}
+function seed(){
+  const groups=[
+    {id:'g1',name:'Middle · суббота',program:'Middle',teacher:'Мария Викторовна',wd:6,time:'17:00'},
+    {id:'g2',name:'Middle · среда',program:'Middle',teacher:'Мария Викторовна',wd:3,time:'18:30'},
+    {id:'g3',name:'Junior · вторник',program:'Junior',teacher:'Ольга Сергеевна',wd:2,time:'17:00'},
+    {id:'g4',name:'High · четверг',program:'High',teacher:'Дмитрий Андреевич',wd:4,time:'19:00'},
+    {id:'g5',name:'Индивидуальные',program:'Middle',teacher:'Дмитрий Андреевич',wd:5,time:'16:00',solo:true}
+  ];
+  // родитель, телефон, [дети], программа, тариф, оплата, группа, пройдено, сделка, доступ
+  const raw=[
+    ['Иванова Анна','+7 900 111-22-01',[['Миша','2016-04-12']],'Middle','y2','bank','g1',40,1201,'active'],
+    ['Петров Сергей','+7 900 111-22-02',[['Артём','2015-09-03']],'Middle','y1','full','g1',12,1207,'active'],
+    ['Смирнова Ольга','+7 900 111-22-03',[['Варя','2016-01-20'],['Лёша','2013-06-11']],'Middle','y3','internal','g1',22,1215,'active'],
+    ['Кузнецова Мария','+7 900 111-22-04',[['Даня','2016-11-30']],'Middle','y2','internal','g2',9,1222,'issued'],
+    ['Попов Андрей','+7 900 111-22-05',[['Соня','2015-03-14']],'Middle','y2','bank','g2',31,1230,'active'],
+    ['Васильева Елена','+7 900 111-22-06',[['Тимур','2016-07-07']],'Middle','y1','full','g2',3,1238,'none'],
+    ['Новикова Ирина','+7 900 111-22-07',[['Ева','2018-02-02']],'Junior','y1','full','g3',18,1241,'active'],
+    ['Морозов Павел','+7 900 111-22-08',[['Гоша','2018-10-10']],'Junior','y2','internal','g3',6,1246,'active'],
+    ['Волкова Наталья','+7 900 111-22-09',[['Алиса','2017-12-25']],'Junior','y1','bank','g3',1,1252,'none'],
+    ['Соколов Игорь','+7 900 111-22-10',[['Макс','2011-05-05']],'High','y3','full','g4',57,1255,'active'],
+    ['Лебедева Татьяна','+7 900 111-22-11',[['Ника','2012-08-19']],'High','y2','internal','g4',20,1261,'active'],
+    ['Козлов Роман','+7 900 111-22-12',[['Илья','2011-01-29']],'High','y1','bank','g4',33,1266,'issued'],
+    ['Федорова Юлия','+7 900 111-22-13',[['Кира','2014-04-04']],'Middle','y2i','full','g5',15,1270,'active'],
+    ['Орлов Виктор','+7 900 111-22-14',[['Степа','2013-09-09']],'Middle','y2i','internal','g5',28,1274,'active']
+  ];
+  const clients=[],students=[];
+  raw.forEach(([parent,phone,kids,program,plan,payment,group,done,deal,acc],i)=>{
+    const fid='f'+(i+1);
+    const login=acc==='none'?'':translit(parent.split(' ')[0]);
+    clients.push({id:fid,parent,phone,email:'',deal:'Б24-'+deal,created:iso(Date.now()-(60+i*9)*DAY),
+      access:acc==='none'?{status:'none'}:{status:acc,login,issued:iso(Date.now()-(40+i*3)*DAY),last:acc==='active'?iso(Date.now()-(i%5)*DAY-3600e3*(i+2)):null}});
+    kids.forEach(([name,birth],k)=>{
+      const tot=PLANS[plan].n, inst=payment==='internal';
+      students.push({id:'s'+(students.length+1),fid,name,birth,program,plan,payment,group:k?pickGroup(groups,program,group):group,done:k?Math.max(0,done-7):done,
+        paid:inst?Math.min(tot,done+(i%3===0?0:6)):tot,
+        nextPay:inst?iso(Date.now()+((i%4)-2)*6*DAY):null,payStep:inst?10:0});
+    });
+  });
+  const st=id=>students.find(s=>s.id===id);
+  const g1next=nextWeekday(6,'17:00');
+  return {
+    groups,clients,students,
+    absences:[
+      {id:'a1',sid:'s1',date:iso(g1next),reason:'Болезнь',comment:'Температура, лечимся',makeup:true,status:'new',created:iso(Date.now()-2*3600e3)},
+      {id:'a2',sid:'s6',date:iso(nextWeekday(3,'18:30')),reason:'Школа: контрольные, олимпиады',comment:'Олимпиада по математике',makeup:true,status:'new',created:iso(Date.now()-20*3600e3)},
+      {id:'a3',sid:'s9',date:iso(nextWeekday(2,'17:00')),reason:'Поездка или отпуск',comment:'',makeup:false,status:'new',created:iso(Date.now()-30*3600e3)},
+      {id:'a4',sid:'s12',date:iso(nextWeekday(4,'19:00',-1)),reason:'Семейные обстоятельства',comment:'',makeup:true,status:'makeup',created:iso(Date.now()-6*DAY)}
+    ],
+    freezes:[
+      {id:'z1',sid:'s5',from:iso(Date.now()+5*DAY),to:iso(Date.now()+25*DAY),reason:'Поездка или отпуск: едем к бабушке',status:'requested',created:iso(Date.now()-5*3600e3)},
+      {id:'z2',sid:'s11',from:iso(Date.now()+3*DAY),to:iso(Date.now()+33*DAY),reason:'Болезнь: восстановление после операции',status:'requested',created:iso(Date.now()-26*3600e3)}
+    ],
+    extras:[
+      {id:'e1',fid:'f1',course:'ai',status:'new',created:iso(Date.now()-3*3600e3)},
+      {id:'e2',fid:'f5',course:'english',status:'new',created:iso(Date.now()-28*3600e3)},
+      {id:'e3',fid:'f10',course:'ai',status:'contacted',created:iso(Date.now()-4*DAY)}
+    ],
+    homework:[
+      {id:'h1',sid:'s1',title:'Ночной домик',lesson:40,url:'https://example.com/render-1',status:'wait',created:iso(Date.now()-5*3600e3)},
+      {id:'h2',sid:'s2',title:'Платформер: второй уровень',lesson:12,url:'https://scratch.mit.edu/projects/1',status:'wait',created:iso(Date.now()-9*3600e3)},
+      {id:'h3',sid:'s3',title:'Ночной домик',lesson:22,url:'https://example.com/render-2',status:'wait',created:iso(Date.now()-27*3600e3)},
+      {id:'h4',sid:'s6',title:'Кот танцует',lesson:3,url:'https://scratch.mit.edu/projects/2',status:'wait',created:iso(Date.now()-2*DAY)},
+      {id:'h5',sid:'s11',title:'Бот-викторина на Python',lesson:20,url:'https://github.com/example/bot',status:'wait',created:iso(Date.now()-3*DAY)}
+    ],
+    attendance:{},
+    b24:{connected:false,webhook:'',auto:true,channel:'sms'},
+    log:[
+      {t:iso(Date.now()-2*3600e3),who:'Кабинет',text:'Иванова Анна сообщила: Миша не сможет присутствовать (Болезнь)'},
+      {t:iso(Date.now()-5*3600e3),who:'Кабинет',text:'Попов Андрей отправил заявку на заморозку для Сони'},
+      {t:iso(Date.now()-26*3600e3),who:'Светлана (менеджер)',text:'Выдан доступ: Кузнецова Мария (логин kuznecova)'},
+      {t:iso(Date.now()-3*DAY),who:'Битрикс24',text:'Сделка Б24-1266 перешла в «Оплачено» → создан клиент Козлов Роман'}
+    ]
+  };
+}
+function pickGroup(groups,program,fallback){return (groups.find(g=>g.program===program&&!g.solo&&g.id!==fallback)||{id:fallback}).id}
+
+/* ---------- хранилище (данные загружаются при старте) ---------- */
+let D;
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(D))}catch(e){}};
+let role='admin';try{role=localStorage.getItem(KEY+'-role')||'admin'}catch(e){}
+if(!ROLES[role])role='admin';
+
+/* ---------- утилиты ---------- */
+const $=s=>document.querySelector(s), $$=s=>document.querySelectorAll(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const icon=(id,s=18)=>`<svg width="${s}" height="${s}" aria-hidden="true"><use href="#${id}"/></svg>`;
+const MON=['янв','фев','мар','апр','мая','июн','июл','авг','сен','окт','ноя','дек'];
+const WD=['вс','пн','вт','ср','чт','пт','сб'], WDF=['воскресенье','понедельник','вторник','среда','четверг','пятница','суббота'];
+const dt=s=>{const d=new Date(s);return `${d.getDate()} ${MON[d.getMonth()]}`};
+const dtt=s=>{const d=new Date(s);return `${dt(s)}, ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`};
+const ago=s=>{const m=Math.round((Date.now()-new Date(s))/60000);if(m<1)return 'только что';if(m<60)return m+' мин назад';const h=Math.round(m/60);if(h<24)return h+' ч назад';const d=Math.round(h/24);return d===1?'вчера':d+' дн назад'};
+const plural=(n,a,b,c)=>{n=Math.abs(n)%100;const n1=n%10;return n>10&&n<20?c:n1>1&&n1<5?b:n1===1?a:c};
+const age=b=>{const d=new Date(b),n=new Date();let a=n.getFullYear()-d.getFullYear();if(n<new Date(n.getFullYear(),d.getMonth(),d.getDate()))a--;return a};
+let toastT;function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('on'),3400)}
+function log(text,who){D.log.unshift({t:iso(Date.now()),who:who||ROLES[role].name,text});save()}
+const client=id=>D.clients.find(c=>c.id===id);
+const student=id=>D.students.find(s=>s.id===id);
+const kidsOf=fid=>D.students.filter(s=>s.fid===fid);
+const groupOf=id=>D.groups.find(g=>g.id===id);
+const openUpTo=s=>PAYS[s.payment].full?PLANS[s.plan].n:s.paid;
+function payState(s){
+  if(PAYS[s.payment].full)return null;
+  const days=Math.round((new Date(s.nextPay)-Date.now())/DAY);
+  return days<0?{k:'bad',t:`просрочен на ${-days} ${plural(-days,'день','дня','дней')}`}:days<=5?{k:'wait',t:days===0?'сегодня':`через ${days} ${plural(days,'день','дня','дней')}`}:{k:'ok',t:dt(s.nextPay)};
+}
+const TR={а:'a',б:'b',в:'v',г:'g',д:'d',е:'e',ё:'e',ж:'zh',з:'z',и:'i',й:'y',к:'k',л:'l',м:'m',н:'n',о:'o',п:'p',р:'r',с:'s',т:'t',у:'u',ф:'f',х:'h',ц:'c',ч:'ch',ш:'sh',щ:'sch',ъ:'',ы:'y',ь:'',э:'e',ю:'yu',я:'ya'};
+function translit(s){return String(s).toLowerCase().split('').map(c=>TR[c]??(/[a-z0-9]/.test(c)?c:'')).join('')}
+function uniqueLogin(base){base=base||'family';let l=base,i=2;const used=new Set(D.clients.map(c=>c.access.login).filter(Boolean));while(used.has(l))l=base+(i++);return l}
+const WORDS=['raketa','zvezda','robot','pixel','kosmos','kometa','orbita','vektor','planeta','kubik','sprite','bonus'];
+function genPass(){const r=n=>crypto.getRandomValues(new Uint32Array(1))[0]%n;return `${WORDS[r(WORDS.length)]}-${WORDS[r(WORDS.length)]}-${10+r(90)}`}
+function accessPill(a){return a.status==='active'?'<span class="pill p-ok">● Заходит</span>':a.status==='issued'?'<span class="pill p-wait">Выдан, не входил</span>':a.status==='blocked'?'<span class="pill p-bad">Заблокирован</span>':'<span class="pill p-new">Нет доступа</span>'}
+
+/* ---------- счётчики ---------- */
+const pendingReq=()=>D.absences.filter(a=>a.status==='new').length+D.freezes.filter(f=>f.status==='requested').length+D.extras.filter(e=>e.status==='new').length;
+const myGroups=()=>role==='teacher'?D.groups.filter(g=>g.teacher===ROLES.teacher.name):D.groups;
+const pendingHw=()=>D.homework.filter(h=>h.status==='wait'&&(role!=='teacher'||myGroups().some(g=>g.id===student(h.sid).group))).length;
+const overdue=()=>D.students.filter(s=>{const p=payState(s);return p&&p.k==='bad'}).length;
+const noAccess=()=>D.clients.filter(c=>c.access.status==='none').length;
+
+/* ---------- навигация ---------- */
+function renderNav(cur){
+  const badge={requests:pendingReq(),homework:pendingHw(),payments:overdue(),clients:noAccess()};
+  $('#nav').innerHTML=ROUTES.filter(r=>ROLES[role].routes.includes(r.id)).map(r=>
+    `<a href="#${r.id}" ${r.id===cur?'aria-current="page"':''}>${icon(r.i)}<span>${r.t}</span>${badge[r.id]?`<span class="cnt">${badge[r.id]}</span>`:''}</a>`).join('');
+}
+let Q='';
+function route(){
+  let [id,arg]=(location.hash||'#dash').slice(1).split('/');
+  if(!ROLES[role].routes.includes(id)){id='dash';arg=null}
+  renderNav(id);
+  const v=$('#view');v.style.animation='none';v.offsetHeight;v.style.animation='';
+  v.innerHTML=VIEWS[id](arg);
+  BIND[id]&&BIND[id](arg);
+  document.title=ROUTES.find(r=>r.id===id).t+' — Админка Уникум';
+  $('#side').classList.remove('open');
+  window.scrollTo(0,0);
+}
+
+/* =====================================================================
+   ЭКРАНЫ
+   ===================================================================== */
+const VIEWS={
+dash(){
+  const r=ROLES[role];
+  const k=(href,n,t,warn)=>`<a class="kpi ${warn&&n?'kpi--warn':''}" href="#${href}"><b>${n}</b><span>${t}</span></a>`;
+  const upcoming=myGroups().map(g=>({g,d:nextWeekday(g.wd,g.time)})).sort((a,b)=>a.d-b.d);
+  const tasks=[];
+  if(r.routes.includes('clients')&&noAccess())tasks.push(`<a class="item" href="#clients" style="text-decoration:none"><span class="pill p-new">${noAccess()}</span><div class="item__main"><b>Клиенты без доступа в кабинет</b><small>Выдайте логин и пароль</small></div>→</a>`);
+  if(r.routes.includes('requests')){const f=D.freezes.filter(x=>x.status==='requested').length,a=D.absences.filter(x=>x.status==='new').length,e=D.extras.filter(x=>x.status==='new').length;
+    if(f)tasks.push(`<a class="item" href="#requests" style="text-decoration:none"><span class="pill p-ice">${f}</span><div class="item__main"><b>Заявки на заморозку</b><small>Подтвердите или отклоните</small></div>→</a>`);
+    if(a)tasks.push(`<a class="item" href="#requests" style="text-decoration:none"><span class="pill p-wait">${a}</span><div class="item__main"><b>Предупреждения о пропусках</b><small>Назначьте отработку, если просят</small></div>→</a>`);
+    if(e)tasks.push(`<a class="item" href="#requests" style="text-decoration:none"><span class="pill p-lilac">${e}</span><div class="item__main"><b>Заявки на доп. курсы</b><small>Свяжитесь с семьёй</small></div>→</a>`);}
+  if(r.routes.includes('homework')&&pendingHw())tasks.push(`<a class="item" href="#homework" style="text-decoration:none"><span class="pill p-wait">${pendingHw()}</span><div class="item__main"><b>Задания ждут проверки</b><small>Поставьте оценку и оставьте отзыв</small></div>→</a>`);
+  if(r.routes.includes('payments')&&overdue())tasks.push(`<a class="item" href="#payments" style="text-decoration:none"><span class="pill p-bad">${overdue()}</span><div class="item__main"><b>Просроченные платежи по рассрочке</b><small>Уроки сверх оплаченных закрыты</small></div>→</a>`);
+  return `
+  <div class="vhead"><div><h1>Здравствуйте!</h1><p>${esc(r.t)} · ${new Date().toLocaleDateString('ru-RU',{weekday:'long',day:'numeric',month:'long'})}</p></div></div>
+  <div class="kpis">
+    ${role==='teacher'?k('groups',D.students.filter(s=>myGroups().some(g=>g.id===s.group)).length,'учеников в ваших группах')+k('groups',myGroups().length,'групп')+k('homework',pendingHw(),'заданий на проверке',1)
+    :k('clients',D.students.length,'учеников')+k('clients',D.clients.filter(c=>c.access.status==='active').length,'семей заходят в кабинет')+k('clients',noAccess(),'без доступа',1)+k('requests',pendingReq(),'заявок ждут ответа',1)+(r.routes.includes('payments')?k('payments',overdue(),'просрочено платежей',1):k('homework',pendingHw(),'заданий на проверке',1))}
+  </div>
+  <div class="grid2">
+    <section class="card"><div class="card__h"><h2>Нужно сделать</h2></div><div class="list">${tasks.join('')||'<p class="empty">Всё сделано 🎉</p>'}</div></section>
+    <section class="card"><div class="card__h"><h2>Ближайшие занятия</h2>${r.routes.includes('groups')?'<a class="link" href="#groups">Все группы</a>':''}</div>
+      <div class="list">${upcoming.map(({g,d})=>`<a class="item" href="${r.routes.includes('groups')?'#groups/'+g.id:'#dash'}" style="text-decoration:none"><div class="item__main"><b>${esc(g.name)}</b><small>${WDF[d.getDay()]}, ${dtt(d)} · ${esc(g.teacher)} · ${D.students.filter(s=>s.group===g.id).length} учен.</small></div><span class="pill p-lilac">${g.program}</span></a>`).join('')}</div>
+    </section>
+  </div>`;
+},
+
+clients(){
+  return `
+  <div class="vhead"><div><h1>Клиенты</h1><p>Семьи, их дети, тариф и доступ в личный кабинет. Новые клиенты приходят из Битрикс24 или добавляются вручную.</p></div>
+    ${role==='curator'?'':'<button class="btn" id="newClient">+ Новый клиент</button>'}</div>
+  <div class="filters">
+    <select id="fProg" aria-label="Программа"><option value="">Все программы</option>${PROGRAMS.map(p=>`<option>${p}</option>`).join('')}</select>
+    <select id="fPay" aria-label="Оплата"><option value="">Любая оплата</option>${Object.entries(PAYS).map(([k,v])=>`<option value="${k}">${v.t}</option>`).join('')}</select>
+    <select id="fAcc" aria-label="Доступ"><option value="">Любой доступ</option><option value="none">Нет доступа</option><option value="issued">Выдан, не входил</option><option value="active">Заходит</option></select>
+    <span id="cnt" style="color:var(--muted);margin-left:4px"></span>
+  </div>
+  <div class="tbl-wrap"><table><thead><tr><th>Родитель</th><th>Ученики</th><th>Программа · тариф</th><th>Оплата</th><th>Группа</th><th>Кабинет</th><th>Сделка</th></tr></thead><tbody id="rows"></tbody></table></div>`;
+},
+
+groups(arg){
+  if(arg)return groupView(arg);
+  return `
+  <div class="vhead"><div><h1>Группы и журнал</h1><p>${role==='teacher'?'Ваши группы. Откройте группу, чтобы отметить посещаемость.':'Расписание групп, состав и отметки посещаемости.'}</p></div></div>
+  <div class="groups">${myGroups().map(g=>{const n=D.students.filter(s=>s.group===g.id).length,d=nextWeekday(g.wd,g.time);
+    return `<a class="group" href="#groups/${g.id}" style="text-decoration:none"><div class="group__top"><h3>${esc(g.name)}</h3><span class="pill p-lilac">${g.program}</span></div>
+      <div class="group__meta"><span>${g.solo?'Индивидуально, по договорённости':`${WDF[g.wd]}, ${g.time}`}</span><span>${esc(g.teacher)}</span><span>${n} ${plural(n,'ученик','ученика','учеников')} · ближайшее: ${dtt(d)}</span></div></a>`}).join('')}</div>`;
+},
+
+requests(){
+  const a=D.absences.filter(x=>x.status==='new').length,f=D.freezes.filter(x=>x.status==='requested').length,e=D.extras.filter(x=>x.status==='new').length;
+  return `
+  <div class="vhead"><div><h1>Заявки</h1><p>Всё, что семьи отправили из личного кабинета.</p></div>
+  <div class="tabs" id="rTabs"><button aria-pressed="true" data-t="abs">Пропуски${a?`<span class="cnt">${a}</span>`:''}</button><button aria-pressed="false" data-t="frz">Заморозки${f?`<span class="cnt">${f}</span>`:''}</button><button aria-pressed="false" data-t="ext">Доп. курсы${e?`<span class="cnt">${e}</span>`:''}</button></div></div>
+  <div class="list" id="rList"></div>`;
+},
+
+homework(){
+  return `<div class="vhead"><div><h1>Проверка заданий</h1><p>Работы, которые ученики сдали в кабинете. Оценка, монетки и отзыв сразу появятся у семьи.</p></div></div><div class="list" id="hwList"></div>`;
+},
+
+payments(){
+  const inst=D.students.filter(s=>s.payment==='internal').sort((a,b)=>new Date(a.nextPay)-new Date(b.nextPay));
+  return `
+  <div class="vhead"><div><h1>Рассрочки</h1><p>Внутренняя рассрочка школы: в кабинете открыто столько занятий, сколько оплачено. Каждый платёж открывает следующую часть курса.</p></div></div>
+  <div class="tbl-wrap"><table><thead><tr><th>Ученик</th><th>Тариф</th><th>Открыто занятий</th><th>Пройдено</th><th>Следующий платёж</th><th></th></tr></thead><tbody>
+  ${inst.map(s=>{const c=client(s.fid),p=payState(s),tot=PLANS[s.plan].n;return `<tr data-cid="${c.id}">
+    <td><b>${esc(s.name)}</b><small>${esc(c.parent)} · ${esc(c.phone)}</small></td><td>${s.program} · ${PLANS[s.plan].t}</td>
+    <td><b>${s.paid}</b> из ${tot}<div class="bar" style="margin-top:4px;width:120px"><span style="width:${Math.round(s.paid/tot*100)}%"></span></div></td>
+    <td>${s.done}${s.done>=s.paid?' <span class="pill p-bad">упёрся в оплату</span>':''}</td>
+    <td>${s.paid>=tot?'<span class="pill p-ok">оплачено всё</span>':`<span class="pill p-${p.k}">${p.t}</span><small>откроет ещё ${s.payStep}</small>`}</td>
+    <td>${s.paid>=tot?'':`<button class="btn btn--xs" data-paid="${s.id}">Платёж получен</button>`}</td></tr>`}).join('')}
+  </tbody></table></div>`;
+},
+
+integrations(){
+  const b=D.b24;
+  return `
+  <div class="vhead"><div><h1>Битрикс24</h1><p>Связь с CRM: оплаченная сделка сама превращается в клиента с доступом в кабинет, а в сделку возвращаются логин и статус.</p></div></div>
+  <section class="card"><div class="b24"><span class="b24__logo">24</span><div style="flex:1"><h2>Битрикс24</h2><p style="color:var(--muted)">${b.connected?'Подключено (демо)':'Не подключено'}</p></div>${b.connected?'<span class="pill p-ok">● работает</span>':'<span class="pill p-mute">выключено</span>'}</div></section>
+  <div class="grid2">
+    <section class="card"><div class="card__h"><h2>Подключение</h2></div>
+      <div style="display:grid;gap:12px">
+        <label class="field"><span>Адрес портала</span><input class="input" id="bPortal" placeholder="https://unikum.bitrix24.ru" value="${esc(b.portal||'')}"></label>
+        <label class="field"><span>Входящий вебхук</span><input class="input" id="bHook" placeholder="Битрикс24 → Разработчикам → Входящий вебхук" value="${esc(b.webhook||'')}"></label>
+        <label class="check"><input type="checkbox" id="bAuto" ${b.auto?'checked':''}> Сразу выдавать доступ, когда сделка оплачена</label>
+        <div class="field"><span>Куда отправлять логин и пароль</span><div class="seg">${[['sms','SMS'],['telegram','Telegram'],['manual','Менеджер отправит сам']].map(([k,t])=>`<label><input type="radio" name="bCh" value="${k}" ${b.channel===k?'checked':''}><span>${t}</span></label>`).join('')}</div></div>
+        <div class="row"><button class="btn" id="bSave">${b.connected?'Сохранить':'Подключить'}</button>${b.connected?'<button class="btn btn--danger" id="bOff">Отключить</button>':''}</div>
+        <p style="color:var(--muted);font-size:11.5px">В прототипе подключение не настоящее: данные никуда не отправляются. Настоящий вебхук будет храниться на сервере школы, а не в браузере.</p>
+      </div>
+    </section>
+    <section class="card"><div class="card__h"><h2>Что откуда берётся</h2></div>
+      <table class="map"><tbody>
+        <tr><td><b>Стадия сделки «Оплачено»</b></td><td class="arrow">→</td><td>создать клиента и выдать доступ</td></tr>
+        <tr><td>Контакт: ФИО, телефон</td><td class="arrow">→</td><td>родитель</td></tr>
+        <tr><td>Поле «Ребёнок», «Дата рождения»</td><td class="arrow">→</td><td>ученик</td></tr>
+        <tr><td>Поле «Программа»</td><td class="arrow">→</td><td>Junior / Middle / High</td></tr>
+        <tr><td>Поле «Вариант обучения»</td><td class="arrow">→</td><td>1 год / 2 года / 3 года / 2 года инд.</td></tr>
+        <tr><td>Поле «Способ оплаты»</td><td class="arrow">→</td><td>р/с · банк. рассрочка · внутр. рассрочка</td></tr>
+        <tr><td>Платёж по рассрочке</td><td class="arrow">→</td><td>открыть следующие занятия</td></tr>
+        <tr><td colspan="3" style="padding-top:14px;color:var(--muted)">Обратно в сделку</td></tr>
+        <tr><td>логин, статус доступа</td><td class="arrow">←</td><td>«Доступ выдан» / «Заходит»</td></tr>
+        <tr><td>заявки на заморозку и доп. курсы</td><td class="arrow">←</td><td>задача ответственному менеджеру</td></tr>
+      </tbody></table>
+    </section>
+  </div>
+  <section class="card"><div class="card__h"><h2>Проверить сценарий</h2></div>
+    <p style="color:var(--muted);margin-bottom:12px">Имитация: в Битрикс24 сделка перешла в стадию «Оплачено». Посмотрите, что сделает система.</p>
+    <button class="btn btn--ghost" id="bSim" ${b.connected?'':'disabled'}>Пришла оплаченная сделка</button>${b.connected?'':' <small style="color:var(--muted)">сначала подключите Битрикс24</small>'}
+    <div class="list" id="simOut" style="margin-top:14px"></div>
+  </section>`;
+},
+
+log(){
+  return `<div class="vhead"><div><h1>Журнал действий</h1><p>Кто, что и когда сделал: менеджеры, кабинет клиентов и автоматизации.</p></div></div>
+  <section class="card"><div class="log">${D.log.slice(0,200).map(l=>`<div class="log__row"><time>${dtt(l.t)}</time><span class="src ${l.who==='Битрикс24'?'src--b24':''}">${esc(l.who)}</span><span>${esc(l.text)}</span></div>`).join('')}</div></section>`;
+}
+};
+
+/* ---------- группа: состав и журнал посещаемости ---------- */
+function groupView(id){
+  const g=groupOf(id);if(!g)return '<p class="empty">Группа не найдена</p>';
+  const kids=D.students.filter(s=>s.group===g.id);
+  const last=nextWeekday(g.wd,g.time,-1), next=nextWeekday(g.wd,g.time);
+  const key=g.id+'|'+last.toISOString().slice(0,10);
+  const marks=D.attendance[key]||{};
+  return `
+  <div class="vhead"><div><a class="link" href="#groups">← Все группы</a><h1 style="margin-top:8px">${esc(g.name)}</h1><p>${g.solo?'Индивидуальные занятия':`${WDF[g.wd]}, ${g.time}`} · ${esc(g.teacher)} · ${kids.length} ${plural(kids.length,'ученик','ученика','учеников')}</p></div></div>
+  <div class="grid2">
+    <section class="card"><div class="card__h"><h2>Журнал · ${dtt(last)}</h2>${D.attendance[key]?'<span class="pill p-ok">отмечено</span>':'<span class="pill p-wait">не отмечено</span>'}</div>
+      <div class="att">${kids.map(s=>{const ab=D.absences.find(a=>a.sid===s.id&&a.date.slice(0,10)===last.toISOString().slice(0,10));const m=marks[s.id]||(ab?'n':'y');
+        return `<div class="att__row" data-sid="${s.id}"><div><b>${esc(s.name)}</b><small>${esc(client(s.fid).parent)}${ab?` · предупредили: ${esc(ab.reason.toLowerCase())}`:''}</small></div>
+        <div class="tog"><button class="y" aria-pressed="${m==='y'}" data-m="y">Был</button><button class="n" aria-pressed="${m==='n'}" data-m="n">Нет</button></div></div>`}).join('')||'<p class="empty">В группе пока нет учеников</p>'}</div>
+      ${kids.length?'<button class="btn" id="attSave" style="margin-top:14px">Сохранить отметки</button>':''}
+    </section>
+    <section class="card"><div class="card__h"><h2>Следующее · ${dtt(next)}</h2></div>
+      <div class="list">${kids.map(s=>{const ab=D.absences.find(a=>a.sid===s.id&&a.date.slice(0,10)===next.toISOString().slice(0,10)&&a.status!=='done');
+        const fr=D.freezes.find(f=>f.sid===s.id&&f.status!=='rejected'&&next>=new Date(f.from)&&next<=new Date(f.to));
+        const locked=s.done>=openUpTo(s);
+        return `<div class="item" style="box-shadow:inset 0 0 0 1px var(--line)"><div class="item__main"><b>${esc(s.name)}</b><small>занятие ${s.done+1} из ${PLANS[s.plan].n}</small></div>
+          ${fr?'<span class="pill p-ice">❄ заморозка</span>':ab?`<span class="pill p-wait">не придёт · ${esc(ab.reason)}</span>`:locked?'<span class="pill p-bad">🔒 нужна оплата</span>':'<span class="pill p-ok">придёт</span>'}</div>`}).join('')}</div>
+    </section>
+  </div>`;
+}
+
+/* =====================================================================
+   ОБРАБОТЧИКИ ЭКРАНОВ
+   ===================================================================== */
+const BIND={
+clients(){
+  const draw=()=>{
+    const q=Q.trim().toLowerCase(),fp=$('#fProg').value,fy=$('#fPay').value,fa=$('#fAcc').value;
+    const list=D.clients.filter(c=>{
+      const kids=kidsOf(c.id);
+      if(fp&&!kids.some(k=>k.program===fp))return false;
+      if(fy&&!kids.some(k=>k.payment===fy))return false;
+      if(fa&&c.access.status!==fa)return false;
+      if(!q)return true;
+      return [c.parent,c.phone.replace(/\D/g,''),c.phone,c.access.login,c.deal,...kids.map(k=>k.name)].join(' ').toLowerCase().includes(q.replace(/^\+/,''));
+    });
+    $('#cnt').textContent=`${list.length} ${plural(list.length,'семья','семьи','семей')}`;
+    $('#rows').innerHTML=list.map(c=>{const kids=kidsOf(c.id);
+      return `<tr data-cid="${c.id}"><td><b>${esc(c.parent)}</b><small>${esc(c.phone)}</small></td>
+      <td>${kids.map(k=>`${esc(k.name)}, ${age(k.birth)}`).join('<br>')}</td>
+      <td>${kids.map(k=>`${k.program} · ${PLANS[k.plan].t}`).join('<br>')}</td>
+      <td>${kids.map(k=>{const p=payState(k);return PAYS[k.payment].t+(p&&p.k==='bad'?' <span class="pill p-bad">долг</span>':'')}).join('<br>')}</td>
+      <td>${kids.map(k=>esc(groupOf(k.group)?.name||'—')).join('<br>')}</td>
+      <td>${accessPill(c.access)}${c.access.login?`<small>${esc(c.access.login)}</small>`:''}</td>
+      <td><small style="color:#2FA8E0;font-weight:700">${esc(c.deal||'—')}</small></td></tr>`}).join('')||'<tr><td colspan="7" class="empty">Никого не нашли</td></tr>';
+  };
+  ['#fProg','#fPay','#fAcc'].forEach(s=>$(s).onchange=draw);
+  $('#rows').onclick=e=>{const tr=e.target.closest('[data-cid]');if(tr)openClient(tr.dataset.cid)};
+  $('#q').oninput=()=>{Q=$('#q').value;draw()};
+  const nc=$('#newClient');if(nc)nc.onclick=()=>newClient();
+  draw();
+},
+groups(arg){
+  if(!arg)return;
+  $$('.tog button').forEach(b=>b.onclick=()=>{b.parentNode.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b))});
+  const s=$('#attSave');if(!s)return;
+  s.onclick=()=>{
+    const g=groupOf(arg), last=nextWeekday(g.wd,g.time,-1), key=g.id+'|'+last.toISOString().slice(0,10);
+    const first=!D.attendance[key];const m={};
+    $$('.att__row').forEach(r=>{m[r.dataset.sid]=r.querySelector('[aria-pressed="true"]').dataset.m});
+    D.attendance[key]=m;
+    if(first)Object.keys(m).forEach(id=>{student(id).done++});
+    const miss=Object.values(m).filter(x=>x==='n').length;
+    log(`Отмечена посещаемость: ${g.name}, ${dt(last)} — были ${Object.keys(m).length-miss}, нет ${miss}`);
+    toast('Отметки сохранены. Они уже видны семьям в журнале посещений ✓');route();
+  };
+},
+requests(){
+  let tab='abs';
+  const draw=()=>{
+    let html='';
+    if(tab==='abs')html=D.absences.slice().sort((a,b)=>(a.status==='new'?0:1)-(b.status==='new'?0:1)).map(a=>{const s=student(a.sid),c=client(s.fid);
+      return `<div class="item"><div class="item__main"><b>${esc(s.name)} не сможет прийти · ${dtt(a.date)}</b><small>${esc(c.parent)} · ${esc(groupOf(s.group).name)} · ${ago(a.created)}</small>
+        <small style="color:var(--text)">${esc(a.reason)}${a.comment?': '+esc(a.comment):''}${a.makeup?' · <b>просят отработку</b>':''}</small></div>
+        ${a.status==='new'?`${a.makeup?`<button class="btn btn--xs" data-abs="${a.id}" data-to="makeup">Назначить отработку</button>`:''}<button class="btn btn--ghost btn--xs" data-abs="${a.id}" data-to="done">Принято</button>`
+        :a.status==='makeup'?'<span class="pill p-lilac">отработка назначена</span>':'<span class="pill p-mute">обработано</span>'}</div>`}).join('');
+    if(tab==='frz')html=D.freezes.slice().sort((a,b)=>(a.status==='requested'?0:1)-(b.status==='requested'?0:1)).map(f=>{const s=student(f.sid),c=client(s.fid),days=Math.round((new Date(f.to)-new Date(f.from))/DAY)+1;
+      return `<div class="item"><span style="font-size:22px">❄</span><div class="item__main"><b>${esc(s.name)} · с ${dt(f.from)} по ${dt(f.to)} (${days} ${plural(days,'день','дня','дней')})</b><small>${esc(c.parent)} · ${esc(c.phone)} · ${ago(f.created)}</small><small style="color:var(--text)">${esc(f.reason)}</small></div>
+        ${f.status==='requested'?`<button class="btn btn--ok btn--xs" data-frz="${f.id}" data-to="approved">Подтвердить</button><button class="btn btn--danger btn--xs" data-frz="${f.id}" data-to="rejected">Отклонить</button>`
+        :f.status==='approved'?'<span class="pill p-ok">подтверждена</span>':'<span class="pill p-bad">отклонена</span>'}</div>`}).join('');
+    if(tab==='ext')html=D.extras.slice().sort((a,b)=>(a.status==='new'?0:1)-(b.status==='new'?0:1)).map(e=>{const c=client(e.fid);
+      return `<div class="item"><span style="font-size:22px">${e.course==='ai'?'🤖':'🇬🇧'}</span><div class="item__main"><b>${EXTRA[e.course]}</b><small>${esc(c.parent)} · ${esc(c.phone)} · дети: ${kidsOf(c.id).map(k=>esc(k.name)).join(', ')} · ${ago(e.created)}</small></div>
+        ${e.status==='new'?`<button class="btn btn--xs" data-ext="${e.id}">Связались</button>`:'<span class="pill p-mute">связались</span>'}</div>`}).join('');
+    $('#rList').innerHTML=html||'<p class="empty">Заявок нет</p>';
+  };
+  $$('#rTabs button').forEach(b=>b.onclick=()=>{tab=b.dataset.t;$$('#rTabs button').forEach(x=>x.setAttribute('aria-pressed',x===b));draw()});
+  $('#rList').onclick=e=>{
+    const b=e.target.closest('button');if(!b)return;
+    if(b.dataset.abs){const a=D.absences.find(x=>x.id===b.dataset.abs),s=student(a.sid);a.status=b.dataset.to;
+      log(b.dataset.to==='makeup'?`Назначена отработка: ${s.name} (пропуск ${dt(a.date)})`:`Пропуск принят: ${s.name}, ${dt(a.date)}`);
+      toast(b.dataset.to==='makeup'?'Отработка назначена — семья увидит это в кабинете':'Отмечено');}
+    if(b.dataset.frz){const f=D.freezes.find(x=>x.id===b.dataset.frz),s=student(f.sid);f.status=b.dataset.to;
+      log(`${f.status==='approved'?'Подтверждена':'Отклонена'} заморозка: ${s.name}, ${dt(f.from)} — ${dt(f.to)}`);
+      toast(f.status==='approved'?'Заморозка подтверждена. Занятия в эти даты перенесутся на после неё':'Заявка отклонена. Семья увидит статус в кабинете');}
+    if(b.dataset.ext){const x=D.extras.find(y=>y.id===b.dataset.ext);x.status='contacted';log(`Связались по заявке «${EXTRA[x.course]}»: ${client(x.fid).parent}`);toast('Отмечено')}
+    save();renderNav('requests');route();$$('#rTabs button').forEach(x=>{if(x.dataset.t===tab)x.click()});
+  };
+  draw();
+},
+homework(){
+  const draw=()=>{
+    const list=D.homework.filter(h=>role!=='teacher'||myGroups().some(g=>g.id===student(h.sid).group));
+    $('#hwList').innerHTML=list.map(h=>{const s=student(h.sid);
+      return h.status==='wait'?`<div class="card" data-hid="${h.id}" style="display:grid;gap:12px">
+        <div class="row" style="justify-content:space-between"><div><b>${esc(h.title)}</b><small style="display:block;color:var(--muted)">${esc(s.name)} · ${esc(groupOf(s.group).name)} · урок ${h.lesson} · сдано ${ago(h.created)}</small></div><a class="btn btn--ghost btn--xs" href="${esc(h.url)}" target="_blank" rel="noopener">Открыть работу ↗</a></div>
+        <div class="fgrid"><div class="field"><span>Оценка</span><div class="stars" data-v="5">${[1,2,3,4,5].map(i=>`<button type="button" data-s="${i}" class="on" aria-label="${i} из 5">★</button>`).join('')}</div></div>
+          <label class="field"><span>Монетки</span><select data-coins>${[0,10,20,30,40,50].map(n=>`<option ${n===20?'selected':''}>${n}</option>`).join('')}</select></label>
+          <label class="field wide"><span>Отзыв для ученика</span><textarea rows="2" data-comment placeholder="Что получилось хорошо и что улучшить"></textarea></label></div>
+        <div class="row"><button class="btn btn--ok btn--xs" data-ok>Проверено</button><button class="btn btn--ghost btn--xs" data-redo>Вернуть на доработку</button></div></div>`
+      :`<div class="item"><div class="item__main"><b>${esc(h.title)} · ${esc(s.name)}</b><small>${h.status==='ok'?`${'★'.repeat(h.stars)} · +${h.coins} монеток${h.comment?' · «'+esc(h.comment)+'»':''}`:'возвращено на доработку'}</small></div><span class="pill ${h.status==='ok'?'p-ok':'p-wait'}">${h.status==='ok'?'проверено':'на доработке'}</span></div>`}).join('')||'<p class="empty">Заданий нет</p>';
+  };
+  $('#hwList').onclick=e=>{
+    const card=e.target.closest('[data-hid]');if(!card)return;
+    const st=e.target.closest('[data-s]');
+    if(st){const v=+st.dataset.s,box=st.parentNode;box.dataset.v=v;box.querySelectorAll('button').forEach(b=>b.classList.toggle('on',+b.dataset.s<=v));return}
+    const h=D.homework.find(x=>x.id===card.dataset.hid),s=student(h.sid);
+    if(e.target.closest('[data-ok]')){
+      const comment=card.querySelector('[data-comment]').value.trim();
+      if(!comment){card.querySelector('[data-comment]').setAttribute('aria-invalid','true');toast('Напишите короткий отзыв — дети его очень ждут');return}
+      Object.assign(h,{status:'ok',stars:+card.querySelector('.stars').dataset.v,coins:+card.querySelector('[data-coins]').value,comment});
+      log(`Проверено задание «${h.title}»: ${s.name} — ${h.stars}★, +${h.coins} монеток`);toast('Оценка и отзыв отправлены ученику ✓');
+    }else if(e.target.closest('[data-redo]')){h.status='redo';log(`Задание «${h.title}» возвращено на доработку: ${s.name}`);toast('Задание вернулось ученику на доработку')}
+    else return;
+    save();renderNav('homework');draw();
+  };
+  draw();
+},
+payments(){
+  $$('[data-paid]').forEach(b=>b.onclick=e=>{e.stopPropagation();payDialog(b.dataset.paid)});
+  $$('tbody tr[data-cid]').forEach(tr=>tr.onclick=e=>{if(!e.target.closest('button'))openClient(tr.dataset.cid)});
+},
+integrations(){
+  $('#bSave').onclick=()=>{
+    const portal=$('#bPortal').value.trim(),hook=$('#bHook').value.trim();
+    if(!/^https:\/\/[\w.-]+\.bitrix24\.(ru|by|kz|com)\/?$/i.test(portal)){$('#bPortal').setAttribute('aria-invalid','true');toast('Адрес портала вида https://название.bitrix24.ru');return}
+    if(!/^https:\/\/.+\/rest\/\d+\/\w+\/?$/i.test(hook)){$('#bHook').setAttribute('aria-invalid','true');toast('Вебхук вида https://…/rest/1/ключ/');return}
+    D.b24=Object.assign(D.b24,{connected:true,portal,webhook:hook,auto:$('#bAuto').checked,channel:(document.querySelector('[name=bCh]:checked')||{}).value||'sms'});
+    log('Подключён Битрикс24 (демо)');save();toast('Битрикс24 подключён (демо)');route();
+  };
+  const off=$('#bOff');if(off)off.onclick=()=>{D.b24.connected=false;log('Битрикс24 отключён');save();route()};
+  const sim=$('#bSim');if(sim)sim.onclick=simulateDeal;
+},
+log(){}
+};
+
+/* =====================================================================
+   КАРТОЧКА КЛИЕНТА
+   ===================================================================== */
+function openClient(id){
+  const c=client(id);if(!c)return;
+  const kids=kidsOf(id), canEdit=role==='admin'||role==='manager';
+  const a=c.access;
+  $('#drawerIn').innerHTML=`
+  <div class="drawer__head"><div><small>Клиент · ${esc(c.deal||'без сделки')}</small><h2>${esc(c.parent)}</h2><small>${esc(c.phone)}${c.email?' · '+esc(c.email):''}</small></div><button class="x" id="dClose" aria-label="Закрыть">✕</button></div>
+  <div class="drawer__body">
+    <section class="card"><div class="card__h"><h2>Личный кабинет</h2>${accessPill(a)}</div>
+      ${a.status==='none'?`<p style="color:var(--muted);margin-bottom:12px">У семьи ещё нет логина. Создайте доступ — система придумает логин и пароль и отправит их клиенту.</p>${canEdit?'<button class="btn" id="aCreate">Создать доступ</button>':''}`
+      :`<div class="access"><span>Логин <code>${esc(a.login)}</code></span><span style="color:var(--muted);font-size:12px">${a.status==='active'?'последний вход '+ago(a.last):a.status==='blocked'?'вход запрещён':'выдан '+ago(a.issued)+', ещё не входили'}</span></div>
+        ${canEdit?`<div class="row" style="margin-top:12px"><button class="btn btn--ghost btn--xs" id="aReset">Сбросить пароль</button>${a.status==='blocked'?'<button class="btn btn--ghost btn--xs" id="aUnblock">Разблокировать</button>':'<button class="btn btn--danger btn--xs" id="aBlock">Заблокировать</button>'}</div>`:''}`}
+    </section>
+    ${kids.map(k=>{const tot=PLANS[k.plan].n,open=openUpTo(k),p=payState(k);
+      return `<section class="kid" data-sid="${k.id}"><div class="card__h" style="margin:0"><h3>${esc(k.name)}, ${age(k.birth)} ${plural(age(k.birth),'год','года','лет')}</h3><span class="pill p-lilac">${k.program}</span></div>
+      <div><small style="color:var(--muted)">Пройдено ${k.done} из ${tot} · открыто ${open}</small><div class="bar" style="margin-top:5px"><span style="width:${Math.round(k.done/tot*100)}%"></span></div></div>
+      ${canEdit?`<div class="fgrid">
+        <label class="field"><span>Программа</span><select data-k="program">${PROGRAMS.map(x=>`<option ${x===k.program?'selected':''}>${x}</option>`).join('')}</select></label>
+        <label class="field"><span>Вариант обучения</span><select data-k="plan">${Object.entries(PLANS).map(([v,x])=>`<option value="${v}" ${v===k.plan?'selected':''}>${x.t} · ${x.n}</option>`).join('')}</select></label>
+        <label class="field"><span>Способ оплаты</span><select data-k="payment">${Object.entries(PAYS).map(([v,x])=>`<option value="${v}" ${v===k.payment?'selected':''}>${x.t}</option>`).join('')}</select></label>
+        <label class="field"><span>Группа</span><select data-k="group">${D.groups.map(g=>`<option value="${g.id}" ${g.id===k.group?'selected':''}>${esc(g.name)}</option>`).join('')}</select></label>
+        ${k.payment==='internal'?`<label class="field"><span>Оплачено занятий</span><input class="input" type="number" min="0" max="${tot}" data-k="paid" value="${k.paid}"></label><div class="field"><span>Следующий платёж</span><div style="padding-top:8px">${p?`<span class="pill p-${p.k}">${p.t}</span>`:'—'}</div></div>`:''}
+      </div>`:`<dl class="kv"><dt>Вариант</dt><dd>${PLANS[k.plan].t}</dd><dt>Оплата</dt><dd>${PAYS[k.payment].t}</dd><dt>Группа</dt><dd>${esc(groupOf(k.group)?.name)}</dd></dl>`}
+      </section>`}).join('')}
+    ${canEdit?'<div class="row"><button class="btn" id="dSave">Сохранить изменения</button><span style="color:var(--muted);font-size:11.5px">Изменения тарифа и оплаты уйдут и в сделку Битрикс24</span></div>':''}
+    <section class="card"><div class="card__h"><h2>История</h2></div><div class="log">${D.log.filter(l=>l.text.includes(c.parent)||kids.some(k=>l.text.includes(k.name+' ')||l.text.endsWith(k.name))).slice(0,8).map(l=>`<div class="log__row" style="grid-template-columns:110px minmax(0,1fr)"><time>${dtt(l.t)}</time><span>${esc(l.text)}</span></div>`).join('')||'<p class="empty">Пока пусто</p>'}</div></section>
+  </div>`;
+  $('#drawer').hidden=false;document.body.style.overflow='hidden';
+  $('#dClose').onclick=closeDrawer;
+  const on=(sel,fn)=>{const el=$(sel);if(el)el.onclick=fn};
+  on('#aCreate',()=>accessDialog(c,'create'));
+  on('#aReset',()=>accessDialog(c,'reset'));
+  on('#aBlock',()=>{c.access.status='blocked';log(`Доступ заблокирован: ${c.parent}`);save();toast('Вход в кабинет заблокирован');openClient(id);refresh()});
+  on('#aUnblock',()=>{c.access.status=c.access.last?'active':'issued';log(`Доступ разблокирован: ${c.parent}`);save();toast('Вход снова разрешён');openClient(id);refresh()});
+  on('#dSave',()=>{
+    $$('#drawerIn .kid').forEach(box=>{const k=student(box.dataset.sid),before=JSON.stringify([k.program,k.plan,k.payment,k.group,k.paid]);
+      box.querySelectorAll('[data-k]').forEach(el=>{k[el.dataset.k]=el.dataset.k==='paid'?Math.max(0,Math.min(PLANS[k.plan].n,+el.value||0)):el.value});
+      if(k.payment==='internal'&&!k.nextPay){k.nextPay=iso(Date.now()+30*DAY);k.payStep=10;if(!k.paid)k.paid=Math.min(PLANS[k.plan].n,k.done+10)}
+      if(JSON.stringify([k.program,k.plan,k.payment,k.group,k.paid])!==before)log(`Изменены данные ученика ${k.name}: ${k.program}, ${PLANS[k.plan].t}, ${PAYS[k.payment].t}, ${groupOf(k.group).name}`)});
+    save();toast('Сохранено ✓');openClient(id);refresh();
+  });
+}
+function closeDrawer(){$('#drawer').hidden=true;document.body.style.overflow=''}
+$('#drawer').onclick=e=>{if(e.target===e.currentTarget)closeDrawer()};
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#drawer').hidden&&!$('#dlg').open)closeDrawer()});
+function refresh(){const h=location.hash.slice(1).split('/')[0]||'dash';renderNav(h);if(h==='clients'){BIND.clients()}else if(h==='payments'||h==='dash'){route()}}
+
+/* ---------- выдача доступа ---------- */
+function accessDialog(c,mode){
+  const login=mode==='create'?uniqueLogin(translit(c.parent.split(' ')[0])):c.access.login;
+  let pass=genPass();
+  const name=c.parent.split(' ')[1]||c.parent;
+  const text=()=>`Здравствуйте, ${name}! ${mode==='create'?'Доступ в личный кабинет «Уникума»':'Новый пароль от личного кабинета «Уникума»'}:\n${CABINET_URL}\nЛогин: ${$('#acLogin')?$('#acLogin').value.trim():login}\nПароль: ${pass}\nПри первом входе придумайте свой пароль в разделе «Профиль».`;
+  $('#dlgBody').innerHTML=`<h2>${mode==='create'?'Создать доступ':'Сбросить пароль'}</h2>
+    <p>${esc(c.parent)} · ${esc(c.phone)}</p>
+    <div class="fgrid">
+      <label class="field"><span>Логин</span><input class="input" id="acLogin" value="${esc(login)}" ${mode==='reset'?'readonly':''} autocapitalize="none" spellcheck="false"></label>
+      <div class="field"><span>Временный пароль</span><div class="row" style="flex-wrap:nowrap"><input class="input" id="acPass" value="${esc(pass)}" readonly><button class="btn btn--ghost btn--xs" id="acGen" type="button" title="Другой пароль">↻</button></div></div>
+    </div>
+    <div class="field"><span>Как отправить</span><div class="seg">${[['sms','SMS на '+c.phone],['telegram','Telegram'],['copy','Скопирую и отправлю сам']].map(([k,t],i)=>`<label><input type="radio" name="acCh" value="${k}" ${i===0?'checked':''}><span>${esc(t)}</span></label>`).join('')}</div></div>
+    <div class="msg" id="acMsg"></div>
+    <p class="err" id="acErr"></p>
+    <div class="dlg__act"><button class="btn btn--ghost" type="button" id="acNo">Отмена</button><button class="btn" type="button" id="acOk">${mode==='create'?'Создать и отправить':'Сбросить и отправить'}</button></div>`;
+  const upd=()=>{$('#acMsg').textContent=text()};
+  upd();
+  $('#acLogin').oninput=()=>{$('#acLogin').value=$('#acLogin').value.toLowerCase().replace(/[^a-z0-9._-]/g,'');$('#acErr').textContent='';upd()};
+  $('#acGen').onclick=()=>{pass=genPass();$('#acPass').value=pass;upd()};
+  $('#acNo').onclick=()=>$('#dlg').close();
+  $('#acOk').onclick=async()=>{
+    const l=$('#acLogin').value.trim();
+    if(mode==='create'){
+      if(l.length<3){$('#acErr').textContent='Логин — от 3 символов латиницей';return}
+      if(D.clients.some(x=>x.id!==c.id&&x.access.login===l)){$('#acErr').textContent='Такой логин уже занят';return}
+    }
+    const ch=document.querySelector('[name=acCh]:checked').value;
+    if(ch==='copy'){try{await navigator.clipboard.writeText(text())}catch(e){}}
+    c.access={status:'issued',login:l,issued:iso(Date.now()),last:null};
+    log(`${mode==='create'?'Выдан доступ':'Сброшен пароль'}: ${c.parent} (логин ${l}) — ${ch==='sms'?'отправлено SMS':ch==='telegram'?'отправлено в Telegram':'сообщение скопировано'}`);
+    save();$('#dlg').close();
+    toast(ch==='copy'?'Сообщение с логином и паролем скопировано':`Логин и пароль отправлены ${ch==='sms'?'по SMS':'в Telegram'} (демо)`);
+    openClient(c.id);refresh();
+  };
+  $('#dlg').showModal();
+}
+
+/* ---------- новый клиент ---------- */
+function newClient(){
+  $('#dlgBody').innerHTML=`<h2>Новый клиент</h2><p>Обычно клиенты приходят из Битрикс24 автоматически. Здесь — ручное добавление.</p>
+    <form id="ncForm" class="fgrid" novalidate>
+      <label class="field wide"><span>Родитель (фамилия и имя)</span><input class="input" name="parent" required placeholder="Иванова Анна"></label>
+      <label class="field"><span>Телефон</span><input class="input" name="phone" type="tel" required placeholder="+7"></label>
+      <label class="field"><span>Сделка Битрикс24</span><input class="input" name="deal" placeholder="номер, необязательно"></label>
+      <label class="field"><span>Ребёнок</span><input class="input" name="kid" required></label>
+      <label class="field"><span>Дата рождения</span><input class="input" name="birth" type="date" required></label>
+      <label class="field"><span>Программа</span><select name="program">${PROGRAMS.map(p=>`<option ${p==='Middle'?'selected':''}>${p}</option>`).join('')}</select></label>
+      <label class="field"><span>Вариант обучения</span><select name="plan">${Object.entries(PLANS).map(([v,x])=>`<option value="${v}" ${v==='y2'?'selected':''}>${x.t} · ${x.n}</option>`).join('')}</select></label>
+      <label class="field"><span>Способ оплаты</span><select name="payment">${Object.entries(PAYS).map(([v,x])=>`<option value="${v}">${x.t}</option>`).join('')}</select></label>
+      <label class="field"><span>Группа</span><select name="group">${D.groups.map(g=>`<option value="${g.id}">${esc(g.name)}</option>`).join('')}</select></label>
+      <label class="check wide"><input type="checkbox" name="give" checked> Сразу выдать доступ в кабинет</label>
+      <p class="err wide" id="ncErr"></p>
+      <div class="dlg__act wide"><button class="btn btn--ghost" type="button" id="ncNo">Отмена</button><button class="btn" type="submit">Добавить</button></div>
+    </form>`;
+  const f=$('#ncForm');
+  $('#ncNo').onclick=()=>$('#dlg').close();
+  f.onsubmit=e=>{
+    e.preventDefault();
+    const v=n=>f.elements[n].value.trim();
+    for(const [n,m] of [['parent','Укажите родителя'],['phone','Укажите телефон'],['kid','Укажите имя ребёнка'],['birth','Укажите дату рождения']])
+      if(!v(n)){f.elements[n].setAttribute('aria-invalid','true');$('#ncErr').textContent=m;f.elements[n].focus();return}
+    if(v('phone').replace(/\D/g,'').length<10){f.elements.phone.setAttribute('aria-invalid','true');$('#ncErr').textContent='Телефон — не меньше 10 цифр';return}
+    const c=addClient({parent:v('parent'),phone:v('phone'),deal:v('deal')?'Б24-'+v('deal').replace(/\D/g,''):'',kid:v('kid'),birth:v('birth'),program:v('program'),plan:v('plan'),payment:v('payment'),group:v('group')});
+    log(`Добавлен клиент вручную: ${c.parent}`);
+    $('#dlg').close();refresh();
+    if(f.elements.give.checked){openClient(c.id);accessDialog(c,'create')}else toast('Клиент добавлен');
+  };
+  $('#dlg').showModal();
+}
+function addClient(o){
+  const fid='f'+(Date.now().toString(36));
+  const c={id:fid,parent:o.parent,phone:o.phone,email:'',deal:o.deal,created:iso(Date.now()),access:{status:'none'}};
+  D.clients.unshift(c);
+  const inst=o.payment==='internal';
+  D.students.push({id:'s'+Date.now().toString(36)+Math.random().toString(36).slice(2,5),fid,name:o.kid,birth:o.birth,program:o.program,plan:o.plan,payment:o.payment,group:o.group,done:0,
+    paid:inst?10:PLANS[o.plan].n,nextPay:inst?iso(Date.now()+30*DAY):null,payStep:inst?10:0});
+  save();return c;
+}
+
+/* ---------- платёж по рассрочке ---------- */
+function payDialog(sid){
+  const s=student(sid),tot=PLANS[s.plan].n,left=tot-s.paid;
+  $('#dlgBody').innerHTML=`<h2>Платёж получен</h2><p>${esc(s.name)} · ${esc(client(s.fid).parent)}. Сейчас открыто ${s.paid} из ${tot}.</p>
+    <div class="fgrid"><label class="field"><span>Открыть ещё занятий</span><input class="input" id="pN" type="number" min="1" max="${left}" value="${Math.min(s.payStep||10,left)}"></label>
+    <label class="field"><span>Следующий платёж</span><input class="input" id="pNext" type="date" value="${new Date(Date.now()+30*DAY).toISOString().slice(0,10)}"></label></div>
+    <p style="color:var(--muted);font-size:12px">В рабочей версии это будет происходить само: платёжная система сообщит об оплате, и занятия откроются без менеджера.</p>
+    <div class="dlg__act"><button class="btn btn--ghost" type="button" id="pNo">Отмена</button><button class="btn btn--ok" type="button" id="pOk">Открыть занятия</button></div>`;
+  $('#pNo').onclick=()=>$('#dlg').close();
+  $('#pOk').onclick=()=>{
+    const n=Math.max(1,Math.min(left,+$('#pN').value||0));
+    s.paid+=n;s.nextPay=s.paid>=tot?null:iso(new Date($('#pNext').value+'T12:00:00'));
+    if(s.paid>=tot)s.payment='internal';
+    log(`Платёж по рассрочке: ${s.name} — открыто ещё ${n} занятий (всего ${s.paid} из ${tot})`);
+    save();$('#dlg').close();toast(`Открыто ещё ${n} ${plural(n,'занятие','занятия','занятий')} ✓`);route();
+  };
+  $('#dlg').showModal();
+}
+
+/* ---------- имитация сделки из Битрикс24 ---------- */
+const SIM=[['Белова Кристина','Полина','2017-03-02','Junior'],['Тарасов Глеб','Марк','2014-10-21','Middle'],['Жукова Вера','Лиза','2012-05-30','High'],['Комаров Олег','Фёдор','2015-12-12','Middle']];
+async function simulateDeal(){
+  const out=$('#simOut');out.innerHTML='';
+  const [parent,kid,birth,program]=SIM[D.clients.length%SIM.length];
+  const deal='Б24-'+(1300+D.clients.length);
+  const plan=['y1','y2','y3'][D.clients.length%3], payment=['bank','full','internal'][D.clients.length%3];
+  const step=async(t,who='Битрикс24')=>{out.insertAdjacentHTML('beforeend',`<div class="item" style="box-shadow:inset 0 0 0 1px var(--line)"><span class="pill ${who==='Битрикс24'?'p-ice':'p-ok'}">${who}</span><div class="item__main">${t}</div></div>`);await new Promise(r=>setTimeout(r,550))};
+  $('#bSim').disabled=true;
+  await step(`Сделка <b>${deal}</b> перешла в стадию «Оплачено»: ${esc(parent)}, ребёнок ${esc(kid)}, ${program}, ${PLANS[plan].t}, ${PAYS[payment].t}`);
+  const g=D.groups.find(x=>x.program===program&&!x.solo)||D.groups[0];
+  const c=addClient({parent,phone:'+7 900 222-33-'+String(10+D.clients.length).slice(-2),deal,kid,birth,program,plan,payment,group:g.id});
+  log(`Сделка ${deal} перешла в «Оплачено» → создан клиент ${parent}`,'Битрикс24');
+  await step(`Создан клиент и ученик ${esc(kid)}, группа «${esc(g.name)}»${payment==='internal'?', открыто первые 10 занятий':', открыт весь курс'}`,'Система');
+  if(D.b24.auto){
+    const login=uniqueLogin(translit(parent.split(' ')[0]));
+    c.access={status:'issued',login,issued:iso(Date.now()),last:null};
+    log(`Выдан доступ: ${parent} (логин ${login}) — ${D.b24.channel==='manual'?'ждёт отправки менеджером':D.b24.channel==='sms'?'отправлено SMS':'отправлено в Telegram'}`,'Система');
+    await step(`Выдан доступ: логин <code>${login}</code>, временный пароль сгенерирован. ${D.b24.channel==='manual'?'Менеджеру поставлена задача отправить его клиенту':D.b24.channel==='sms'?'Отправлено SMS':'Отправлено в Telegram'}`,'Система');
+    await step(`В сделку ${deal} записаны логин и статус «Доступ выдан»`);
+  }else await step('Автовыдача выключена — клиент ждёт в списке «Нет доступа»','Система');
+  save();renderNav('integrations');$('#bSim').disabled=false;
+  out.insertAdjacentHTML('beforeend',`<button class="btn btn--ghost btn--xs" style="justify-self:start" onclick="location.hash='clients';setTimeout(()=>openClient('${c.id}'),50)">Открыть клиента →</button>`);
+}
+
+/* =====================================================================
+   СТАРТ
+   ===================================================================== */
+try{D=JSON.parse(localStorage.getItem(KEY))}catch(e){}
+if(!D||!D.clients)D=seed();
+$('#roleSel').value=role;
+$('#roleSel').onchange=e=>{role=e.target.value;try{localStorage.setItem(KEY+'-role',role)}catch(err){}closeDrawer();toast('Вы смотрите админку как: '+ROLES[role].t);route()};
+$('#menuBtn').onclick=()=>$('#side').classList.toggle('open');
+$('#q').addEventListener('keydown',e=>{if(e.key==='Enter'&&!location.hash.startsWith('#clients')){Q=$('#q').value;location.hash='clients'}});
+$('#q').addEventListener('input',()=>{Q=$('#q').value});
+$('#logout').onclick=()=>{try{sessionStorage.removeItem('unikum-admin-auth');localStorage.removeItem('unikum-admin-auth')}catch(e){}location.replace('cabinet.html')};
+$('#resetDemo').onclick=()=>{D=seed();save();toast('Демо-данные сброшены');route()};
+$('#dlg').addEventListener('click',e=>{if(e.target===e.currentTarget)e.currentTarget.close()});
+window.addEventListener('hashchange',route);
+route();
+</script>
+</body>
+</html>
