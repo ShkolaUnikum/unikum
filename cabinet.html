@@ -6,6 +6,7 @@
 <title>Личный кабинет — Уникум</title>
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#410EAD">
+<script>try{if(localStorage.getItem('unikum-theme')==='dark')document.documentElement.dataset.theme='dark'}catch(e){}</script>
 <link rel="icon" type="image/png" href="img/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -350,7 +351,7 @@ dialog::backdrop{background:rgba(25,5,70,.55);backdrop-filter:blur(4px)}
   .layout{grid-template-columns:1fr;padding-top:20px;padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}
   .side{display:none}
   .top__tag,.coinpill{display:none}
-  .tabbar{display:grid;grid-template-columns:repeat(5,1fr);position:fixed;left:0;right:0;bottom:0;z-index:50;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);
+  .tabbar{display:grid;grid-template-columns:repeat(5,1fr);position:fixed;left:0;right:0;bottom:0;z-index:50;background:#fff;
     box-shadow:0 -10px 30px -16px rgba(65,14,173,.45);padding:6px max(8px,env(safe-area-inset-right)) calc(6px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-left))}
   .tabbar a{position:relative;display:grid;justify-items:center;gap:3px;padding:7px 2px;border-radius:12px;text-decoration:none;font-size:10.5px;font-weight:700;color:var(--muted)}
   .tabbar svg{width:22px;height:22px}
@@ -390,6 +391,86 @@ dialog::backdrop{background:rgba(25,5,70,.55);backdrop-filter:blur(4px)}
   .timer b{font-size:22px}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+
+/* ============ ДЕКОР И ШАПКА (правки) ============ */
+/* плюсики-«звёздочки» только в правой части карточек, чтобы не попадать под текст */
+.next,.payhero,.xc__head{isolation:isolate;background-image:none}
+.next{background:var(--night)}
+.payhero{background:var(--night)}
+.xc__head{background:linear-gradient(135deg,var(--c1),var(--c2))}
+.next::before,.payhero::before,.xc__head::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:var(--sparkles) 0 0/520px auto;
+  -webkit-mask:linear-gradient(90deg,transparent 0 52%,#000 78%);mask:linear-gradient(90deg,transparent 0 52%,#000 78%)}
+.payhero{position:relative;overflow:hidden}
+/* экран входа: звёздочки приглушены и не лезут под заголовок */
+.login{background:var(--night)}
+.login::after{content:"";position:absolute;inset:0;pointer-events:none;background:var(--sparkles) 0 0/640px auto;opacity:.75;
+  -webkit-mask:linear-gradient(90deg,#000 0 3%,transparent 9% 50%,#000 58%);mask:linear-gradient(90deg,#000 0 3%,transparent 9% 50%,#000 58%)}
+@media (max-width:900px){.login::after{-webkit-mask:linear-gradient(#000,transparent 12% 88%,#000);mask:linear-gradient(#000,transparent 12% 88%,#000)}
+  .next::before,.payhero::before,.xc__head::before{-webkit-mask:linear-gradient(90deg,transparent 0 60%,#000 90%);mask:linear-gradient(90deg,transparent 0 60%,#000 90%)}}
+/* шапка кабинета стоит наверху страницы и не едет за прокруткой */
+.top{position:relative;top:auto}
+.side{top:20px}
+
+/* ============ ПЕРЕКЛЮЧАТЕЛЬ ТЕМЫ ============ */
+.theme-btn{flex:none;width:38px;height:38px;display:grid;place-items:center;border:0;border-radius:12px;color:#fff;background:rgba(255,255,255,.1);box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.26);transition:background .15s,box-shadow .15s,transform .2s}
+.theme-btn:hover{background:rgba(255,255,255,.18);box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.6)}
+.theme-btn:active{transform:rotate(-20deg) scale(.94)}
+.theme-btn .i-sun,html[data-theme="dark"] .theme-btn .i-moon{display:none}
+html[data-theme="dark"] .theme-btn .i-sun{display:block;color:var(--yellow)}
+.login__theme{position:absolute;z-index:2;top:max(16px,env(safe-area-inset-top));right:max(16px,env(safe-area-inset-right))}
+
+/* ============ ТЁМНАЯ ТЕМА ============ */
+html[data-theme="dark"]{
+  color-scheme:dark;
+  --paper:#120826;--card:#1B0F3A;--text:#EEE8FF;--muted:#B3A5D9;--line:rgba(190,160,255,.16);--ink:#B391FF;
+  --glow:0 24px 50px -26px rgba(0,0,0,.85),0 0 0 1px rgba(190,160,255,.1);
+  --s2:#22144A;--s3:#1F1243;--edge:#3A2A66;
+}
+html[data-theme="dark"] .btn--ghost{background:var(--card);color:#E3D6FF;box-shadow:inset 0 0 0 2px rgba(179,145,255,.3)}
+html[data-theme="dark"] .btn--ghost:hover{box-shadow:inset 0 0 0 2px #B391FF,0 14px 26px -16px rgba(0,0,0,.8)}
+html[data-theme="dark"] .next .btn--ghost{background:rgba(255,255,255,.12);color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.35)}
+html[data-theme="dark"] .lcard{background:var(--card);box-shadow:0 40px 80px -30px rgba(0,0,0,.8),0 0 0 1px rgba(190,160,255,.18),0 0 60px -10px rgba(255,95,168,.3)}
+html[data-theme="dark"] .input{background:var(--s2)}
+html[data-theme="dark"] .input:focus{background:#2A1A58}
+html[data-theme="dark"] .pass button:hover{background:var(--s2)}
+html[data-theme="dark"] .err{color:#FF8DB2}
+html[data-theme="dark"] .demo-note{background:rgba(255,222,59,.1);color:#E6DCA6}
+html[data-theme="dark"] .side a:hover,html[data-theme="dark"] .side a[aria-current="page"],html[data-theme="dark"] .side__help{background:var(--card)}
+html[data-theme="dark"] .pill--new{background:rgba(255,95,168,.16);color:#FF9CCB}
+html[data-theme="dark"] .pill--wait{background:rgba(255,222,59,.14);color:#FFE07A}
+html[data-theme="dark"] .pill--ok{background:rgba(47,199,154,.16);color:#72E6C3}
+html[data-theme="dark"] .pill--lilac{background:rgba(179,145,255,.16);color:#D6C2FF}
+html[data-theme="dark"] .pill--ice{background:rgba(63,182,255,.14);color:#93D5FF}
+html[data-theme="dark"] .pill--muted{background:var(--s2)}
+html[data-theme="dark"] .stat,html[data-theme="dark"] .mc,html[data-theme="dark"] .xc,html[data-theme="dark"] .more__ic{background:var(--card)}
+html[data-theme="dark"] .item,html[data-theme="dark"] .badge{background:var(--s3)}
+html[data-theme="dark"] .date,html[data-theme="dark"] .freeze__ic,html[data-theme="dark"] .paymark{background:var(--s2)}
+html[data-theme="dark"] .tabs button{background:var(--card)}
+html[data-theme="dark"] .tabs button[aria-pressed="true"],html[data-theme="dark"] .item--on .paymark{background:#6A2BE0;color:#fff}
+html[data-theme="dark"] .stars s{color:var(--edge)}
+html[data-theme="dark"] .road::before{background:repeating-linear-gradient(90deg,var(--edge) 0 10px,transparent 10px 18px)}
+html[data-theme="dark"] .node__dot{background:var(--card);box-shadow:inset 0 0 0 2px var(--edge)}
+html[data-theme="dark"] .lesson--done i{background:rgba(47,199,154,.16);color:#72E6C3}
+html[data-theme="dark"] .lesson--now{background:rgba(255,95,168,.1)}
+html[data-theme="dark"] .freeze{background:linear-gradient(135deg,rgba(63,182,255,.12),rgba(179,145,255,.12));box-shadow:inset 0 0 0 1.5px rgba(63,182,255,.3)}
+html[data-theme="dark"] .freeze__ic{color:#93D5FF}
+html[data-theme="dark"] .reason span,html[data-theme="dark"] .slots button{color:#D6C2FF}
+html[data-theme="dark"] .reason input:checked + span,html[data-theme="dark"] .slots button[aria-pressed="true"]{background:var(--card)}
+html[data-theme="dark"] .fr__sum{background:rgba(63,182,255,.12);color:#A6DCFF}
+html[data-theme="dark"] .item--on{background:rgba(179,145,255,.12)}
+html[data-theme="dark"] .switch input{background:var(--edge)}
+html[data-theme="dark"] dialog{background:var(--card);color:var(--text)}
+html[data-theme="dark"] .tabbar{background:rgba(27,15,58,.96);box-shadow:0 -10px 30px -16px rgba(0,0,0,.8)}
+html[data-theme="dark"] .tabbar a[aria-current="page"]{background:rgba(179,145,255,.14)}
+html[data-theme="dark"] .mc__tag{background:rgba(27,15,58,.9);color:#72E6C3}
+html[data-theme="dark"] .mc__tag--new{background:var(--yellow);color:#22075A}
+
+/* ============ ОТСКОК ПРИ ПРОКРУТКЕ ЗА КРАЙ ============ */
+/* сверху — цвет шапки, снизу — цвет фона страницы */
+html{background:var(--paper) linear-gradient(#410EAD 50%,var(--paper) 50%) fixed}
+html[data-theme="dark"] .login__waves path[fill="#F5EEFF"]{fill:var(--paper)}
 </style>
 </head>
 <body>
@@ -416,6 +497,7 @@ dialog::backdrop{background:rgba(25,5,70,.55);backdrop-filter:blur(4px)}
 
 <!-- ===================== ВХОД ===================== -->
 <section class="login" id="login" hidden>
+  <div class="login__theme"><button class="theme-btn" type="button" data-theme-toggle aria-label="Включить тёмную тему" aria-pressed="false"><svg class="i-moon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M20.5 14.6A8.5 8.5 0 0 1 9.4 3.5a.6.6 0 0 0-.8-.7A9.5 9.5 0 1 0 21.2 15.4a.6.6 0 0 0-.7-.8z"/></svg><svg class="i-sun" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></g></svg></button></div>
   <div class="login__in">
     <div class="login__brand">
       <a class="login__logo" href="index.html" aria-label="Уникум — на главную"><img class="b" src="img/logo-brain.png" alt=""><img class="w" src="img/logo-word.png" alt="Уникум"></a>
@@ -484,6 +566,7 @@ dialog::backdrop{background:rgba(25,5,70,.55);backdrop-filter:blur(4px)}
       <span class="top__tag">Личный кабинет</span>
       <label class="kid" title="Ученик"><span class="kid__ava" id="kidAva">?</span><div><b id="kidName"></b><small id="kidCourse"></small></div><select id="kidSel" aria-label="Выбрать ученика" hidden></select></label>
       <span class="coinpill" title="Монетки за задания"><svg width="18" height="18"><use href="#i-coin"/></svg><span id="coinTop">0</span></span>
+      <button class="theme-btn" type="button" data-theme-toggle aria-label="Включить тёмную тему" aria-pressed="false"><svg class="i-moon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M20.5 14.6A8.5 8.5 0 0 1 9.4 3.5a.6.6 0 0 0-.8-.7A9.5 9.5 0 1 0 21.2 15.4a.6.6 0 0 0-.7-.8z"/></svg><svg class="i-sun" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></g></svg></button>
       <a class="me" href="#profile" aria-label="Профиль"><span class="me__ava" id="meAva">А</span></a>
     </div>
   </header>
@@ -1452,6 +1535,20 @@ function openSetPass(kind){
   history.replaceState(null,'',location.pathname);
   showLogin('setpass');$('#np1').focus();
 }
+
+/* ---------- тёмная тема (выбор общий с сайтом) ---------- */
+(()=>{
+  const root=document.documentElement, meta=document.querySelector('meta[name=theme-color]');
+  const apply=t=>{
+    if(t==='dark')root.dataset.theme='dark';else delete root.dataset.theme;
+    meta&&meta.setAttribute('content',t==='dark'?'#120826':'#410EAD');
+    document.querySelectorAll('[data-theme-toggle]').forEach(b=>{b.setAttribute('aria-pressed',t==='dark');b.setAttribute('aria-label',t==='dark'?'Включить светлую тему':'Включить тёмную тему')});
+  };
+  apply(root.dataset.theme==='dark'?'dark':'light');
+  document.querySelectorAll('[data-theme-toggle]').forEach(b=>b.addEventListener('click',()=>{
+    const t=root.dataset.theme==='dark'?'light':'dark';apply(t);try{localStorage.setItem('unikum-theme',t)}catch(e){}
+  }));
+})();
 </script>
 </body>
 </html>
