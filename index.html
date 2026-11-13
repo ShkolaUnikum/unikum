@@ -9,7 +9,8 @@
 <meta property="og:description" content="Дети создают свои игры, сайты и приложения. Первый урок — бесплатно.">
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#5B1AB5">
-<script>try{if(localStorage.getItem('unikum-theme')==='dark')document.documentElement.dataset.theme='dark'}catch(e){}</script>
+<script>try{var n=navigator,c=n.connection;if((n.hardwareConcurrency&&n.hardwareConcurrency<=4)||(n.deviceMemory&&n.deviceMemory<=4)||(c&&c.saveData))document.documentElement.classList.add('perf-lite')}catch(e){}</script>
+<script>try{if(localStorage.getItem('unikum-theme')!=='light')document.documentElement.dataset.theme='dark'}catch(e){document.documentElement.dataset.theme='dark'}</script>
 <link rel="icon" type="image/png" href="img/favicon.png">
 <link rel="apple-touch-icon" href="img/logo-brain-lg.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -120,7 +121,7 @@ h1,h2,h3,h4{font-family:var(--display);text-transform:uppercase;margin:0;line-he
 .hero__title > span:nth-of-type(1){color:var(--white)}
 .hero__title > span:nth-of-type(2){animation-delay:.15s;color:var(--yellow)}
 .hero__title > span:nth-of-type(3){animation-delay:.3s;font-size:clamp(64px,10.5vw,158px);font-weight:800;text-transform:uppercase;margin-top:.14em;letter-spacing:.02em;color:var(--sun)}
-.hero__title > span:nth-of-type(3) em{font-style:normal;position:relative;display:inline-block;animation:glitch 5s steps(1) 1.4s infinite;text-shadow:0 6px 0 rgba(30,4,90,.35)}
+.hero__title > span:nth-of-type(3) em{font-style:normal;position:relative;display:inline-block;text-shadow:0 6px 0 rgba(30,4,90,.35)}
 .hero__title > span:nth-of-type(3) em::after{content:"";position:absolute;left:.02em;bottom:-.2em;width:64%;height:.16em;
   background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 24' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='g'%3E%3Cstop offset='0' stop-color='%23FFDE3B'/%3E%3Cstop offset='.75' stop-color='%23FFDE3B'/%3E%3Cstop offset='1' stop-color='%23FFDE3B' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M4 18 C 70 4, 190 2, 296 12' fill='none' stroke='url(%23g)' stroke-width='7' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat center/100% 100%}
 .hero__burst{position:absolute;left:-.95em;top:.05em;width:.7em;height:.7em;font-size:clamp(28px,4vw,58px);color:var(--yellow)}
@@ -657,40 +658,40 @@ html[data-theme="dark"] .nav__theme .t-light{display:inline}
 /* ============ ТЁМНАЯ ТЕМА ============ */
 html[data-theme="dark"]{
   color-scheme:dark;
-  --bgd:#120826;--surface:#1B0F3A;--paper:#120826;--paper-2:#22144A;
+  --bgd:#090D22;--surface:#111836;--paper:#090D22;--paper-2:#18203F;
   --text:#EEE8FF;--muted:#B3A5D9;--deep:#F6F1FF;--ink:#B391FF;--ink-dark:#2A0D70;
   --line:rgba(190,160,255,.16);
   --glow:0 24px 50px -24px rgba(0,0,0,.8),0 0 0 1px rgba(190,160,255,.1);
 }
 html[data-theme="dark"] body{background:var(--bgd)}
-html[data-theme="dark"] .nav.is-open{background:#1B0F3A}
+html[data-theme="dark"] .nav.is-open{background:#111836}
 html[data-theme="dark"] .sec--white{background:var(--bgd)}
 html[data-theme="dark"] #why,html[data-theme="dark"] #reviews,html[data-theme="dark"] #courses,html[data-theme="dark"] #license-block,html[data-theme="dark"] #faq{
   background:radial-gradient(38% 34% at 96% 6%,rgba(255,95,168,.12),transparent 70%),radial-gradient(40% 30% at 2% 55%,rgba(124,58,255,.16),transparent 70%),var(--bgd)}
-html[data-theme="dark"] #how{background:linear-gradient(var(--bgd),#190C38 22%,#190C38 78%,var(--bgd))!important}
+html[data-theme="dark"] #how{background:linear-gradient(var(--bgd),#0D1330 22%,#0D1330 78%,var(--bgd))!important}
 /* волны между секциями и под первым экраном переходят в тёмный фон */
 html[data-theme="dark"] .wave path[fill="#fff"]{fill:var(--bgd)}
-html[data-theme="dark"] #wfront stop:nth-child(2){stop-color:#3A1A80}
-html[data-theme="dark"] #wfront stop:nth-child(3),html[data-theme="dark"] #wfront stop:nth-child(4){stop-color:#120826}
+html[data-theme="dark"] #wfront stop:nth-child(2){stop-color:#1C2768}
+html[data-theme="dark"] #wfront stop:nth-child(3),html[data-theme="dark"] #wfront stop:nth-child(4){stop-color:#090D22}
 /* карточки и плашки */
 html[data-theme="dark"] .tag,html[data-theme="dark"] .course__langs span{background:rgba(179,145,255,.14);color:#D9C8FF}
 html[data-theme="dark"] .btn--ghost,html[data-theme="dark"] .btn--ghost:hover{background:var(--surface);color:#E3D6FF}
-html[data-theme="dark"] .need details{background:color-mix(in srgb,var(--c) 18%,#1B0F3A)}
+html[data-theme="dark"] .need details{background:color-mix(in srgb,var(--c) 18%,#111836)}
 html[data-theme="dark"] .need details p{background:rgba(10,4,26,.45)}
 html[data-theme="dark"] .stat{background:rgba(47,199,154,.16)}
 html[data-theme="dark"] .acard,html[data-theme="dark"] .win,html[data-theme="dark"] .need,html[data-theme="dark"] .after-note,html[data-theme="dark"] .mod,html[data-theme="dark"] .rcard,html[data-theme="dark"] .rev__body,html[data-theme="dark"] .faq details,html[data-theme="dark"] .cookie{background:var(--surface)}
-html[data-theme="dark"] .course__pic .chip{background:#22144A;color:#F6F1FF}
+html[data-theme="dark"] .course__pic .chip{background:#18203F;color:#F6F1FF}
 html[data-theme="dark"] .courses .win__bar{background:linear-gradient(90deg,#5A1BD0,#410EAD)}
 html[data-theme="dark"] .program{background:#170B33}
 html[data-theme="dark"] .mod__res{background:rgba(255,95,168,.14)}
 html[data-theme="dark"] .coins{background:var(--surface);border-color:rgba(179,145,255,.35)}
 html[data-theme="dark"] .faq details[open] summary{background:rgba(255,95,168,.14)}
-html[data-theme="dark"] dialog .x,html[data-theme="dark"] .x{background:#22144A}
-html[data-theme="dark"] .phone:focus-within,html[data-theme="dark"] .field input:focus,html[data-theme="dark"] .field select:focus{background:#2A1A58}
+html[data-theme="dark"] dialog .x,html[data-theme="dark"] .x{background:#18203F}
+html[data-theme="dark"] .phone:focus-within,html[data-theme="dark"] .field input:focus,html[data-theme="dark"] .field select:focus{background:#1E2850}
 html[data-theme="dark"] .field.err input,html[data-theme="dark"] .field.err select,html[data-theme="dark"] .field.err .phone{background:rgba(255,138,61,.12)}
 html[data-theme="dark"] .field .msg,html[data-theme="dark"] .check.err{color:#FFA27A}
 html[data-theme="dark"] .gcard{color:#5B1AB5}
-html[data-theme="dark"] .rcard__photo,html[data-theme="dark"] .rev__photo{background:#22144A}
+html[data-theme="dark"] .rcard__photo,html[data-theme="dark"] .rev__photo{background:#18203F}
 html[data-theme="dark"] .cookie a{color:#D9C8FF}
 html[data-theme="dark"] img:not([src*="logo"]):not(.hero img){filter:brightness(.94)}
 
@@ -711,7 +712,7 @@ html[data-theme="dark"] #why::before,html[data-theme="dark"] #reviews::before,ht
 html{background:#2A0878 linear-gradient(#410EAD 50%,#2A0878 50%) fixed}
 
 /* ============ ПЕРВЫЙ ЭКРАН: МАЛЬЧИК-ПРОГРАММИСТ ============ */
-.hero__bg{position:absolute;z-index:0;top:0;right:0;width:min(57%,1100px);aspect-ratio:1003/722;max-height:100%;pointer-events:none;
+.hero__bg{position:absolute;z-index:0;top:0;right:0;width:min(57%,1100px);aspect-ratio:900/730;max-height:100%;pointer-events:none;
   -webkit-mask:linear-gradient(90deg,transparent 0,#000 11%),linear-gradient(#000 76%,transparent 97%);-webkit-mask-composite:source-in;
   mask:linear-gradient(90deg,transparent 0,#000 11%),linear-gradient(#000 76%,transparent 97%);mask-composite:intersect}
 .hero__bg img{width:100%;height:100%;object-fit:cover;object-position:50% 0;animation:heroIn 1.1s cubic-bezier(.2,.8,.2,1) both}
@@ -785,47 +786,241 @@ html{background:#2A0878 linear-gradient(#410EAD 50%,#2A0878 50%) fixed}
   linear-gradient(90deg,#380C9C 0%,#4512BF 45%,#4A14C8 70%,#3A0EA6 100%)}
 
 /* телефоны и планшеты: картинка во всю ширину сверху, текст под ней */
-@media (max-width:900px){.hero__stage .hero__bg{left:0;right:0;width:100%;height:auto;aspect-ratio:1003/722;max-height:none}
+@media (max-width:900px){.hero__stage .hero__bg{left:0;right:0;width:100%;height:auto;aspect-ratio:900/730;max-height:none}
   .hero__stage .hero__bg img{object-position:50% 0}
-  .hero--v2 .hero__in{padding-top:58vw}}
+  .hero--v2 .hero__in{padding-top:68vw}}
 
 /* ============ ЭФФЕКТЫ КАРТИНКИ НА ПЕРВОМ ЭКРАНЕ ============ */
 /* картинка медленно «дышит» и плавает */
-.hero__stage .hero__bg{scale:1.035;animation:heroFloat 8s ease-in-out 1.2s infinite;}
-@keyframes heroFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+/* картинка стоит на месте и лишь чуть приподнимается, когда на неё навели мышку */
+.hero__stage .hero__bg{scale:1.035;transition:transform .8s cubic-bezier(.2,.8,.2,1)}
+.hero--lift .hero__stage .hero__bg{transform:translateY(-8px)}
 .hero__fx{position:absolute;inset:0;pointer-events:none;overflow:hidden}
 .hero__fx > span{position:absolute;inset:0}
 /* 3) мягкое пульсирующее свечение вокруг мальчика */
-.fx-glow{background:radial-gradient(34% 40% at 46% 38%,rgba(190,110,255,.55),transparent 70%);animation:fxGlow 5s ease-in-out infinite}
-@keyframes fxGlow{0%,100%{opacity:.25}50%{opacity:.75}}
+.fx-glow{background:radial-gradient(34% 40% at 52% 42%,rgba(190,110,255,.55),transparent 70%);animation:fxGlow 5s ease-in-out infinite}
+@keyframes fxGlow{0%,100%{opacity:.12}50%{opacity:.36}}
 /* 4) неон в наушниках мигает голубым */
-.fx-phones{background:radial-gradient(7% 9% at 49.5% 21%,rgba(120,220,255,.9),transparent 70%);animation:fxPhones 2.6s ease-in-out infinite}
-@keyframes fxPhones{0%,100%{opacity:.15}45%{opacity:.85}55%{opacity:.5}62%{opacity:.9}}
+.fx-phones{background:radial-gradient(7% 8% at 67.8% 23%,rgba(120,220,255,.9),transparent 70%);animation:fxPhones 2.6s ease-in-out infinite}
+@keyframes fxPhones{0%,100%{opacity:.08}45%{opacity:.42}55%{opacity:.25}62%{opacity:.45}}
 /* 5) светящаяся орбита справа переливается */
-.fx-orbit{background:radial-gradient(12% 30% at 93% 52%,rgba(255,210,90,.7),transparent 70%),radial-gradient(14% 10% at 18% 77%,rgba(255,170,90,.55),transparent 70%);animation:fxOrbit 4s ease-in-out infinite}
-@keyframes fxOrbit{0%,100%{opacity:.2}50%{opacity:.8}}
-/* 6) по картинке время от времени проходит блик */
-.fx-sweep{background:none}
-.fx-sweep::before{content:"";position:absolute;top:0;bottom:0;left:-60%;width:60%;background:linear-gradient(105deg,transparent 15%,rgba(255,255,255,.13) 42%,rgba(255,236,255,.22) 50%,rgba(255,255,255,.13) 58%,transparent 85%);animation:fxSweep 9s ease-in-out 2s infinite}
-@keyframes fxSweep{0%{transform:translateX(0)}35%,100%{transform:translateX(280%)}}
+.fx-orbit{background:radial-gradient(9% 20% at 88% 30%,rgba(255,200,90,.7),transparent 70%),radial-gradient(9% 9% at 25% 60%,rgba(255,215,60,.6),transparent 70%);animation:fxOrbit 4s ease-in-out infinite}
+@keyframes fxOrbit{0%,100%{opacity:.1}50%{opacity:.4}}
 /* 7) звёздочки вспыхивают над кубиками и неоном */
-.fx-star{position:absolute;width:var(--s);height:var(--s);margin:calc(var(--s) / -2) 0 0 calc(var(--s) / -2);color:#fff;opacity:0;filter:drop-shadow(0 0 6px #fff) drop-shadow(0 0 12px #FF8AE2);animation:fxStar 4.2s ease-in-out var(--d) infinite}
+.fx-star{position:absolute;width:var(--s);height:var(--s);margin:calc(var(--s) / -2) 0 0 calc(var(--s) / -2);color:#fff;opacity:0;filter:drop-shadow(0 0 3px #fff) drop-shadow(0 0 6px #FF8AE2);animation:fxStar 4.2s ease-in-out var(--d) infinite}
 .fx-star svg{width:100%;height:100%;fill:currentColor}
-.fx-star:nth-child(odd){color:#FFF3B0;filter:drop-shadow(0 0 6px #FFE58A) drop-shadow(0 0 12px #FFB02E)}
-@keyframes fxStar{0%,55%,100%{opacity:0;transform:scale(.2) rotate(0)}68%{opacity:1;transform:scale(1) rotate(45deg)}80%{opacity:0;transform:scale(.4) rotate(90deg)}}
+.fx-star:nth-child(odd){color:#FFF3B0;filter:drop-shadow(0 0 3px #FFE58A) drop-shadow(0 0 6px #FFB02E)}
+@keyframes fxStar{0%,55%,100%{opacity:0;transform:scale(.2) rotate(0)}68%{opacity:.55;transform:scale(.55) rotate(45deg)}80%{opacity:0;transform:scale(.4) rotate(90deg)}}
 /* 8) цветные пиксели поднимаются вверх, как «данные» */
-.fx-pixels i{position:absolute;bottom:var(--b);left:var(--l);width:var(--z);height:var(--z);border-radius:1.5px;background:var(--c);box-shadow:0 0 8px var(--c);opacity:0;animation:fxRise var(--t) linear var(--d) infinite}
-@keyframes fxRise{0%{opacity:0;transform:translateY(0)}12%{opacity:.95}80%{opacity:.7}100%{opacity:0;transform:translateY(calc(var(--h) * -1)) rotate(90deg)}}
-@media (max-width:900px){.hero__stage .hero__bg{translate:none}.fx-pixels i:nth-child(n+11){display:none}}
+.fx-pixels i{position:absolute;bottom:var(--b);left:var(--l);width:var(--z);height:var(--z);border-radius:1.5px;background:var(--c);box-shadow:0 0 4px var(--c);opacity:0;animation:fxRise var(--t) linear var(--d) infinite}
+@keyframes fxRise{0%{opacity:0;transform:translateY(0)}12%{opacity:.5}80%{opacity:.35}100%{opacity:0;transform:translateY(calc(var(--h) * -1)) rotate(90deg)}}
+@media (max-width:900px){.hero__stage .hero__bg{translate:none}.fx-pixels i:nth-child(n+6){display:none}}
 @media (prefers-reduced-motion:reduce){.hero__stage .hero__bg,.hero__fx *{animation:none!important}.hero__fx{display:none}.hero__stage .hero__bg,.hero--v2 .h2t,.fx-pixels{translate:none}}
 
 /* ============ ПРОИЗВОДИТЕЛЬНОСТЬ ============ */
 /* волна под первым экраном: размытое SVG нельзя анимировать дёшево — оставляем её неподвижной */
 .hero__waves .glow{animation:none}
 /* анимации слоями, которые браузер двигает на видеокарте */
-.hero__stage .hero__bg,.fx-sweep::before,.fx-pixels i,.fx-star{will-change:transform,opacity}
+.hero__stage .hero__bg,.fx-pixels i,.fx-star{will-change:transform,opacity}
 /* когда первый экран или бегущая строка не видны — их анимации на паузе */
 .is-offscreen,.is-offscreen *,.is-offscreen *::before{animation-play-state:paused!important}
+
+/* ============ БЛОК «ЧТО ВЫ ПОЛУЧИТЕ» — НОВЫЙ ВИД ============ */
+.after--v2 img.only-dark{display:none!important}
+html[data-theme="dark"] .after--v2 img.only-dark{display:block!important}
+html[data-theme="dark"] .after--v2 img.only-light{display:none!important}
+.after--v2{gap:24px}
+.after--v2 .acard{border-radius:22px;overflow:hidden;background:#fff;color:var(--text);
+  box-shadow:0 0 0 2px rgba(150,105,255,.4),0 26px 54px -28px rgba(91,26,181,.6)}
+.after--v2 .win__bar{padding:11px 18px;background:linear-gradient(90deg,#6626E6,#8C4CFF);font-size:13px;letter-spacing:.05em}
+.after--v2 .acard__pic img{display:block;width:100%;height:auto}
+.after--v2 .acard--game > .acard__pic{flex:1 1 auto;min-height:0;display:flex}
+.after--v2 .acard--game > .acard__pic img{height:100%;min-height:260px;object-fit:cover;object-position:50% 40%}
+.after--v2 .acard--game .acard__txt{padding:6px 30px 28px}
+.after--v2 .acard__in{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:14px;padding:16px 24px 20px 14px}
+.after--v2 .acard__in .acard__pic img{border-radius:14px}
+.after--v2 .acard h3{font-family:var(--display);font-weight:800;line-height:1.08;color:var(--deep);margin:0 0 12px}
+.after--v2 .acard--game h3{font-size:clamp(28px,3vw,42px);text-transform:none}
+.after--v2 .acard--skills h3,.after--v2 .acard--path h3{font-size:clamp(20px,2vw,28px);text-transform:uppercase}
+.after--v2 mark{background:var(--yellow);color:#22075A;padding:.02em .22em .06em;border-radius:.18em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.after--v2 .acard p{color:var(--text);font-size:14.5px;line-height:1.6}
+.after--v2 .acard--game p{font-size:15.5px}
+.after--v2 .after-note{border-radius:22px;background:#fff;padding:14px 18px 14px 20px;box-shadow:0 0 0 2px rgba(150,105,255,.4),0 20px 44px -26px rgba(91,26,181,.55)}
+.after--v2 .after-note__ic{flex:none;width:92px}
+.after--v2 .after-note__ic img{width:100%;height:auto;transform:rotate(-8deg);border-radius:10px}
+.after--v2 .after-note p{color:var(--deep)}
+
+
+/* тёмная тема: тёмные карточки с неоновыми рамками */
+html[data-theme="dark"] .after--v2 .acard,html[data-theme="dark"] .after--v2 .after-note{background:#111836;box-shadow:0 0 0 2px var(--nc),0 0 30px -8px var(--nc),0 30px 60px -28px rgba(0,0,0,.85)}
+html[data-theme="dark"] .after--v2 .acard--game{--nc:#FF5FA8}
+html[data-theme="dark"] .after--v2 .acard--skills{--nc:#3FD8F0}
+html[data-theme="dark"] .after--v2 .acard--path{--nc:#FF8A3D}
+html[data-theme="dark"] .after--v2 .after-note{--nc:#FFDE3B}
+html[data-theme="dark"] .after--v2 .win__bar{background:linear-gradient(90deg,#3A1494,#5222C4)}
+html[data-theme="dark"] .after--v2 .acard h3,html[data-theme="dark"] .after--v2 .after-note p{color:#fff}
+html[data-theme="dark"] .after--v2 mark{background:none;color:var(--yellow);padding:0}
+html[data-theme="dark"] .after--v2 .acard p{color:#DCD3F7}
+
+@media (max-width:767px){
+  .after--v2 .acard__in{grid-template-columns:1fr;justify-items:center;padding:14px 18px 20px}
+  .after--v2 .acard__in .acard__pic{max-width:260px}
+  .after--v2 .acard__in > div:last-child{justify-self:stretch}
+  .after--v2 .acard--game .acard__txt{padding:4px 18px 22px}
+  .after--v2 .after-note__ic{width:70px}
+}
+
+/* ============ БЛОК «ДЛЯ ЧЕГО» — НОВЫЕ КАРТИНКИ И НЕОН ============ */
+.need__pic img{aspect-ratio:396/276}
+.need--idea{--nc:#FF5FA8}.need--school{--nc:#2FD3B0}.need--job{--nc:#FF8A3D}
+html[data-theme="dark"] .need{background:#111836;box-shadow:0 0 0 2px var(--nc),0 0 30px -8px var(--nc),0 30px 60px -28px rgba(0,0,0,.85)}
+html[data-theme="dark"] .need:hover{box-shadow:0 0 0 2px var(--nc),0 0 44px -6px var(--nc),0 34px 64px -28px rgba(0,0,0,.9)}
+html[data-theme="dark"] .need .win__bar{background:linear-gradient(90deg,#4A16C4,#6C2DEB)}
+html[data-theme="dark"] .need h3,html[data-theme="dark"] .need p b,html[data-theme="dark"] .stat b{color:#fff}
+html[data-theme="dark"] .need p{color:#DCD3F7}
+html[data-theme="dark"] .stat{background:#192345;box-shadow:inset 0 0 0 1px rgba(190,160,255,.14)}
+html[data-theme="dark"] .stat span{color:#C9BEEA}
+html[data-theme="dark"] .need details{background:color-mix(in srgb,var(--nc) 16%,#111836)}
+html[data-theme="dark"] .need summary{color:#fff}
+
+/* ============ ПЕРВЫЙ ЭКРАН: МАЛЬЧИК С НОУТБУКОМ (макет 4) ============ */
+.hero--v2 .h2t{transform:none;gap:.04em}
+.h2t__l1{text-shadow:0 4px 0 rgba(30,4,90,.3)}
+.h2t__l2 > span{background:none;box-shadow:none;transform:none;padding:0;border-radius:0;color:var(--yellow);text-shadow:0 4px 0 rgba(30,4,90,.3)}
+.h2t__l3{margin-top:.02em;text-shadow:0 7px 0 rgba(30,4,90,.35),0 0 40px rgba(180,120,255,.3)}
+.h2t__l3 em::after{left:0;bottom:-.17em;width:100%;height:.085em;border-radius:99px;background:linear-gradient(90deg,#FF4FA0,#FF8A3D 48%,#FFDE3B);box-shadow:0 0 18px rgba(255,120,120,.45)}
+.hero--v2 .hero__lead{max-width:520px;line-height:1.45}
+.hero__age{display:inline-block;margin-top:8px;padding:.12em .6em .16em;border-radius:999px;background:var(--yellow);color:#22075A;font-weight:800;box-shadow:0 10px 22px -12px rgba(255,222,59,.8)}
+.hero__feats li + li{border-left:0}
+.hero__feats li{padding:0 clamp(10px,1.4vw,20px)}
+.hero__cta{font-size:clamp(16px,1.3vw,19px)!important;text-transform:none!important;letter-spacing:0!important;padding:18px 18px 18px 30px!important;border-radius:20px!important}
+.hero__cta .arr{width:40px;height:40px;border-radius:50%;font-size:18px}
+
+/* макет 4: пропорции */
+@media (min-width:901px){
+  .hero__stage .hero__bg{width:min(57%,1080px)}
+  .h2t__l1,.h2t__l2 > span{font-size:clamp(30px,3.55vw,60px)}
+  .h2t__l3{font-size:clamp(62px,8.4vw,142px)}
+  .hero--v2 .hero__text{max-width:640px}
+}
+.hero__age{display:table;margin-top:10px}
+.hero__ic{width:62px;height:62px;border-radius:18px}
+.hero__ic svg{width:32px;height:32px}
+.hero__feats li{font-size:14.5px}
+@media (min-width:901px) and (max-height:820px){
+  .h2t__l1,.h2t__l2 > span{font-size:clamp(28px,min(3.55vw,6.2vh),60px)}
+  .h2t__l3{font-size:clamp(54px,min(8.4vw,13.5vh),142px)}
+  .hero__ic{width:50px;height:50px;border-radius:14px}.hero__ic svg{width:26px;height:26px}
+  .hero__age{margin-top:6px}
+}
+
+/* край картинки растворяется плавнее */
+.hero__stage .hero__bg{-webkit-mask:linear-gradient(90deg,transparent 0,rgba(0,0,0,.35) 10%,#000 30%),linear-gradient(#000 76%,transparent 97%);-webkit-mask-composite:source-in;
+  mask:linear-gradient(90deg,transparent 0,rgba(0,0,0,.35) 10%,#000 30%),linear-gradient(#000 76%,transparent 97%);mask-composite:intersect}
+/* возраст — в одну строку с текстом */
+.hero__age{display:inline-block;margin:6px 0 0 4px;vertical-align:baseline}
+@media (max-width:900px){
+  .hero__stage .hero__bg{-webkit-mask:linear-gradient(#000 62%,transparent);mask:linear-gradient(#000 62%,transparent)}}
+
+/* ============ ИКОНКИ ПРЕИМУЩЕСТВ: ЭФФЕКТЫ ============ */
+.feat{position:relative;display:grid;justify-items:center;gap:9px;padding:0;border:0;background:none;color:inherit;font:inherit;text-align:center;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.feat:focus-visible{outline:none}
+.feat:focus-visible .hero__ic{outline:3px solid var(--yellow);outline-offset:3px}
+.feat .hero__ic{position:relative;overflow:hidden;transition:transform .45s cubic-bezier(.3,1.7,.45,1),box-shadow .35s,background .35s}
+/* блик, пробегающий по плитке при наведении */
+.feat .hero__ic::after{content:"";position:absolute;inset:-40%;background:linear-gradient(115deg,transparent 40%,rgba(255,255,255,.35) 50%,transparent 60%);transform:translateX(-70%);transition:transform .7s ease}
+.feat .hero__ic svg{position:relative;z-index:1;transition:transform .45s cubic-bezier(.3,1.7,.45,1),filter .35s,color .35s}
+.feat__t{transition:color .3s}
+.feat:hover .hero__ic,.feat:focus-visible .hero__ic{transform:translateY(-7px) scale(1.08) rotate(-4deg);
+  background:linear-gradient(160deg,rgba(255,222,59,.28),rgba(255,95,168,.22)),rgba(40,10,110,.7);
+  box-shadow:inset 0 0 0 1.5px rgba(255,222,59,.75),0 14px 30px -10px rgba(255,180,60,.75),0 0 24px -4px rgba(255,95,168,.6)}
+.feat:hover .hero__ic::after,.feat:focus-visible .hero__ic::after{transform:translateX(70%)}
+.feat:hover .hero__ic svg,.feat:focus-visible .hero__ic svg{transform:scale(1.12) rotate(6deg);color:#FFF3A6;filter:drop-shadow(0 0 8px rgba(255,222,59,.9))}
+.feat:hover .feat__t,.feat:focus-visible .feat__t{color:var(--yellow)}
+.feat:active .hero__ic{transform:translateY(-2px) scale(.94);transition-duration:.12s}
+.feat.is-pop .hero__ic{animation:featPop .5s cubic-bezier(.3,1.7,.45,1)}
+@keyframes featPop{0%{transform:translateY(-7px) scale(1.08) rotate(-4deg)}35%{transform:translateY(-12px) scale(1.2) rotate(5deg)}100%{transform:translateY(-7px) scale(1.08) rotate(-4deg)}}
+/* вылетающие нолики и единички */
+.bit{position:absolute;left:50%;top:31px;z-index:5;pointer-events:none;font:800 var(--fs,16px)/1 var(--mono);color:var(--c);text-shadow:0 0 8px var(--c);
+  transform:translate(-50%,-50%);animation:bitFly var(--t,.9s) cubic-bezier(.15,.75,.35,1) forwards}
+@keyframes bitFly{0%{opacity:0;transform:translate(-50%,-50%) scale(.4)}12%{opacity:1}
+  100%{opacity:0;transform:translate(calc(-50% + var(--x)),calc(-50% + var(--y))) rotate(var(--r)) scale(1)}}
+@media (prefers-reduced-motion:reduce){.feat .hero__ic,.feat .hero__ic svg{transition:none}.bit{display:none}}
+
+/* ============ ТЁМНАЯ ТЕМА: ГЛУБЖЕ И БЛИЖЕ К ТЁМНО-СИНЕМУ ============ */
+html[data-theme="dark"]{--night:radial-gradient(60% 70% at 80% 30%,#2E1294 0%,rgba(46,18,148,0) 70%),radial-gradient(50% 60% at 10% 70%,#1F1478 0%,rgba(31,20,120,0) 70%),#140E52}
+html[data-theme="dark"] .hero{--hbg:#1E0C6E;background:radial-gradient(55% 70% at 74% 40%,#3B16AE 0%,rgba(59,22,174,0) 72%),radial-gradient(45% 60% at 12% 25%,#2A1090 0%,rgba(42,16,144,0) 70%),var(--hbg)}
+html[data-theme="dark"] .header{background:linear-gradient(90deg,#1E0E66,#2A1287 55%,#1E0E66)}
+html[data-theme="dark"] .footer{background:linear-gradient(#140E52 0,#090D22 220px)}
+html[data-theme="dark"]{background:#090D22 linear-gradient(#1E0E66 50%,#090D22 50%) fixed}
+
+/* ============ ПЕРВЫЙ ЭКРАН: СТЕКЛЯННОЕ ОКНО (LIQUID GLASS) ============ */
+.glass__defs{position:absolute;width:0;height:0;overflow:hidden;pointer-events:none}
+.hero--v2 .hero__text.glass{
+  --gp:clamp(26px,2.9vw,48px);            /* внутренний отступ окна */
+  --rx:0deg;--ry:0deg;--press:1;           /* наклон и нажатие — из JS */
+  --gx:30%;--gy:0%;--hl:0;                 /* блик за курсором */
+  --g-tint:rgba(255,255,255,.075);--g-tint2:rgba(110,60,230,.10);
+  --g-rim:rgba(255,255,255,.34);--g-rim-hi:rgba(255,255,255,.95);--g-line:rgba(255,255,255,.14);
+  --g-shadow:rgba(22,4,80,.42);
+  position:relative;isolation:isolate;
+  margin-left:calc(var(--gp) * -.2);padding:0 var(--gp) calc(var(--gp) * .95);
+  border-radius:clamp(26px,2.2vw,38px);
+  background:linear-gradient(150deg,rgba(255,255,255,.14),rgba(255,255,255,.02) 42%,var(--g-tint2)),var(--g-tint);
+  -webkit-backdrop-filter:blur(14px) saturate(1.45);backdrop-filter:blur(14px) saturate(1.45);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.28),inset 0 -1px 0 rgba(255,255,255,.06),
+    inset 0 0 30px rgba(255,255,255,.035),0 30px 70px -34px var(--g-shadow),0 2px 10px -4px rgba(10,0,40,.18);
+  transform:perspective(1300px) rotateX(var(--rx)) rotateY(var(--ry)) scale(var(--press));
+  transform-origin:50% 50%;will-change:transform;touch-action:pan-y;
+  transition:background .5s ease,box-shadow .5s ease}
+.hero--v2 .hero__text.glass.glass--refract{-webkit-backdrop-filter:url(#liquid-glass) saturate(1.45);backdrop-filter:url(#liquid-glass) saturate(1.45)}
+/* блик, который следует за курсором */
+.glass::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;pointer-events:none;
+  background:radial-gradient(420px circle at var(--gx) var(--gy),rgba(255,255,255,.13),rgba(255,255,255,.04) 45%,transparent 70%),
+    linear-gradient(170deg,rgba(255,255,255,.10),transparent 22%);
+  opacity:calc(.35 + var(--hl) * .65)}
+/* тонкая кромка: ярче там, где курсор */
+.glass::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;
+  background:radial-gradient(260px circle at var(--gx) var(--gy),rgba(255,255,255,calc(var(--hl) * .85)),transparent 70%),
+    linear-gradient(155deg,var(--g-rim-hi),var(--g-rim) 24%,rgba(255,255,255,.08) 55%,var(--g-rim) 100%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;
+  mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
+/* верхняя панель окна с тремя точками macOS */
+.glass__bar{justify-self:stretch;display:flex;align-items:center;gap:8px;
+  margin:0 calc(var(--gp) * -1);padding:clamp(14px,1.3vw,20px) calc(var(--gp) * .7);border-bottom:1px solid var(--g-line);
+  margin-bottom:clamp(2px,.6vw,10px)}
+.glass__bar i{width:12px;height:12px;border-radius:50%;background:#FF5F57;box-shadow:inset 0 0 0 .5px rgba(0,0,0,.18)}
+.glass__bar i:nth-child(2){background:#FEBC2E}
+.glass__bar i:nth-child(3){background:#28C840}
+/* заголовок чуть компактнее, чтобы уместиться в окно */
+@media (min-width:901px){
+  .hero--v2 .hero__text.glass{max-width:min(700px,52vw)}
+  .glass .h2t__l1,.glass .h2t__l2 > span{font-size:clamp(28px,2.95vw,52px)}
+  .glass .h2t__l3{font-size:clamp(56px,6.9vw,122px)}
+}
+@media (min-width:901px) and (max-height:820px){
+  .hero--v2 .hero__text.glass{--gp:clamp(24px,2.4vw,38px)}
+  .glass__bar{padding-block:12px;margin-bottom:0}
+  .glass .h2t__l1,.glass .h2t__l2 > span{font-size:clamp(26px,min(2.95vw,5.2vh),52px)}
+  .glass .h2t__l3{font-size:clamp(50px,min(6.9vw,11.5vh),122px)}
+}
+@media (max-width:900px){
+  .hero--v2 .hero__text.glass{--gp:clamp(18px,4.5vw,30px);margin-left:calc(var(--gp) * -.3);margin-right:calc(var(--gp) * -.3);border-radius:24px}
+  .glass__bar{padding-block:13px}
+  .glass__bar i{width:10px;height:10px}
+}
+/* тёмная тема: стекло темнее и спокойнее */
+html[data-theme="dark"] .hero--v2 .hero__text.glass{
+  --g-tint:rgba(70,40,170,.13);--g-tint2:rgba(20,8,70,.22);
+  --g-rim:rgba(190,170,255,.26);--g-rim-hi:rgba(235,225,255,.8);--g-line:rgba(200,180,255,.13);--g-shadow:rgba(2,0,20,.7)}
+@media (prefers-reduced-motion:reduce){.hero--v2 .hero__text.glass{transform:none;will-change:auto}}
+
+/* ============ ОБЛЕГЧЁННЫЙ РЕЖИМ ДЛЯ СЛАБЫХ КОМПЬЮТЕРОВ ============ */
+/* включается сам: мало ядер/памяти, режим экономии трафика или если первый экран тормозит */
+.perf-lite .hero--v2 .hero__text.glass,.perf-lite .hero--v2 .hero__text.glass.glass--refract{-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);will-change:auto}
+.perf-lite .hero__fx *{animation:none!important}
+.perf-lite .fx-star,.perf-lite .fx-pixels{display:none}
+.perf-lite .hero__bg img{animation:none}
 </style>
 </head>
 <body>
@@ -858,25 +1053,26 @@ html{background:#2A0878 linear-gradient(#410EAD 50%,#2A0878 50%) fixed}
 
 <!-- ===================== HERO ===================== -->
 <section class="hero hero--v2">
+  <svg class="glass__defs" width="0" height="0" aria-hidden="true" focusable="false"><filter id="liquid-glass" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse" primitiveUnits="userSpaceOnUse" x="0" y="0" width="700" height="700"><feGaussianBlur in="SourceGraphic" stdDeviation="7" result="soft"/><feImage id="liquid-glass-map" x="0" y="0" width="700" height="700" preserveAspectRatio="none" result="map"/><feDisplacementMap in="soft" in2="map" scale="46" xChannelSelector="R" yChannelSelector="G"/></filter></svg>
   <div class="hero__stage">
-    <div class="hero__bg" aria-hidden="true"><img src="img/hero-boy.jpg" width="1003" height="722" alt="" fetchpriority="high"><div class="hero__fx"><span class="fx-glow"></span><span class="fx-phones"></span><span class="fx-orbit"></span><span class="fx-sweep"></span><i class="fx-star" style="left:90%;top:7%;--s:26px;--d:0s"><svg viewBox="0 0 24 24"><path d="M12 0c.6 6 5.4 11.4 12 12-6.6.6-11.4 6-12 12-.6-6-5.4-11.4-12-12C6.6 11.4 11.4 6 12 0z"/></svg></i><i class="fx-star" style="left:96%;top:31%;--s:18px;--d:1.1s"><svg viewBox="0 0 24 24"><path d="M12 0c.6 6 5.4 11.4 12 12-6.6.6-11.4 6-12 12-.6-6-5.4-11.4-12-12C6.6 11.4 11.4 6 12 0z"/></svg></i><i class="fx-star" style="left:78%;top:15%;--s:16px;--d:2.2s"><svg viewBox="0 0 24 24"><path d="M12 0c.6 6 5.4 11.4 12 12-6.6.6-11.4 6-12 12-.6-6-5.4-11.4-12-12C6.6 11.4 11.4 6 12 0z"/></svg></i><i class="fx-star" style="left:61%;top:4%;--s:20px;--d:0.6s"><svg viewBox="0 0 24 24"><path d="M12 0c.6 6 5.4 11.4 12 12-6.6.6-11.4 6-12 12-.6-6-5.4-11.4-12-12C6.6 11.4 11.4 6 12 0z"/></svg></i><i class="fx-star" style="left:70%;top:82%;--s:22px;--d:1.7s"><svg viewBox="0 0 24 24"><path d="M12 0c.6 6 5.4 11.4 12 12-6.6.6-11.4 6-12 12-.6-6-5.4-11.4-12-12C6.6 11.4 11.4 6 12 0z"/></svg></i><i class="fx-star" style="left:92%;top:70%;--s:16px;--d:2.8s"><svg viewBox="0 0 24 24"><path d="M12 0c.6 6 5.4 11.4 12 12-6.6.6-11.4 6-12 12-.6-6-5.4-11.4-12-12C6.6 11.4 11.4 6 12 0z"/></svg></i><i class="fx-star" style="left:24%;top:3%;--s:18px;--d:1.4s"><svg viewBox="0 0 24 24"><path d="M12 0c.6 6 5.4 11.4 12 12-6.6.6-11.4 6-12 12-.6-6-5.4-11.4-12-12C6.6 11.4 11.4 6 12 0z"/></svg></i><i class="fx-star" style="left:41%;top:60%;--s:14px;--d:3.3s"><svg viewBox="0 0 24 24"><path d="M12 0c.6 6 5.4 11.4 12 12-6.6.6-11.4 6-12 12-.6-6-5.4-11.4-12-12C6.6 11.4 11.4 6 12 0z"/></svg></i><span class="fx-pixels"></span></div></div>
+    <div class="hero__bg" aria-hidden="true"><img src="img/hero-boy3.jpg" width="900" height="730" alt="" fetchpriority="high"><div class="hero__fx"><span class="fx-glow"></span><span class="fx-phones"></span><span class="fx-orbit"></span><i class="fx-star" style="left:37%;top:19%;--s:26px;--d:0s"><svg viewBox="0 0 24 24"><path d="M12 0c.6 6 5.4 11.4 12 12-6.6.6-11.4 6-12 12-.6-6-5.4-11.4-12-12C6.6 11.4 11.4 6 12 0z"/></svg></i><i class="fx-star" style="left:10%;top:8%;--s:18px;--d:1.1s"><svg viewBox="0 0 24 24"><path d="M12 0c.6 6 5.4 11.4 12 12-6.6.6-11.4 6-12 12-.6-6-5.4-11.4-12-12C6.6 11.4 11.4 6 12 0z"/></svg></i><i class="fx-star" style="left:89%;top:8%;--s:16px;--d:2.2s"><svg viewBox="0 0 24 24"><path d="M12 0c.6 6 5.4 11.4 12 12-6.6.6-11.4 6-12 12-.6-6-5.4-11.4-12-12C6.6 11.4 11.4 6 12 0z"/></svg></i><i class="fx-star" style="left:96%;top:41%;--s:20px;--d:0.6s"><svg viewBox="0 0 24 24"><path d="M12 0c.6 6 5.4 11.4 12 12-6.6.6-11.4 6-12 12-.6-6-5.4-11.4-12-12C6.6 11.4 11.4 6 12 0z"/></svg></i><i class="fx-star" style="left:78%;top:21%;--s:22px;--d:1.7s"><svg viewBox="0 0 24 24"><path d="M12 0c.6 6 5.4 11.4 12 12-6.6.6-11.4 6-12 12-.6-6-5.4-11.4-12-12C6.6 11.4 11.4 6 12 0z"/></svg></i><i class="fx-star" style="left:53%;top:5%;--s:16px;--d:2.8s"><svg viewBox="0 0 24 24"><path d="M12 0c.6 6 5.4 11.4 12 12-6.6.6-11.4 6-12 12-.6-6-5.4-11.4-12-12C6.6 11.4 11.4 6 12 0z"/></svg></i><i class="fx-star" style="left:11%;top:51%;--s:18px;--d:1.4s"><svg viewBox="0 0 24 24"><path d="M12 0c.6 6 5.4 11.4 12 12-6.6.6-11.4 6-12 12-.6-6-5.4-11.4-12-12C6.6 11.4 11.4 6 12 0z"/></svg></i><i class="fx-star" style="left:97%;top:77%;--s:14px;--d:3.3s"><svg viewBox="0 0 24 24"><path d="M12 0c.6 6 5.4 11.4 12 12-6.6.6-11.4 6-12 12-.6-6-5.4-11.4-12-12C6.6 11.4 11.4 6 12 0z"/></svg></i><span class="fx-pixels"></span></div></div>
   </div>
   <div class="wrap hero__in">
-    <div class="hero__text">
+    <div class="hero__text glass" data-glass>
+      <div class="glass__bar" aria-hidden="true"><i></i><i></i><i></i></div>
       <h1 class="h2t">
-        <svg class="hero__burst" viewBox="0 0 24 24" aria-hidden="true"><g fill="currentColor"><rect x="10" y="1" width="4" height="7" rx="1.5" transform="rotate(25 12 12)"/><rect x="1" y="10" width="7" height="4" rx="1.5" transform="rotate(20 12 12)"/><rect x="4" y="16" width="6" height="4" rx="1.5" transform="rotate(-30 7 18)"/></g></svg>
         <span class="h2t__l1">Онлайн-школа</span>
         <span class="h2t__l2"><span>программирования</span></span>
         <span class="h2t__l3"><em>Уникум</em></span>
       </h1>
-      <p class="hero__lead">Программирование, создание игр<br>и&nbsp;цифровые проекты для подростков <span style="white-space:nowrap">7–17 лет</span>.</p>
+      <p class="hero__lead">Программирование, игры и цифровые проекты для детей и&nbsp;подростков <span class="hero__age">от&nbsp;7 до&nbsp;16&nbsp;лет.</span></p>
       <ul class="hero__feats">
-        <li><span class="hero__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="13" rx="2.5"/><path d="M9.5 9 7.5 11l2 2M14.5 9l2 2-2 2M12.6 8.6l-1.2 4.8M8 20.5h8"/></g></svg></span><span>Реальные<br>навыки</span></li>
-        <li><span class="hero__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 8h9a4.5 4.5 0 0 1 4.4 5.4l-.8 3.8a2 2 0 0 1-3.5.9L14.8 16H9.2l-1.8 2.1a2 2 0 0 1-3.5-.9l-.8-3.8A4.5 4.5 0 0 1 7.5 8z"/><path d="M8 11v3M6.5 12.5h3"/><circle cx="15.5" cy="11.6" r=".6" fill="currentColor"/><circle cx="17.2" cy="13.3" r=".6" fill="currentColor"/></g></svg></span><span>Создание<br>своих игр</span></li>
-        <li><span class="hero__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3.5 8.5 4.3L12 12 3.5 7.8z"/><path d="m3.5 12 8.5 4.3 8.5-4.3"/><path d="m3.5 16.2 8.5 4.3 8.5-4.3"/></g></svg></span><span>Практика<br>и проекты</span></li>
-        <li><span class="hero__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3"/><path d="M6.5 19a5.5 5.5 0 0 1 11 0"/><circle cx="5.5" cy="10" r="2.2"/><path d="M2 18a3.6 3.6 0 0 1 4.2-3.5"/><circle cx="18.5" cy="10" r="2.2"/><path d="M22 18a3.6 3.6 0 0 0-4.2-3.5"/></g></svg></span><span>Обучение<br>в мини-группах</span></li>
+        <li><button class="feat" type="button"><span class="hero__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 7 3.5 12l5 5M15.5 7l5 5-5 5M13.6 5l-3.2 14"/></g></svg></span><span class="feat__t">Практика<br>на деле</span></button></li>
+        <li><button class="feat" type="button"><span class="hero__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 8h9a4.5 4.5 0 0 1 4.4 5.4l-.8 3.8a2 2 0 0 1-3.5.9L14.8 16H9.2l-1.8 2.1a2 2 0 0 1-3.5-.9l-.8-3.8A4.5 4.5 0 0 1 7.5 8z"/><path d="M8 11v3M6.5 12.5h3"/><circle cx="15.5" cy="11.6" r=".6" fill="currentColor"/><circle cx="17.2" cy="13.3" r=".6" fill="currentColor"/></g></svg></span><span class="feat__t">Создавай<br>свои игры</span></button></li>
+        <li><button class="feat" type="button"><span class="hero__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3"/><path d="M6.5 19a5.5 5.5 0 0 1 11 0"/><circle cx="5.5" cy="10" r="2.2"/><path d="M2 18a3.6 3.6 0 0 1 4.2-3.5"/><circle cx="18.5" cy="10" r="2.2"/><path d="M22 18a3.6 3.6 0 0 0-4.2-3.5"/></g></svg></span><span class="feat__t">Работай<br>в команде</span></button></li>
+        <li><button class="feat" type="button"><span class="hero__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m12 4.5 9.5 4.5-9.5 4.5L2.5 9z"/><path d="M6.5 11v4.2c0 1.6 2.5 3.3 5.5 3.3s5.5-1.7 5.5-3.3V11M21.5 9v5"/></g></svg></span><span class="feat__t">С поддержкой<br>наставника</span></button></li>
       </ul>
-      <button class="btn" data-open="lead">Выбрать время <span class="arr">→</span></button>
+      <button class="btn hero__cta" type="button" data-open="lead">Выбрать направление <span class="arr">→</span></button>
     </div>
   </div>
   <svg class="hero__waves" viewBox="0 0 1440 360" preserveAspectRatio="none" aria-hidden="true">
@@ -907,7 +1103,7 @@ html{background:#2A0878 linear-gradient(#410EAD 50%,#2A0878 50%) fixed}
     <div class="needs">
       <article class="need need--idea reveal">
         <div class="win__bar"><span class="dots"><i></i><i></i><i></i></span>idea.exe</div>
-        <div class="need__pic" style="background:#FBE8A5"><img src="img/why-idea.jpg" width="466" height="314" alt="Лампочка, код и галочка на ступенях 1, 2, 3" loading="lazy"></div>
+        <div class="need__pic"><img src="img/why2-idea.jpg" width="396" height="276" alt="Лампочка, ноутбук с кодом, игра с пришельцем и геймпад" loading="lazy"></div>
         <div class="need__body">
           <h3>Доводить идею до результата</h3>
           <p>Ребёнок ставит цель, пишет программу и сам проверяет результат.</p>
@@ -918,7 +1114,7 @@ html{background:#2A0878 linear-gradient(#410EAD 50%,#2A0878 50%) fixed}
       </article>
       <article class="need need--school reveal">
         <div class="win__bar"><span class="dots"><i></i><i></i><i></i></span>school.exe</div>
-        <div class="need__pic" style="background:#B0FCD5"><img src="img/why-school.jpg" width="466" height="314" alt="Мальчик показывает дневник с оценками 5, 4, 5" loading="lazy"></div>
+        <div class="need__pic"><img src="img/why2-school.jpg" width="396" height="276" alt="Пиксельный мальчик с ноутбуком и оценки: английский 5, математика 4, информатика 5" loading="lazy"></div>
         <div class="need__body">
           <h3>Лучше разбираться в школьных предметах</h3>
           <div class="stat"><b>4,6 из 5</b><span>средний балл наших учеников</span></div>
@@ -929,7 +1125,7 @@ html{background:#2A0878 linear-gradient(#410EAD 50%,#2A0878 50%) fixed}
       </article>
       <article class="need need--job reveal">
         <div class="win__bar"><span class="dots"><i></i><i></i><i></i></span>career.exe</div>
-        <div class="need__pic" style="background:#F7A898"><img src="img/why-job.jpg" width="466" height="314" alt="Ноутбук с кодом и смартфон" loading="lazy"></div>
+        <div class="need__pic"><img src="img/why2-job.jpg" width="396" height="276" alt="Ноутбук с кодом, робот, VR-очки и иконки приложений на фоне города" loading="lazy"></div>
         <div class="need__body">
           <h3>Востребованная профессия программиста</h3>
           <p>Есть вакансии от <b>100&nbsp;000&nbsp;₽</b> в месяц. Возможны льготы, включая ИТ-ипотеку.</p>
@@ -953,31 +1149,31 @@ html{background:#2A0878 linear-gradient(#410EAD 50%,#2A0878 50%) fixed}
       <h2 class="label label--alt">после бесплатного урока?</h2>
       <p>За час ребёнок создаст свою первую игру, а вы узнаете, что у него уже получается, что его увлекло и с какого проекта стоит продолжить.</p>
     </div>
-    <div class="after">
+    <div class="after after--v2">
       <article class="acard acard--game reveal">
         <div class="win__bar"><span class="dots"><i></i><i></i><i></i></span>my_game.sb3</div>
-        <img src="img/after-game.jpg" width="616" height="426" alt="Ноутбук с игрой: котик догоняет робота" loading="lazy">
+        <div class="acard__pic"><img class="only-light" src="img/trial-g-light.jpg" width="694" height="422" alt="Мальчик в наушниках собирает игру в Scratch на ноутбуке, рядом робот" loading="lazy"><img class="only-dark" src="img/trial-g-dark.jpg" width="618" height="418" alt="Мальчик в наушниках собирает игру в Scratch на ноутбуке, рядом робот" loading="lazy"></div>
         <div class="acard__txt">
-          <h3>Своя игра в Scratch</h3>
+          <h3>Своя игра в <mark>Scratch</mark></h3>
           <p>Ребёнок соберёт «Догони робота» или «Фруктовый ниндзя». В конце урока вы сможете сыграть вместе, а ребёнок покажет, какие команды он запрограммировал сам.</p>
         </div>
       </article>
       <article class="acard acard--skills reveal">
         <div class="win__bar"><span class="dots"><i></i><i></i><i></i></span>report.txt</div>
         <div class="acard__in">
-          <img src="img/after-skills.jpg" width="300" height="276" alt="Планшет с отметками: получилось, с подсказкой, следующий шаг" loading="lazy">
-          <div><h3>Что ребёнок уже умеет</h3><p>Преподаватель расскажет, с чем ребёнок справился самостоятельно, где пригодилась подсказка и какой навык стоит потренировать дальше.</p></div>
+          <div class="acard__pic"><img class="only-light" src="img/trial-r-light.jpg" width="292" height="228" alt="Планшет с отметками и лампочка" loading="lazy"><img class="only-dark" src="img/trial-r-dark.jpg" width="292" height="240" alt="Планшет с отметками и лампочка" loading="lazy"></div>
+          <div><h3>Что ребёнок <mark>уже умеет</mark></h3><p>Преподаватель расскажет, с чем ребёнок справился самостоятельно, где пригодилась подсказка и какой навык стоит потренировать дальше.</p></div>
         </div>
       </article>
       <article class="acard acard--path reveal">
         <div class="win__bar"><span class="dots"><i></i><i></i><i></i></span>next_step.exe</div>
         <div class="acard__in">
-          <img src="img/after-path.jpg" width="318" height="306" alt="Компас, карандаш, пазл и значок кода" loading="lazy">
-          <div><h3>Какое направление попробовать</h3><p>Вместе с ребёнком обсудим, что его увлекло больше — придумывать героев, программировать движение или разгадывать логику игры. Преподаватель предложит следующий проект с учётом этих интересов.</p></div>
+          <div class="acard__pic"><img class="only-light" src="img/trial-n-light.jpg" width="310" height="250" alt="Мишень со стрелой, геймпад и значок кода" loading="lazy"><img class="only-dark" src="img/trial-n-dark.jpg" width="296" height="250" alt="Мишень со стрелой, геймпад и значок кода" loading="lazy"></div>
+          <div><h3>Какое направление <mark>попробовать</mark></h3><p>Вместе с ребёнком обсудим, что его увлекло больше — придумывать героев, программировать движение или разгадывать логику игры. Преподаватель предложит следующий проект с учётом этих интересов.</p></div>
         </div>
       </article>
       <div class="after-note reveal">
-        <img src="img/after-ticket.jpg" width="100" height="78" alt="">
+        <span class="after-note__ic"><img class="only-light" src="img/trial-t-light.jpg" width="115" height="86" alt="" loading="lazy" aria-hidden="true"><img class="only-dark" src="img/trial-t-dark.jpg" width="115" height="86" alt="" loading="lazy" aria-hidden="true"></span>
         <p>После бесплатного вводного урока школа «Уникум» предлагает льготные условия для дальнейшего обучения.</p>
         <button class="btn btn--sm" data-open="lead">Выбрать время <span class="arr">→</span></button>
       </div>
@@ -1232,7 +1428,7 @@ function paintPix(root=document){ root.querySelectorAll('[data-pix]').forEach(el
 
 /* ============ БЕГУЩАЯ СТРОКА ============ */
 (()=>{
-  const phrases=['Создаём игры, сайты и приложения с нуля','Первый урок бесплатно','Scratch · Roblox · Python · Unity · Web','Живые онлайн-уроки в мини-группах'];
+  const phrases=['Первый урок бесплатно','Scratch · Roblox · Python · Unity · Web','Живые онлайн-уроки в мини-группах','Создаём игры и цифровые проекты'];
   const half=phrases.concat(phrases).map(t=>`<span>${t}</span>`).join('');
   document.getElementById('marquee').innerHTML=half+half;
 })();
@@ -1509,7 +1705,7 @@ paintPix();
   const root=document.documentElement, meta=document.querySelector('meta[name=theme-color]');
   const apply=t=>{
     if(t==='dark')root.dataset.theme='dark';else delete root.dataset.theme;
-    meta&&meta.setAttribute('content',t==='dark'?'#120826':'#5B1AB5');
+    meta&&meta.setAttribute('content',t==='dark'?'#090D22':'#5B1AB5');
     document.querySelectorAll('[data-theme-toggle]').forEach(b=>{
       b.setAttribute('aria-pressed',t==='dark');
       if(b.classList.contains('theme-btn'))b.setAttribute('aria-label',t==='dark'?'Включить светлую тему':'Включить тёмную тему');
@@ -1529,8 +1725,8 @@ paintPix();
   if(!hero||!px||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
   const cols=['#FFDE3B','#FF8AE2','#9FE7FF','#B48CFF','#FFB02E','#7DFFC8'];
   let html='';
-  for(let i=0;i<18;i++){
-    const z=3+Math.round(Math.random()*6);
+  for(let i=0;i<9;i++){
+    const z=2+Math.round(Math.random()*3);
     html+=`<i style="--l:${(4+Math.random()*92).toFixed(1)}%;--b:${(5+Math.random()*45).toFixed(1)}%;--z:${z}px;--c:${cols[i%cols.length]};--t:${(6+Math.random()*6).toFixed(1)}s;--d:${(-Math.random()*10).toFixed(1)}s;--h:${120+Math.round(Math.random()*160)}px"></i>`;
   }
   px.innerHTML=html;
@@ -1541,6 +1737,130 @@ paintPix();
   if(!('IntersectionObserver' in window))return;
   const io=new IntersectionObserver(es=>es.forEach(e=>e.target.classList.toggle('is-offscreen',!e.isIntersecting)),{rootMargin:'80px'});
   document.querySelectorAll('.hero--v2,.marquee').forEach(el=>io.observe(el));
+})();
+
+/* ============ ПЕРВЫЙ ЭКРАН: ЛЁГКИЙ ПОДЪЁМ КАРТИНКИ ПРИ НАВЕДЕНИИ ============ */
+(()=>{
+  const hero=document.querySelector('.hero--v2'), bg=hero&&hero.querySelector('.hero__bg'), txt=hero&&hero.querySelector('.hero__text');
+  if(!bg||!matchMedia('(pointer:fine)').matches||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  let raf=0,x=0,y=0;
+  const check=()=>{raf=0;
+    const b=bg.getBoundingClientRect(), t=txt.getBoundingClientRect();
+    // над картинкой, но не над текстом
+    const on=x>=Math.max(b.left,t.right)&&x<=b.right&&y>=b.top&&y<=Math.min(b.bottom,hero.getBoundingClientRect().bottom);
+    hero.classList.toggle('hero--lift',on);
+  };
+  hero.addEventListener('pointermove',e=>{x=e.clientX;y=e.clientY;if(!raf)raf=requestAnimationFrame(check)});
+  hero.addEventListener('pointerleave',()=>hero.classList.remove('hero--lift'));
+})();
+
+/* ============ ИКОНКИ ПРЕИМУЩЕСТВ: НОЛИКИ И ЕДИНИЧКИ ПО КЛИКУ ============ */
+(()=>{
+  const cols=['#FFDE3B','#FF8AE2','#9FE7FF','#FFFFFF','#7DFFC8'];
+  document.querySelectorAll('.hero__feats .feat').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      btn.classList.remove('is-pop');void btn.offsetWidth;btn.classList.add('is-pop');
+      if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+      const n=14;
+      for(let i=0;i<n;i++){
+        const b=document.createElement('span');
+        const a=-Math.PI/2+(Math.random()-.5)*Math.PI*1.5;      // в основном вверх и в стороны
+        const d=50+Math.random()*70;
+        b.className='bit';b.textContent=Math.random()<.5?'0':'1';
+        b.style.cssText=`--x:${(Math.cos(a)*d).toFixed(0)}px;--y:${(Math.sin(a)*d).toFixed(0)}px;--r:${((Math.random()-.5)*120).toFixed(0)}deg;--c:${cols[i%cols.length]};--fs:${12+Math.round(Math.random()*9)}px;--t:${(.7+Math.random()*.5).toFixed(2)}s;animation-delay:${(Math.random()*.08).toFixed(2)}s`;
+        btn.appendChild(b);
+        b.addEventListener('animationend',()=>b.remove());
+      }
+    });
+  });
+})();
+
+/* ============ СТЕКЛЯННОЕ ОКНО: ПРЕЛОМЛЕНИЕ, НАКЛОН, БЛИКИ ============ */
+(()=>{
+  const el=document.querySelector('[data-glass]'),root=document.documentElement;
+  if(!el)return;
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)');
+  const fine=matchMedia('(pointer:fine)');
+  const ua=navigator.userAgent;
+  // преломление по краям — только в десктопном Chromium (Safari и Firefox не умеют SVG в backdrop-filter)
+  const canRefract=!!window.chrome&&/Chrome\//.test(ua)&&!/Mobile|CriOS|FxiOS|EdgiOS/.test(ua)&&fine.matches;
+  if(canRefract){
+    const filter=document.getElementById('liquid-glass'),fe=document.getElementById('liquid-glass-map');
+    const build=()=>{
+      if(innerWidth<=900||root.classList.contains('perf-lite')){el.classList.remove('glass--refract');return}
+      const W=el.offsetWidth,H=el.offsetHeight;if(!W||!H)return;
+      const k=.5,w=Math.ceil(W*k),h=Math.ceil(H*k);
+      const r=parseFloat(getComputedStyle(el).borderTopLeftRadius)*k||16, bez=Math.min(30*k*1.4,Math.min(w,h)/4);
+      const c=document.createElement('canvas');c.width=w;c.height=h;
+      const ctx=c.getContext('2d'),img=ctx.createImageData(w,h),d=img.data;
+      for(let y=0;y<h;y++)for(let x=0;x<w;x++){
+        const px=x+.5,py=y+.5,cx=Math.min(Math.max(px,r),w-r),cy=Math.min(Math.max(py,r),h-r);
+        let vx=px-cx,vy=py-cy,dist,nx=0,ny=0;
+        if(vx||vy){const len=Math.hypot(vx,vy);dist=r-len;nx=vx/len;ny=vy/len}
+        else{const l=px,rr=w-px,t=py,b=h-py;dist=Math.min(l,rr,t,b);
+          if(dist===l)nx=-1;else if(dist===rr)nx=1;else if(dist===t)ny=-1;else ny=1}
+        const m=dist<bez?Math.pow(1-Math.max(dist,0)/bez,2):0, o=(y*w+x)*4;
+        d[o]=128-nx*m*127;d[o+1]=128-ny*m*127;d[o+2]=128;d[o+3]=255;
+      }
+      ctx.putImageData(img,0,0);
+      for(const n of [filter,fe]){n.setAttribute('width',W);n.setAttribute('height',H)}
+      fe.setAttribute('href',c.toDataURL());
+      el.classList.add('glass--refract');
+    };
+    let t=0;new ResizeObserver(()=>{clearTimeout(t);t=setTimeout(build,120)}).observe(el);
+  }
+  if(reduce.matches)return;
+
+  // пружина: наклон 3.5° к курсору, плавный возврат
+  const S={rx:0,ry:0,p:1,vrx:0,vry:0,vp:0,hl:0,gx:30,gy:0};
+  let T={rx:0,ry:0,p:1,hl:0,gx:30,gy:0},raf=0,last=0;
+  const K=150,C=17;
+  const tick=now=>{
+    const dt=Math.min((now-last)/1000||.016,.032);last=now;
+    for(const [a,v] of [['rx','vrx'],['ry','vry'],['p','vp']]){
+      const f=-K*(S[a]-T[a])-C*S[v];S[v]+=f*dt;S[a]+=S[v]*dt;
+    }
+    const e=1-Math.pow(.0015,dt);S.hl+=(T.hl-S.hl)*e;S.gx+=(T.gx-S.gx)*e*1.4;S.gy+=(T.gy-S.gy)*e*1.4;
+    const st=el.style;
+    st.setProperty('--rx',S.rx.toFixed(3)+'deg');st.setProperty('--ry',S.ry.toFixed(3)+'deg');
+    st.setProperty('--press',S.p.toFixed(4));st.setProperty('--hl',S.hl.toFixed(3));
+    st.setProperty('--gx',S.gx.toFixed(1)+'%');st.setProperty('--gy',S.gy.toFixed(1)+'%');
+    const moving=Math.abs(S.rx-T.rx)+Math.abs(S.ry-T.ry)+Math.abs(S.vrx)+Math.abs(S.vry)+Math.abs(S.p-T.p)+Math.abs(S.vp)>.002||Math.abs(S.hl-T.hl)>.003||Math.abs(S.gx-T.gx)+Math.abs(S.gy-T.gy)>.2;
+    raf=moving?requestAnimationFrame(tick):0;
+  };
+  const kick=()=>{if(!raf){last=performance.now();raf=requestAnimationFrame(tick)}};
+  const aim=e=>{
+    const r=el.getBoundingClientRect();
+    const nx=Math.max(-1,Math.min(1,((e.clientX-r.left)/r.width-.5)*2)),ny=Math.max(-1,Math.min(1,((e.clientY-r.top)/r.height-.5)*2));
+    const amp=e.pointerType==='mouse'?3.5:2.2;
+    T.ry=nx*amp;T.rx=-ny*amp;T.hl=1;
+    T.gx=(nx*.5+.5)*100;T.gy=(ny*.5+.5)*100;kick();
+  };
+  const rest=()=>{T.rx=0;T.ry=0;T.p=1;T.hl=0;kick()};
+  el.addEventListener('pointerenter',aim);
+  el.addEventListener('pointermove',e=>{if(e.pointerType==='mouse'||e.buttons||T.p<1)aim(e)});
+  el.addEventListener('pointerdown',e=>{T.p=.988;aim(e)});
+  el.addEventListener('pointerup',e=>{T.p=1;if(e.pointerType!=='mouse')rest();else kick()});
+  el.addEventListener('pointerleave',rest);
+  el.addEventListener('pointercancel',rest);   // начался вертикальный скролл пальцем — отпускаем окно
+})();
+
+/* ============ ЗАМЕР ПЛАВНОСТИ: ЕСЛИ ПЕРВЫЙ ЭКРАН ТОРМОЗИТ — ОБЛЕГЧАЕМ ============ */
+(()=>{
+  const root=document.documentElement;
+  if(root.classList.contains('perf-lite'))return;
+  const start=()=>{
+    if(document.hidden||scrollY>innerHeight)return;
+    let n=0,slow=0,last=0;
+    const f=t=>{
+      if(last){const d=t-last;if(d<200){n++;if(d>28)slow++}}
+      last=t;
+      if(n<120)requestAnimationFrame(f);
+      else if(slow/n>.3){root.classList.add('perf-lite');document.querySelector('[data-glass]')?.classList.remove('glass--refract')}
+    };
+    requestAnimationFrame(f);
+  };
+  if(document.readyState==='complete')setTimeout(start,1200);else addEventListener('load',()=>setTimeout(start,1200),{once:true});
 })();
 </script>
 </body>

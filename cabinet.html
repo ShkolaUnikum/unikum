@@ -6,7 +6,7 @@
 <title>Личный кабинет — Уникум</title>
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#410EAD">
-<script>try{if(localStorage.getItem('unikum-theme')==='dark')document.documentElement.dataset.theme='dark'}catch(e){}</script>
+<script>try{if(localStorage.getItem('unikum-theme')!=='light')document.documentElement.dataset.theme='dark'}catch(e){document.documentElement.dataset.theme='dark'}</script>
 <link rel="icon" type="image/png" href="img/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -424,16 +424,16 @@ html[data-theme="dark"] .theme-btn .i-sun{display:block;color:var(--yellow)}
 /* ============ ТЁМНАЯ ТЕМА ============ */
 html[data-theme="dark"]{
   color-scheme:dark;
-  --paper:#120826;--card:#1B0F3A;--text:#EEE8FF;--muted:#B3A5D9;--line:rgba(190,160,255,.16);--ink:#B391FF;
+  --paper:#090D22;--card:#111836;--text:#EEE8FF;--muted:#B3A5D9;--line:rgba(190,160,255,.16);--ink:#B391FF;
   --glow:0 24px 50px -26px rgba(0,0,0,.85),0 0 0 1px rgba(190,160,255,.1);
-  --s2:#22144A;--s3:#1F1243;--edge:#3A2A66;
+  --s2:#18203F;--s3:#141B3B;--edge:#2A3460;
 }
 html[data-theme="dark"] .btn--ghost{background:var(--card);color:#E3D6FF;box-shadow:inset 0 0 0 2px rgba(179,145,255,.3)}
 html[data-theme="dark"] .btn--ghost:hover{box-shadow:inset 0 0 0 2px #B391FF,0 14px 26px -16px rgba(0,0,0,.8)}
 html[data-theme="dark"] .next .btn--ghost{background:rgba(255,255,255,.12);color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.35)}
 html[data-theme="dark"] .lcard{background:var(--card);box-shadow:0 40px 80px -30px rgba(0,0,0,.8),0 0 0 1px rgba(190,160,255,.18),0 0 60px -10px rgba(255,95,168,.3)}
 html[data-theme="dark"] .input{background:var(--s2)}
-html[data-theme="dark"] .input:focus{background:#2A1A58}
+html[data-theme="dark"] .input:focus{background:#1E2850}
 html[data-theme="dark"] .pass button:hover{background:var(--s2)}
 html[data-theme="dark"] .err{color:#FF8DB2}
 html[data-theme="dark"] .demo-note{background:rgba(255,222,59,.1);color:#E6DCA6}
@@ -462,15 +462,21 @@ html[data-theme="dark"] .fr__sum{background:rgba(63,182,255,.12);color:#A6DCFF}
 html[data-theme="dark"] .item--on{background:rgba(179,145,255,.12)}
 html[data-theme="dark"] .switch input{background:var(--edge)}
 html[data-theme="dark"] dialog{background:var(--card);color:var(--text)}
-html[data-theme="dark"] .tabbar{background:rgba(27,15,58,.96);box-shadow:0 -10px 30px -16px rgba(0,0,0,.8)}
+html[data-theme="dark"] .tabbar{background:rgba(17,24,54,.96);box-shadow:0 -10px 30px -16px rgba(0,0,0,.8)}
 html[data-theme="dark"] .tabbar a[aria-current="page"]{background:rgba(179,145,255,.14)}
-html[data-theme="dark"] .mc__tag{background:rgba(27,15,58,.9);color:#72E6C3}
+html[data-theme="dark"] .mc__tag{background:rgba(17,24,54,.9);color:#72E6C3}
 html[data-theme="dark"] .mc__tag--new{background:var(--yellow);color:#22075A}
 
 /* ============ ОТСКОК ПРИ ПРОКРУТКЕ ЗА КРАЙ ============ */
 /* сверху — цвет шапки, снизу — цвет фона страницы */
 html{background:var(--paper) linear-gradient(#410EAD 50%,var(--paper) 50%) fixed}
 html[data-theme="dark"] .login__waves path[fill="#F5EEFF"]{fill:var(--paper)}
+
+/* тёмная тема: шапка и экран входа глубже, ближе к тёмно-синему */
+html[data-theme="dark"]{--night:radial-gradient(60% 70% at 80% 30%,#2E1294 0%,rgba(46,18,148,0) 70%),radial-gradient(50% 60% at 10% 70%,#1F1478 0%,rgba(31,20,120,0) 70%),#140E52}
+html[data-theme="dark"] .top{background:#1E0E66}
+html[data-theme="dark"] body::before{background:#1E0E66}
+html[data-theme="dark"]{background:#090D22 linear-gradient(#1E0E66 50%,#090D22 50%) fixed}
 </style>
 </head>
 <body>
@@ -510,7 +516,6 @@ html[data-theme="dark"] .login__waves path[fill="#F5EEFF"]{fill:var(--paper)}
       </ul>
     </div>
     <div class="lcard">
-      <img class="login__star" src="img/star-face.jpg" alt="">
       <!-- обычный вход -->
       <div id="signIn">
         <h1>Вход</h1>
@@ -792,7 +797,7 @@ const API={
         freeze:(()=>{const f=frz.find(x=>x.student_id===s.id);return f?{id:f.id,from:new Date(f.starts_on+'T00:00:00'),to:new Date(f.ends_on+'T23:59:59'),reason:f.reason||'',status:f.status}:null})(),
         homework:hw.filter(h=>h.student_id===s.id).map(h=>({id:h.id,lesson:h.lesson_n,lessonTitle:h.lesson_title,title:h.title,task:h.task,
           status:h.status,url:h.url||'',stars:h.stars||0,coins:h.coins||0,comment:h.comment||''}))})),
-      masterclasses:mcs.map(m=>({id:m.id,title:m.title,desc:m.description||'',tag:m.tag||'',min:m.duration_min||0,cover:m.cover_url||'img/star-face.jpg',video:m.video_url||'',
+      masterclasses:mcs.map(m=>({id:m.id,title:m.title,desc:m.description||'',tag:m.tag||'',min:m.duration_min||0,cover:m.cover_url||'img/game.jpg',video:m.video_url||'',
         isNew:Date.now()-new Date(m.published_at).getTime()<14*86400000,seen:!!ls.get('mc-seen-'+m.id)})),
       requests:Object.fromEntries(reqs.map(r=>[r.course,true]))
     };
@@ -964,7 +969,6 @@ home(){
   const who=S.parent.name||'';
   return `
   <div class="next">
-    <img class="next__star" src="img/star-face.jpg" alt="">
     <span class="next__hello">${hello()}${who?', '+esc(who):''}!</span>
     ${next?`<h2>Урок ${next.n}. ${esc(next.title)}</h2>
     <div class="next__meta"><span>${icon('i-cal',16)} ${dLong(next.date)}</span><span>${icon('i-clock',16)} ${t2(next.date)} — ${next.dur} минут</span>${st.teacher.name?`<span>${icon('i-user',16)} ${esc(st.teacher.name)}</span>`:''}</div>
@@ -1424,7 +1428,7 @@ async function enter(mode){
   }
   cur=Math.min(+ls.get('unikum-kid')||0,Math.max(0,S.students.length-1));
   $('#login').hidden=true;$('#app').hidden=false;
-  if(!location.hash||/access_token|type=/.test(location.hash))history.replaceState(null,'',location.pathname+'#home');
+  if(!location.hash||location.hash==='#logout'||/access_token|type=/.test(location.hash))history.replaceState(null,'',location.pathname+'#home');
   fillTop();route();
 }
 async function logout(){
@@ -1541,7 +1545,7 @@ function openSetPass(kind){
   const root=document.documentElement, meta=document.querySelector('meta[name=theme-color]');
   const apply=t=>{
     if(t==='dark')root.dataset.theme='dark';else delete root.dataset.theme;
-    meta&&meta.setAttribute('content',t==='dark'?'#120826':'#410EAD');
+    meta&&meta.setAttribute('content',t==='dark'?'#090D22':'#410EAD');
     document.querySelectorAll('[data-theme-toggle]').forEach(b=>{b.setAttribute('aria-pressed',t==='dark');b.setAttribute('aria-label',t==='dark'?'Включить светлую тему':'Включить тёмную тему')});
   };
   apply(root.dataset.theme==='dark'?'dark':'light');
