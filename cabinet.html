@@ -358,7 +358,7 @@ dialog::backdrop{background:rgba(25,5,70,.55);backdrop-filter:blur(4px)}
   .tabbar a[aria-current="page"]{color:var(--ink);background:#F3ECFF}
   .tabbar a[aria-current="page"] svg{color:var(--sun)}
   .tabbar .cnt{position:absolute;top:3px;left:calc(50% + 6px);min-width:17px;height:17px;padding:0 4px;border-radius:999px;display:grid;place-items:center;font-size:10px;color:#fff;background:var(--sun)}
-  .road{grid-template-columns:repeat(3,minmax(0,1fr));row-gap:22px}
+  .road{grid-template-columns:repeat(3,minmax(0,1fr))!important;row-gap:22px}
   .road::before{display:none}
 }
 @media (max-width:640px){
@@ -477,12 +477,57 @@ html[data-theme="dark"]{--night:radial-gradient(60% 70% at 80% 30%,#2E1294 0%,rg
 html[data-theme="dark"] .top{background:#1E0E66}
 html[data-theme="dark"] body::before{background:#1E0E66}
 html[data-theme="dark"]{background:#090D22 linear-gradient(#1E0E66 50%,#090D22 50%) fixed}
+
+/* ============ ПРОГРАММА ОБУЧЕНИЯ ============ */
+.road--wrap{row-gap:22px}.road--wrap::before{display:none}
+.plan-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.plan-stats div{display:grid;gap:4px;padding:14px 16px;border-radius:16px;background:var(--paper)}
+.plan-stats b{font:800 26px/1 var(--display);color:var(--ink,#5B1AB5)}
+.plan-stats span{font-size:12.5px;color:var(--muted)}
+.plan-note{margin:16px 0 0;color:var(--muted);font-size:14px;line-height:1.55;max-width:75ch}
+.plans{display:grid;gap:12px}
+.plan{border-radius:20px;background:var(--card,#fff);box-shadow:0 0 0 1px var(--edge,#E8E0F7),0 14px 30px -24px rgba(65,14,173,.45);overflow:hidden}
+.plan summary{list-style:none;display:flex;align-items:center;gap:14px;padding:16px 18px;cursor:pointer}
+.plan summary::-webkit-details-marker{display:none}
+.plan summary::after{content:"";flex:none;width:9px;height:9px;margin-left:4px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg) translateY(-3px);transition:transform .2s}
+.plan[open] summary::after{transform:rotate(-135deg) translateY(-2px)}
+.plan__n{flex:none;width:40px;height:40px;border-radius:13px;display:grid;place-items:center;font:800 15px/1 var(--display);background:var(--paper);color:var(--muted)}
+.plan--done .plan__n{background:linear-gradient(135deg,#4FE0B5,#16A57E);color:#fff}
+.plan--now .plan__n{background:linear-gradient(135deg,#FF72B3,#C82A92);color:#fff}
+.plan__h{display:grid;gap:3px;min-width:0;flex:1}
+.plan__h b{font:700 16px/1.2 var(--display)}
+.plan__h small{color:var(--muted);font-size:12.5px;line-height:1.35}
+.plan summary .pill{flex:none;white-space:nowrap}
+.plan__body{padding:2px 18px 18px 72px;display:grid;gap:12px}
+.plan__goal{margin:0;font-size:14.5px;line-height:1.5}
+.plan__lessons{margin:0;padding:0;list-style:none;counter-reset:l;display:grid;gap:2px}
+.plan__lessons li{counter-increment:l;display:grid;grid-template-columns:28px minmax(0,1fr) minmax(0,.9fr);gap:10px;align-items:baseline;padding:8px 10px;border-radius:10px;font-size:14px}
+.plan__lessons li:nth-child(odd){background:var(--paper)}
+.plan__lessons li::before{content:counter(l);font:700 12px/1 var(--display);color:var(--muted)}
+.plan__lessons b{font-weight:600}
+.plan__lessons span{color:var(--muted);font-size:13px}
+.plan__lbl{margin:0;font-size:12.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.plan__tags{display:flex;flex-wrap:wrap;gap:6px}
+.plan__tags span{padding:5px 11px;border-radius:99px;background:var(--paper);font-size:13px}
+.plan__res{margin:0;padding:10px 14px;border-radius:12px;background:rgba(22,165,126,.1);font-size:14px;line-height:1.5}
+@media (max-width:760px){
+  .plan-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .plan summary{flex-wrap:wrap;padding:14px}
+  .plan__h{flex:1 1 calc(100% - 64px)}
+  .plan summary .pill{order:3;margin-left:54px}
+  .plan summary::after{position:absolute;right:18px;top:26px}
+  .plan summary{position:relative;padding-right:40px}
+  .plan__body{padding:0 14px 16px}
+  .plan__lessons li{grid-template-columns:24px minmax(0,1fr)}
+  .plan__lessons li span{grid-column:2}
+}
 </style>
 </head>
 <body>
 
 <!-- Иконки -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-book" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.5C10 5 7 4.5 3.5 5v13c3.5-.5 6.5 0 8.5 1.5 2-1.5 5-2 8.5-1.5V5C17 4.5 14 5 12 6.5z"/><path d="M12 6.5v13"/></g></symbol>
   <symbol id="i-home" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></symbol>
   <symbol id="i-cal" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18"/></g></symbol>
   <symbol id="i-hw" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8.5 15l2 2 4-4"/></g></symbol>
@@ -629,9 +674,9 @@ function wait(ms){return new Promise(r=>setTimeout(r,ms))}
 /* Программы — как на сайте (Junior / Middle / High). Число в модуле — его доля в курсе:
    при курсе на 180 занятий модули растягиваются пропорционально. */
 const PROGRAMS={
-  Junior:{age:'6–8 лет',modules:[['ScratchJr','Простые игры и мультики',4],['Scratch','Анимации и игры',12],['Minecraft','Строим кодом',7],['Tinkercad','3D-моделирование',8],['Roblox Studio','Первая игра на Lua',12]]},
-  Middle:{age:'9–11 лет',modules:[['Scratch','Игры с меню и уровнями',8],['Roblox Studio','Игры на Lua',9],['JavaScript','Браузерные игры',8],['Blender','3D-модели и сцены',10],['Unity · C#','3D-игры на Unity',16],['HTML/CSS','Первый сайт',10]]},
-  High:{age:'12–15 лет',modules:[['Python','Программы и 2D-игры',16],['Web','Сайты на HTML, CSS, JS',14],['Unity · C#','Профессиональный геймдев',18],['Java · Android','Мобильные приложения',10],['Git','Командная разработка',4]]}
+  Junior:{age:'6–8 лет',modules:[['ScratchJr','Первые анимации',12],['Scratch','Игры из блоков',39],['Minecraft','Строим кодом',20],['Tinkercad','3D-модели',26],['Kodu Game Lab','Свои 3D-миры',23],['Stencyl','Платформеры',29],['App Inventor','Приложения для телефона',26],['Roblox Studio','Первая игра на Lua',46]]},
+  Middle:{age:'9–11 лет',modules:[['Scratch','Игры с меню и уровнями',26.5],['Minecraft','Алгоритмы с черепашкой',18],['Stencyl','Свой платформер',23],['App Inventor','Приложения для Android',26],['Roblox Studio','3D-игры на Lua',53],['JavaScript','Первые веб-программы',23],['Blender','3D-моделирование',29],['Unity · C#','3D-игры на Unity',62],['HTML · CSS · JS','Свой сайт',39],['Python','Игры и помощники',45]]},
+  High:{age:'12–15 лет',modules:[['Scratch','Классика аркад',18],['App Inventor','Приложения для Android',26],['Stencyl','2D-игры',26],['Roblox Studio','3D-игры на Lua',26],['JavaScript','Веб-программы',21],['Unity · C#','3D-игры на Unity',50],['Blender','3D-моделирование',29],['Unreal Engine','Игры на большом движке',37.5],['HTML · CSS · JS','Сайт по макету',39],['Python','Программы, игры, боты',45],['Java · Android','Приложение с нуля',26]]}
 };
 /* Варианты обучения (на сайте не показываются) */
 const PLANS={
@@ -661,6 +706,73 @@ function modulesOf(st){
   let from=1;
   return base.map((m,i)=>{const o={tech:m[0],title:m[1],count:cnt[i],from,to:from+cnt[i]-1};from+=cnt[i];return o});
 }
+/* Учебная программа по модулям: цель, темы занятий с проектами и итог модуля.
+   Часы — академические (45 мин). В курсе ученика модули идут в том же порядке,
+   а число занятий в модуле зависит от длины выбранного варианта обучения. */
+const CURRICULUM={
+  Middle:{hours:344.5,modules:[
+    {goal:'Знакомство с программированием: алгоритмы, циклы, условия и переменные на понятных блоках.',
+     lessons:[['Сцена, спрайты и первые скрипты','проект «Битва мемов»'],['Координаты, условия и сенсоры','игра про защиту города'],['Переменные и операторы','игра «Аэрохоккей»'],['Перо и циклы с условием','проект «Рисуем музыку»'],['Сообщения между спрайтами','космическая битва'],['Вложенные циклы и повороты','игра «Битва за высоту»'],['Таймер и анимация','гонки со светофором'],['Свой проект','игра по своей идее'],['Защита проекта','презентация группе']],
+     result:'Создаёт свою игру с циклами, условиями, сенсорами и переменными.'},
+    {goal:'Алгоритмы на практике: программируем черепашку, которая копает и строит в игровом мире.',
+     lessons:[['Управление черепашкой','миссия «Побег с астероида»'],['Цикл с повторением: копаем и строим','спасение дроида на лавовой планете'],['Ветвления: полоса препятствий','спасение данных из штаба'],['Цикл «пока»: подкоп под базу','проникновение на базу'],['Цикл FOR и сравнение циклов','задания на закрепление'],['Вложенные циклы','постройка сложных фигур']],
+     result:'Понимает разные виды циклов и ветвления и применяет их в задачах.'},
+    {goal:'Собираем полноценный 2D-платформер: физика, уровни, счёт и меню.',
+     lessons:[['Первая программа и первый уровень','уровень платформера'],['Поведение персонажей и условия','доработка уровня'],['Физика и координаты','портал и гравитация'],['Смена сцен и переменные','счёт монет и жизней'],['Операторы','победа, поражение и их экраны'],['Звуки и меню','кликабельное меню игры'],['Второй персонаж и свой проект','план собственной игры'],['Защита проекта','презентация группе']],
+     result:'Делает свою игру с несколькими уровнями, физикой и меню.'},
+    {goal:'Создаём приложения и игры для телефона на Android.',
+     lessons:[['Кнопки, звуки и проигрыватель','приложение «Драм-машина»'],['Холст, координаты и цвета','«Рисовалка», часть 1'],['Условия, цикл «для», случайные числа','«Рисовалка», часть 2'],['Спрайты и процедуры','игра «Мини-гольф»'],['Глобальные переменные и логика','гоночная игра'],['Списки и распознавание речи','голосовое приложение'],['Несколько экранов','игра «Охота на зомби»'],['Свой проект','приложение по своей идее'],['Защита проекта','презентация группе']],
+     result:'Делает рабочее приложение для телефона с несколькими экранами.'},
+    {goal:'Первые 3D-игры и первый текстовый язык программирования — Lua.',
+     lessons:[['Интерфейс и 3D-пространство','ось Z и инструменты'],['Материалы, цвет и первый скрипт на Lua','оживший объект'],['Соединение деталей и функции','механизмы из деталей'],['Спецэффекты и переменные','анимированная радуга'],['Интерфейс игрока и условия','игра «Мини-футбол»'],['NPC, инструменты и цикл while','игра на выживание'],['Ландшафт и водоёмы','исчезающие при касании предметы'],['Телепорт и свой проект','план собственной игры'],['Защита проекта','презентация группе'],['Большой проект: арена','локация для битвы'],['Большой проект: скрипты и консоль','бесконечные циклы и ожидание'],['Большой проект: спецэффекты','объекты и эффекты на арене'],['Большой проект: интерфейс','сбор кристаллов'],['Большой проект: соперник','оружие и бот-соперник']],
+     result:'Пишет скрипты на Lua и делает свою 3D-игру с интерфейсом и ботами.'},
+    {goal:'Программирование для браузера: веб-страница и первые программы на JavaScript.',
+     lessons:[['Первая веб-страница','страница с котиком'],['Ввод, вывод и условия','котик-угадайка'],['Циклы, функции и кнопки','угадайка по кнопке'],['Массивы и случайность','«Шар судьбы»'],['Объекты','викторина, часть 1'],['Цикл for','викторина, часть 2'],['Свой проект','страница о любимой игре с викториной'],['Защита проекта','презентация группе']],
+     result:'Делает веб-страницу с программой: переменные, условия, циклы, функции.'},
+    {goal:'3D-моделирование: от простых фигур до готовой сцены с рендером.',
+     lessons:[['Интерфейс и примитивы','стол и стул'],['Материалы и режим редактирования','бочка'],['Вытягивание и модификаторы','кубок'],['Текстуры и развёртка','пол и ковёр пиратской каюты'],['Физика и анимация','сундук с монетами и карта'],['Референс и нож','пиратская сабля'],['Текст, булевы операции и фаски','гравировка, бутылка и книга'],['Свет, камера и рендер','готовая пиратская каюта'],['Свои модели, часть 1','предмет из жизни'],['Свои модели, часть 2','доработка и показ']],
+     result:'Создаёт модели с текстурами для игр и делает красивый рендер сцены.'},
+    {goal:'Разработка 3D-игр на профессиональном движке и язык C#.',
+     lessons:[['Интерфейс, объекты и материалы','первая сцена'],['Коллайдеры и первый скрипт на C#','вращающаяся мельница'],['Частицы, триггеры и перезапуск уровня','ловушки'],['Ландшафт, сцены и переменные','мир из нескольких уровней'],['Интерфейс: полоска здоровья','урон от лавы'],['Боты с искусственным интеллектом','враг преследует игрока'],['Стрельба и реакция ботов','арбалет'],['Звук и смена дня и ночи','атмосфера игры'],['Главное меню и финал','законченная игра'],['Сборка игры и выбор проекта','игра запускается без редактора'],['Защита проекта','презентация группе'],['Демо-сцена','анимированные часы'],['Игра-раннер: движение','заготовка уровня'],['Игра-раннер: прыжки и монеты','препятствия и сбор монет'],['Игра-раннер: меню и очки','интерфейс игры'],['Игра-раннер: бесконечная дорога','звук и финальные доработки']],
+     result:'Делает законченную 3D-игру на Unity и пишет скрипты на C#.'},
+    {goal:'Вёрстка сайта по настоящему макету — как в работе веб-разработчика.',
+     lessons:[['Основы HTML и CSS','заготовка сайта'],['Техзадание и макет в Figma','шапка сайта с меню'],['Секции и обёртки','первые три блока'],['Псевдоэлементы','блок навыков'],['Видео на сайте','блок процессов'],['Форма обратной связи','поля и кнопки'],['Галерея и библиотеки','галерея с увеличением'],['Основы JavaScript','реакция на кнопки'],['Всплывающая форма','окно «Написать мне»'],['CSS-анимация','плавные эффекты'],['Меню и подвал','сайт по макету целиком'],['Адаптивность','версия для телефона'],['Отправка формы и публикация','сайт в интернете']],
+     result:'Сам верстает адаптивный сайт по макету и публикует его в интернете.'},
+    {goal:'Python — язык для программ, игр и ботов.',
+     lessons:[['Вывод на экран и переменные','математические задачи'],['Ввод и условия','программа-приветствие'],['Списки, случайность и цикл while','бесконечный цикл и выход из него'],['Закрепление','игра «Камень, ножницы, бумага»'],['Функции','две сложные функции'],['Окна и рисование','анимация на холсте'],['Классы и объекты','основы ООП'],['«Арканоид», часть 1','мяч на холсте'],['«Арканоид», часть 2','отскоки и платформа'],['«Арканоид», часть 3','управление и конец игры'],['Голосовой помощник, часть 1','распознавание речи'],['Голосовой помощник, часть 2','ответы голосом и команды'],['Чат-бот, часть 1','основа бота и словари'],['Чат-бот, часть 2','ключевые слова и стикеры'],['Чат-бот, часть 3','случайные советы и картинки']],
+     result:'Пишет программы на Python: игры, голосового помощника и чат-бота.'}
+  ]},
+  Junior:{hours:220,modules:[
+    {goal:'Первые шаги: собираем мультики и мини-игры из крупных блоков.',projects:['анимация «Гонки»','игра про лягушонка','игра «Волшебник»','космическая игра'],result:'Собирает простые анимации и игры из блоков.'},
+    {goal:'Основы алгоритмов на понятных блоках: движение, координаты, циклы, условия.',projects:['«Физкультминутка»','игра «Парковка»','игра «Обезьянка»','игра «Заряди робота»','рисование в Scratch'],result:'Создаёт свою игру с циклами, условиями и переменными.'},
+    {goal:'Программируем черепашку в игровом мире и тренируем пространственное мышление.',projects:['постройки кодом','собственный проект'],result:'Понимает циклы и ветвления на задачах в игровом мире.'},
+    {goal:'3D-моделирование и связь моделей с игрой.',projects:['блоки и персонажи в 3D','инструменты в стиле пиксель-арт','3D-логотип','свой монстр в игре'],result:'Моделирует в 3D и переносит свои модели в игру.'},
+    {goal:'Создаём 3D-миры и оживляем персонажей без сложного кода.',projects:['свой ландшафт','собственная локация'],result:'Строит миры, программирует персонажей и понимает структуру алгоритмов.'},
+    {goal:'Собираем 2D-платформер: физика, уровни, счёт, меню.',projects:['первый уровень','портал и физика','победа и поражение','меню игры','игра «Лабиринт»'],result:'Делает игру с уровнями, физикой и меню.'},
+    {goal:'Первые приложения для телефона.',projects:['«Драм-машина»','«Рисовалка»','«Мини-гольф»','гоночная игра','голосовое приложение'],result:'Делает простое приложение для Android.'},
+    {goal:'Первая 3D-игра и первый текстовый код на Lua.',projects:['радуга со спецэффектами','«Мини-футбол»','игра на выживание','телепорт','большая игра-арена'],result:'Делает свою 3D-игру и пишет первые скрипты.'}
+  ]},
+  High:{hours:343.5,modules:[
+    {goal:'Быстрый старт в алгоритмах на классических аркадах.',projects:['«Ловец стрелок»','аркада с мячом и кирпичами','игра с летающей птичкой'],result:'Уверенно использует циклы, условия, списки и свои блоки.'},
+    {goal:'Приложения и игры для Android.',projects:['«Драм-машина»','«Рисовалка»','«Мини-гольф»','гоночная игра','голосовое приложение'],result:'Делает приложение с несколькими экранами.'},
+    {goal:'2D-игры с физикой, уровнями и меню.',projects:['«Лабиринт»','«Инопланетное нашествие»','«Падающий блок»','«Подземелье»','своя игра'],result:'Собирает законченную 2D-игру.'},
+    {goal:'3D-игры и язык Lua.',projects:['радуга со спецэффектами','«Мини-футбол»','игра на выживание','телепорт'],result:'Пишет скрипты на Lua и делает свою 3D-игру.'},
+    {goal:'Программы для браузера на JavaScript.',projects:['котик-угадайка','«Шар судьбы»','викторина','своя страница с викториной'],result:'Пишет программы с переменными, условиями, циклами и функциями.'},
+    {goal:'3D-игры на Unity и язык C#.',projects:['мир с ловушками и врагами','главное меню и финал','игра-раннер'],result:'Делает законченную 3D-игру на Unity.'},
+    {goal:'3D-моделирование и рендер.',projects:['мебель и бочка','кубок и сабля','пиратская каюта','свои модели'],result:'Создаёт модели с текстурами и делает рендер сцены.'},
+    {goal:'Игры на большом движке, которым пользуются студии.',projects:['персонажи с искусственным интеллектом','прицел и камера','своя игра'],result:'Делает игру средней сложности на Unreal Engine.'},
+    {goal:'Вёрстка сайта по макету и публикация.',projects:['сайт по макету из Figma','форма и галерея','адаптивная версия','публикация в интернете'],result:'Сам верстает и публикует адаптивный сайт.'},
+    {goal:'Python: программы, игры и боты.',projects:['«Камень, ножницы, бумага»','«Арканоид»','голосовой помощник','чат-бот'],result:'Пишет программы на Python и использует классы.'},
+    {goal:'Мобильная разработка на Java.',projects:['первое приложение для Android','приложение-викторина'],result:'Создаёт приложение для Android с нуля.'}
+  ]}
+};
+// тема занятия курса: темы модуля распределяются по его занятиям
+function topicOf(program,mi,k,count){
+  const m=(CURRICULUM[program]||{modules:[]}).modules[mi];
+  if(!m||!m.lessons)return '';
+  const L=m.lessons.length, t=m.lessons[Math.min(L-1,Math.floor(k*L/count))];
+  return t[0];
+}
 const ACHIEVE=[
   {k:'first',e:'🚀',t:'Первый проект',d:'Сдал первое задание'},
   {k:'scratch',e:'🎮',t:'Геймдизайнер',d:'Прошёл модуль Scratch'},
@@ -674,18 +786,18 @@ const CURATOR_TG='https://t.me/'; // ЗАМЕНИТЕ на Telegram курато
 /* =====================================================================
    ДЕМО-ДАННЫЕ (когда Supabase не подключён или нажата «Посмотреть демо»)
    ===================================================================== */
-const DEMO_BLENDER=['Интерфейс Blender и навигация','Примитивы и режим редактирования','Экструзия и модификаторы','Low-poly дерево и камни',
-  'Low-poly домик','Материалы и текстуры','Свет и камера','Рендер в Eevee','Сцена «Лесная поляна»','Анимация по ключевым кадрам',
-  'Персонаж и анимация ходьбы','Экспорт модели в Unity','Итоговая сцена и защита'];
-const DEMO_FROM=34;   // курс Middle на 80 занятий: Scratch 11 + Roblox 12 + JavaScript 10 → Blender с 34-го занятия
-const DEMO_DONE=40;   // пройдено 40 из 80 — половина курса
-const demoTopic=n=>DEMO_BLENDER[n-DEMO_FROM]||('Занятие '+n);
+const DEMO_MS=modulesOf({program:'Middle',total:80});
+const DEMO_FROM=DEMO_MS.find(m=>m.tech==='Blender').from; // курс Middle на 80 занятий: Blender — 7-й модуль
+const DEMO_DONE=DEMO_FROM+3;   // пройдено чуть больше половины курса, сейчас идёт Blender
+const DEMO_TOPICS={};
+DEMO_MS.forEach((m,mi)=>{for(let k=0;k<m.count;k++)DEMO_TOPICS[m.from+k]=topicOf('Middle',mi,k,m.count)});
+const demoTopic=n=>DEMO_TOPICS[n]||('Занятие '+n);
 const DEMO_HW=[
-  {id:'h40',lesson:40,title:'Ночной домик',task:'Поставь в сцену с домиком три источника света — луна, окно и фонарь — и настрой камеру. Пришли ссылку на рендер.',status:'todo'},
-  {id:'h39',lesson:39,title:'Разноцветный робот',task:'Раскрась робота из примитивов: минимум 4 материала, один — металлический.',status:'wait'},
-  {id:'h38',lesson:38,title:'Мой домик',task:'Смоделируй low-poly домик с крышей, окнами и дверью.',status:'ok',stars:5,coins:30,comment:'Аккуратная сетка и приятные пропорции — так держать!'},
-  {id:'h37',lesson:37,title:'Осенний лес',task:'Сделай три разных low-poly дерева и пару камней.',status:'ok',stars:4,coins:20,comment:'Деревья получились разными. Попробуй добавить больше оттенков листвы.'},
-  {id:'h36',lesson:36,title:'Космолёт',task:'Собери симметричный космический корабль с модификатором «Зеркало».',status:'ok',stars:5,coins:20,comment:'Классный дизайн и чистая симметрия!'}
+  {id:'h3',lesson:DEMO_DONE,title:'Сундук с сокровищами',task:'Заполни сундук монетами с помощью физики твёрдых тел, а на стол положи карту из ткани. Пришли ссылку на рендер.',status:'todo'},
+  {id:'h2',lesson:DEMO_DONE-1,title:'Кубок',task:'Сделай кубок инструментами Inset и Extrude и сгладь его модификатором Subdivision Surface.',status:'wait'},
+  {id:'h1',lesson:DEMO_DONE-2,title:'Бочка',task:'Смоделируй бочку с помощью Loop Cut и наложи на неё материал дерева.',status:'ok',stars:5,coins:30,comment:'Ровные обручи и хорошие пропорции — так держать!'},
+  {id:'h0',lesson:DEMO_FROM,title:'Стол и стул',task:'Собери стол и стул из примитивов и объедини их части.',status:'ok',stars:4,coins:20,comment:'Аккуратно! Попробуй сделать ножки стула чуть тоньше.'},
+  {id:'hj',lesson:DEMO_FROM-1,title:'Викторина',task:'Добавь в викторину ещё 5 вопросов и подсчёт правильных ответов.',status:'ok',stars:5,coins:20,comment:'Отличные вопросы и чистый код!'}
 ];
 const DEMO_MISSED={17:{reason:'Болезнь',makeupDone:true},29:{reason:'Поездка или отпуск'}};
 function demoLessons(){
@@ -696,7 +808,7 @@ function demoLessons(){
   const past=days.filter(d=>d<=now).slice(-DEMO_DONE), fut=days.filter(d=>d>now).slice(0,6);
   const ms=modulesOf({program:'Middle',total:PLANS.y2.n});
   return past.concat(fut).map((d,i)=>{const n=i+1, m=ms.find(x=>n>=x.from&&n<=x.to), miss=DEMO_MISSED[n];
-    return {id:'l'+n,n,title:m.tech==='Blender'?demoTopic(n):`${m.title}: занятие ${n-m.from+1}`,course:m.tech,date:d,
+    return {id:'l'+n,n,title:demoTopic(n),course:m.tech,date:d,
       status:n>DEMO_DONE?'planned':miss?'missed':'done',meet:'',record:n<=DEMO_DONE?'#':'',dur:90,
       absence:miss?{reason:miss.reason,comment:'',makeup:!!miss.makeupDone,makeupDone:!!miss.makeupDone}:null}});
 }
@@ -706,7 +818,7 @@ function demoState(){
   const fr=d.freeze?{id:'f1',from:new Date(d.freeze.from),to:new Date(d.freeze.to),reason:d.freeze.reason,status:d.freeze.status}:null;
   const homework=DEMO_HW.map(h=>Object.assign({},h,{lessonTitle:demoTopic(h.lesson)},d.hw&&d.hw[h.id]||{}));
   const child=Object.assign({name:'Миша',birth:'2016-04-12'},d.child||{});
-  const topics={};DEMO_BLENDER.forEach((t,i)=>topics[DEMO_FROM+i]=t);
+  const topics=Object.assign({},DEMO_TOPICS);
   return {
     parent:Object.assign({name:'Анна',phone:'+7 900 000-00-00',email:'mail@example.ru'},d.parent||{}),
     notify:Object.assign({lesson:true,hw:true,news:false},d.notify||{}),
@@ -893,6 +1005,7 @@ const ROUTES=[
   {id:'journal',t:'Журнал посещений',i:'i-journal'},
   {id:'homework',t:'Задания',i:'i-hw',tab:1},
   {id:'progress',t:'Прогресс',i:'i-prog'},
+  {id:'program',t:'Программа обучения',s:'Программа',i:'i-book'},
   {id:'masterclasses',t:'Мастер-классы',s:'Видео',i:'i-play',tab:1},
   {id:'extra',t:'Доп. курсы',i:'i-spark'},
   {id:'pay',t:'Оплата',i:'i-pay'},
@@ -1051,6 +1164,33 @@ homework(){
     <button aria-pressed="true" data-f="all">Все</button><button aria-pressed="false" data-f="todo">Сделать</button><button aria-pressed="false" data-f="wait">На проверке</button><button aria-pressed="false" data-f="ok">Проверено</button></div></div>
   <div class="list" id="hwList" style="gap:16px"></div>`;
 },
+program(){
+  const st=stu(), prog=st.program||'Middle', cur=CURRICULUM[prog], ms=modulesOf(st), done=doneCount(st), mod=curModule(st);
+  const base=(PROGRAMS[prog]||PROGRAMS.Middle).modules;
+  const h=n=>String(n).replace('.',',');
+  const card=(m,i)=>{
+    const c=cur&&cur.modules[i]||{}, st2=done>=m.to?'done':m.from===mod.from?'now':'next';
+    const pill=st2==='done'?'<span class="pill pill--ok">пройден</span>':st2==='now'?`<span class="pill pill--new">идёт сейчас · ${Math.max(0,done-m.from+1)} из ${m.count}</span>`:'<span class="pill pill--muted">впереди</span>';
+    const body=c.lessons?`<ol class="plan__lessons">${c.lessons.map(([t,pr])=>`<li><b>${esc(t)}</b><span>${esc(pr)}</span></li>`).join('')}</ol>`
+      :c.projects?`<p class="plan__lbl">Проекты модуля</p><div class="plan__tags">${c.projects.map(x=>`<span>${esc(x)}</span>`).join('')}</div>`:'';
+    return `<details class="plan plan--${st2}" ${st2==='now'?'open':''}>
+      <summary><span class="plan__n">${st2==='done'?'✓':i+1}</span><span class="plan__h"><b>${esc(m.tech)}</b><small>${esc(m.title)} · ${h(base[i][2])} ак. ч · в вашем курсе занятия ${m.from}–${m.to}</small></span>${pill}</summary>
+      <div class="plan__body">${c.goal?`<p class="plan__goal">${esc(c.goal)}</p>`:''}${body}${c.result?`<p class="plan__res"><b>Итог модуля:</b> ${esc(c.result)}</p>`:''}</div>
+    </details>`;
+  };
+  return `
+  <div class="vhead"><div><h1>Программа обучения</h1><p>Чему учится ${esc(st.name)} на курсе ${esc(prog)}: модули по порядку, темы занятий и проекты.</p></div></div>
+  <section class="card plan-intro">
+    <div class="plan-stats">
+      <div><b>${ms.length}</b><span>${plural(ms.length,'модуль','модуля','модулей')}</span></div>
+      <div><b>${cur?h(cur.hours):'—'}</b><span>ак. часов в полной программе</span></div>
+      <div><b>${st.total}</b><span>${plural(st.total,'занятие','занятия','занятий')} в вашем курсе</span></div>
+      <div><b>${ms.filter(m=>done>=m.to).length}</b><span>${plural(ms.filter(m=>done>=m.to).length,'модуль пройден','модуля пройдено','модулей пройдено')}</span></div>
+    </div>
+    <p class="plan-note">Каждый модуль — новая среда или язык программирования и свой проект в конце. Модули идут от простого к сложному: от блоков к настоящему коду. В курсе на ${st.total} ${plural(st.total,'занятие','занятия','занятий')} модули идут в том же порядке, а близкие темы объединяются в одно занятие. Академический час — 45 минут.</p>
+  </section>
+  <div class="plans">${ms.map(card).join('')}</div>`;
+},
 progress(){
   const st=stu(), done=doneCount(st), pct=pctOf(st), ms=modulesOf(st), mod=curModule(st);
   const cl=courseLessons(st), nextI=cl.findIndex(l=>!l.done);
@@ -1063,7 +1203,7 @@ progress(){
   <section class="card">
     <div class="card__h"><h2>Курс ${esc(st.program||'Middle')}</h2><span class="pill pill--lilac">${done} из ${st.total} · ${pct}%</span></div>
     <div class="bar" style="height:12px;margin:0 0 22px"><span style="width:${pct}%"></span></div>
-    <div class="road" style="--cols:${ms.length}">${ms.map(m=>{const s=done>=m.to?'done':m.from===mod.from?'now':'';const mp=Math.round(Math.max(0,done-m.from+1)/m.count*100);
+    <div class="road${ms.length>6?' road--wrap':''}" style="--cols:${ms.length>6?Math.ceil(ms.length/2):ms.length}">${ms.map(m=>{const s=done>=m.to?'done':m.from===mod.from?'now':'';const mp=Math.round(Math.max(0,done-m.from+1)/m.count*100);
       return `<div class="node ${s?'node--'+s:''}"><span class="node__dot">${s==='done'?'✓':s==='now'?mp+'%':'🔒'}</span><b>${esc(m.tech)}</b><small>${esc(m.title)}<br>${m.count} ${plural(m.count,'занятие','занятия','занятий')}</small></div>`}).join('')}</div>
   </section>
   <div class="grid2">

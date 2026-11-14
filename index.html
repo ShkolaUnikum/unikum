@@ -1124,6 +1124,69 @@ html[data-theme="dark"] .hero__pic::before{background:radial-gradient(closest-si
 .after--v2 .acard__in .acard__pic img.acard__obj{border-radius:0;width:min(100%,210px);margin-inline:auto;filter:drop-shadow(0 12px 16px rgba(60,20,140,.28))}
 .after--v2 .after-note__ic img.acard__obj{transform:none;border-radius:0;filter:drop-shadow(0 6px 10px rgba(60,20,140,.3))}
 html[data-theme="dark"] .after--v2 img.acard__obj{filter:drop-shadow(0 12px 18px rgba(0,0,0,.45))}
+
+/* ============ КУРСЫ: ЛОГОТИПЫ ТЕХНОЛОГИЙ НА КАРТИНКЕ ============ */
+.course__pic .chip{top:12px;bottom:auto}
+.course__logos{position:absolute;z-index:2;left:10px;right:10px;bottom:10px;display:flex;flex-wrap:wrap;gap:6px;pointer-events:none}
+.course__logos .lg{display:inline-flex;align-items:center;gap:6px;padding:5px 10px 5px 8px;border-radius:99px;
+  background:rgba(16,8,52,.72);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);box-shadow:inset 0 0 0 1px rgba(255,255,255,.16);
+  font:600 12.5px/1 var(--body);color:#fff;white-space:nowrap}
+.course__pic .course__logos .lg img{position:static;inset:auto;width:15px;height:15px;flex:none;object-fit:contain;animation:none}
+.course__logos .lg--txt{padding-left:10px}
+@media (max-width:600px){.course__logos .lg{font-size:11.5px;padding:4px 8px 4px 7px}.course__pic .course__logos .lg img{width:13px;height:13px}}
+
+/* курсы: картинка при переключении вкладки появляется сразу, без проявления */
+.course__pic img{animation:none}
+
+/* ============ ЧИТАЕМОСТЬ: ВАЖНЫЕ ФРАЗЫ И РАСКРЫТЫЕ ТЕКСТЫ ============ */
+/* важные фразы: жирные, ярче и с тонкой градиентной линией в цветах школы */
+.hl{font-weight:700;color:var(--deep,#2A0B6B);padding-bottom:2px;
+  background:linear-gradient(90deg,#E8338A,#FF8A3D) no-repeat 0 100%/100% 2px;
+  -webkit-box-decoration-break:clone;box-decoration-break:clone}
+html[data-theme="dark"] .hl{color:#fff;background-image:linear-gradient(90deg,#FF5FA8,#FFDE3B)}
+.step .hl,html[data-theme="dark"] .step .hl{color:#fff;background-image:linear-gradient(90deg,rgba(255,255,255,.9),rgba(255,255,255,.45))}
+/* раскрытый текст «Подробнее» в блоке «Для чего» */
+.need details p{font-size:16px;line-height:1.65;color:var(--text)}
+html[data-theme="dark"] .need details p{color:#F1ECFF;background:rgba(255,255,255,.07);box-shadow:inset 0 0 0 1px rgba(255,255,255,.1)}
+html[data-theme="dark"] .need__body p{color:#E4DDFA}
+
+/* «Подробнее» и вопросы: плавное раскрытие (анимация в JS) */
+.need details p{animation:none}
+details.dt-anim{overflow:hidden}
+
+/* ============ ОКНА (ЗАПИСЬ, ЛИЦЕНЗИЯ): СТЕКЛО, КАК НА ПЕРВОМ ЭКРАНЕ ============ */
+dialog{color-scheme:dark;
+  --paper:rgba(255,255,255,.07);--paper-2:rgba(255,255,255,.08);--surface:transparent;--white:rgba(255,255,255,.12);
+  --text:#F6F2FF;--muted:#D4CAF2;--deep:#FFFFFF;--ink:#D9C6FF;--line:rgba(255,255,255,.2);color:var(--text)}
+dialog::backdrop,html[data-theme="dark"] dialog::backdrop{background:rgba(8,4,32,.46);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
+dialog .win,html[data-theme="dark"] dialog .win{position:relative;border:0;border-radius:28px;overflow:hidden;
+  background:linear-gradient(150deg,rgba(255,255,255,.16),rgba(255,255,255,.03) 45%,rgba(120,70,240,.12)),rgba(34,16,98,.58);
+  -webkit-backdrop-filter:blur(22px) saturate(1.5);backdrop-filter:blur(22px) saturate(1.5);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.35),inset 0 0 0 1px rgba(255,255,255,.16),0 40px 90px -30px rgba(0,0,0,.85)}
+dialog .win::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;
+  background:linear-gradient(155deg,rgba(255,255,255,.85),rgba(255,255,255,.18) 30%,rgba(255,255,255,.05) 60%,rgba(200,170,255,.35));
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
+dialog .win__bar{background:transparent!important;border-bottom:1px solid rgba(255,255,255,.14);color:#fff}
+dialog .win__body{background:transparent}
+dialog .x,html[data-theme="dark"] dialog .x{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25)!important;border-radius:10px}
+dialog .x:hover{background:rgba(255,255,255,.22)}
+dialog .form h3{color:#fff}
+dialog .form > p{color:#E2DAF8}
+dialog .field label{color:#F1ECFF}
+dialog .field input,dialog .field select,dialog .phone,
+html[data-theme="dark"] dialog .field input,html[data-theme="dark"] dialog .field select,html[data-theme="dark"] dialog .phone{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.22);color:#fff}
+dialog .field input::placeholder{color:rgba(255,255,255,.55)}
+dialog .phone:focus-within,dialog .field input:focus,dialog .field select:focus,
+html[data-theme="dark"] dialog .phone:focus-within,html[data-theme="dark"] dialog .field input:focus,html[data-theme="dark"] dialog .field select:focus{background:rgba(255,255,255,.14);border-color:var(--sun)}
+dialog .phone__cc{color:#fff;border-right-color:rgba(255,255,255,.2)!important}
+dialog .phone__cc::after{border-color:#fff}
+dialog .field select option{background:#24125F;color:#fff}
+dialog .check{color:#E9E2FA}
+dialog .check a{color:#fff}
+dialog .field.err input,dialog .field.err select,dialog .field.err .phone,
+html[data-theme="dark"] dialog .field.err input,html[data-theme="dark"] dialog .field.err select,html[data-theme="dark"] dialog .field.err .phone{background:rgba(255,138,61,.16);border-color:#FF9A5C}
+dialog .field .msg,dialog .check.err,html[data-theme="dark"] dialog .field .msg,html[data-theme="dark"] dialog .check.err{color:#FFB48A}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){dialog .win{background:#2A1572}}
 </style>
 </head>
 <body>
@@ -1213,7 +1276,7 @@ html[data-theme="dark"] .after--v2 img.acard__obj{filter:drop-shadow(0 12px 18px
           <p>Ребёнок ставит цель, пишет программу и сам проверяет результат.</p>
         </div>
         <details><summary>Подробнее</summary>
-          <p>На каждом уроке ребёнок проходит весь путь: придумывает, что хочет сделать, разбивает задачу на шаги, пишет код и тестирует. Если что-то не работает — ищет ошибку и исправляет. Так появляется привычка доводить дело до конца — и в учёбе, и в жизни.</p>
+          <p>На каждом уроке ребёнок проходит <strong class="hl">весь путь</strong>: придумывает, что хочет сделать, разбивает задачу на шаги, пишет код и тестирует. Если что-то не работает — ищет ошибку и исправляет. Так появляется <strong class="hl">привычка доводить дело до конца</strong> — и в учёбе, и в жизни.</p>
         </details>
       </article>
       <article class="need need--school reveal">
@@ -1224,7 +1287,7 @@ html[data-theme="dark"] .after--v2 img.acard__obj{filter:drop-shadow(0 12px 18px
           <div class="stat"><b>4,6 из 5</b><span>средний балл наших учеников</span></div>
         </div>
         <details><summary>Подробнее</summary>
-          <p>Чтобы герой прыгнул или набрал очки, нужны координаты, проценты и логические условия, а команды и интерфейсы — на английском. Школьные знания становятся инструментом для своей игры, поэтому их проще понять и запомнить.</p>
+          <p>Чтобы герой прыгнул или набрал очки, нужны координаты, проценты и логические условия, а команды и интерфейсы — на английском. Школьные знания становятся <strong class="hl">инструментом для своей игры</strong>, поэтому их <strong class="hl">проще понять и запомнить</strong>.</p>
         </details>
       </article>
       <article class="need need--job reveal">
@@ -1232,10 +1295,10 @@ html[data-theme="dark"] .after--v2 img.acard__obj{filter:drop-shadow(0 12px 18px
         <div class="need__pic"><img src="img/why5-job.jpg" width="1080" height="720" alt="Мальчик и девочка с планшетом смотрят на большой монитор с кодом и макетом приложения" loading="lazy"></div>
         <div class="need__body">
           <h3>Востребованная профессия программиста</h3>
-          <p>Есть вакансии от <b>100&nbsp;000&nbsp;₽</b> в месяц. Возможны льготы, включая ИТ-ипотеку.</p>
+          <p>Есть вакансии от <b>100&nbsp;000&nbsp;₽</b> в месяц. Возможны льготы, включая <strong class="hl">ИТ-ипотеку</strong>.</p>
         </div>
         <details><summary>Подробнее</summary>
-          <p>Программисты нужны почти в каждой отрасли — от медицины до игр. Работать можно удалённо из любого города, а государство поддерживает ИТ-специалистов льготами. Ранний старт даёт ребёнку фору при выборе профессии.</p>
+          <p>Программисты <strong class="hl">нужны почти в каждой отрасли</strong> — от медицины до игр. Работать можно <strong class="hl">удалённо из любого города</strong>, а государство поддерживает ИТ-специалистов льготами. <strong class="hl">Ранний старт</strong> даёт ребёнку фору при выборе профессии.</p>
         </details>
       </article>
     </div>
@@ -1251,7 +1314,7 @@ html[data-theme="dark"] .after--v2 img.acard__obj{filter:drop-shadow(0 12px 18px
       <span class="tag">#пробный_урок</span><br>
       <h2 class="label">Что вы получите</h2><br>
       <h2 class="label label--alt">после бесплатного урока?</h2>
-      <p>За час ребёнок создаст свою первую игру, а вы узнаете, что у него уже получается, что его увлекло и с какого проекта стоит продолжить.</p>
+      <p>За час ребёнок <strong class="hl">создаст свою первую игру</strong>, а вы узнаете, что у него уже получается, что его увлекло и с какого проекта стоит продолжить.</p>
     </div>
     <div class="after after--v2">
       <article class="acard acard--game reveal">
@@ -1259,26 +1322,26 @@ html[data-theme="dark"] .after--v2 img.acard__obj{filter:drop-shadow(0 12px 18px
         <div class="acard__pic"><img src="img/trial4-game.jpg" width="1280" height="957" alt="Ноутбук с пиксельной игрой: рыжий кот догоняет робота; рядом блоки кода, наушники и геймпад" loading="lazy"></div>
         <div class="acard__txt">
           <h3>Своя игра в <mark>Scratch</mark></h3>
-          <p>Ребёнок соберёт «Догони робота» или «Фруктовый ниндзя». В конце урока вы сможете сыграть вместе, а ребёнок покажет, какие команды он запрограммировал сам.</p>
+          <p>Ребёнок соберёт «Догони робота» или «Фруктовый ниндзя». В конце урока вы <strong class="hl">сможете сыграть вместе</strong>, а ребёнок покажет, какие команды он <strong class="hl">запрограммировал сам</strong>.</p>
         </div>
       </article>
       <article class="acard acard--skills reveal">
         <div class="win__bar"><span class="dots"><i></i><i></i><i></i></span>report.txt</div>
         <div class="acard__in">
           <div class="acard__pic"><img class="acard__obj" src="img/trial3-report.webp" width="640" height="652" alt="Планшет со списком: три галочки и звёздочка, рядом лампочка, карандаш и медаль" loading="lazy"></div>
-          <div><h3>Что ребёнок <mark>уже умеет</mark></h3><p>Преподаватель расскажет, с чем ребёнок справился самостоятельно, где пригодилась подсказка и какой навык стоит потренировать дальше.</p></div>
+          <div><h3>Что ребёнок <mark>уже умеет</mark></h3><p>Преподаватель расскажет, с чем ребёнок <strong class="hl">справился самостоятельно</strong>, где пригодилась подсказка и <strong class="hl">какой навык стоит потренировать</strong> дальше.</p></div>
         </div>
       </article>
       <article class="acard acard--path reveal">
         <div class="win__bar"><span class="dots"><i></i><i></i><i></i></span>next_step.exe</div>
         <div class="acard__in">
           <div class="acard__pic"><img class="only-light" src="img/trial-n-light.jpg" width="310" height="250" alt="Мишень со стрелой, геймпад и значок кода" loading="lazy"><img class="only-dark" src="img/trial-n-dark.jpg" width="296" height="250" alt="Мишень со стрелой, геймпад и значок кода" loading="lazy"></div>
-          <div><h3>Какое направление <mark>попробовать</mark></h3><p>Вместе с ребёнком обсудим, что его увлекло больше — придумывать героев, программировать движение или разгадывать логику игры. Преподаватель предложит следующий проект с учётом этих интересов.</p></div>
+          <div><h3>Какое направление <mark>попробовать</mark></h3><p>Вместе с ребёнком обсудим, что его увлекло больше — придумывать героев, программировать движение или разгадывать логику игры. Преподаватель <strong class="hl">предложит следующий проект</strong> с учётом этих интересов.</p></div>
         </div>
       </article>
       <div class="after-note reveal">
         <span class="after-note__ic"><img class="acard__obj" src="img/trial3-ticket.webp" width="320" height="257" alt="" loading="lazy" aria-hidden="true"></span>
-        <p>После бесплатного вводного урока школа «Уникум» предлагает льготные условия для дальнейшего обучения.</p>
+        <p>После бесплатного вводного урока школа «Уникум» предлагает <strong class="hl">льготные условия</strong> для дальнейшего обучения.</p>
         <button class="btn btn--sm" data-open="lead">Выбрать время <span class="arr">→</span></button>
       </div>
     </div>
@@ -1336,14 +1399,14 @@ html[data-theme="dark"] .after--v2 img.acard__obj{filter:drop-shadow(0 12px 18px
       <h2 class="label label--alt">обучение</h2>
     </div>
     <div class="steps">
-      <div class="step reveal"><b>01</b><h3>Пробный урок</h3><p>Бесплатно знакомимся, определяем уровень и подбираем курс.</p></div>
-      <div class="step reveal"><b>02</b><h3>Своя группа</h3><p>До 6 ребят одного возраста и уровня, удобное расписание.</p></div>
-      <div class="step reveal"><b>03</b><h3>Уроки онлайн</h3><p>Живые занятия с преподавателем <span style="white-space:nowrap">1–2 раза</span> в&nbsp;неделю, записи всегда доступны.</p></div>
-      <div class="step reveal"><b>04</b><h3>Свой проект</h3><p>Каждый модуль заканчивается защитой собственной игры или приложения.</p></div>
+      <div class="step reveal"><b>01</b><h3>Пробный урок</h3><p><strong class="hl">Бесплатно</strong> знакомимся, определяем уровень и подбираем курс.</p></div>
+      <div class="step reveal"><b>02</b><h3>Своя группа</h3><p><strong class="hl">До 6 ребят</strong> одного возраста и уровня, удобное расписание.</p></div>
+      <div class="step reveal"><b>03</b><h3>Уроки онлайн</h3><p>Живые занятия с преподавателем <span style="white-space:nowrap">1–2 раза</span> в&nbsp;неделю, <strong class="hl">записи всегда доступны</strong>.</p></div>
+      <div class="step reveal"><b>04</b><h3>Свой проект</h3><p>Каждый модуль заканчивается <strong class="hl">защитой собственной игры</strong> или приложения.</p></div>
     </div>
     <div class="coins reveal">
       <span data-pix="coin"></span>
-      <p><b>Юникоины за успехи.</b> За домашние задания и проекты ученики получают внутреннюю валюту и обменивают её на призы.</p>
+      <p><b>Юникоины за успехи.</b> За домашние задания и проекты ученики получают внутреннюю валюту и <strong class="hl">обменивают её на призы</strong>.</p>
     </div>
   </div>
 </section>
@@ -1371,11 +1434,11 @@ html[data-theme="dark"] .after--v2 img.acard__obj{filter:drop-shadow(0 12px 18px
       <h2 class="label">Частые вопросы</h2>
     </div>
     <div class="faq reveal">
-      <details name="faq"><summary>Нужен ли опыт программирования?</summary><p>Нет. Мы начинаем с нуля и подбираем курс по возрасту и уровню на пробном уроке.</p></details>
-      <details name="faq"><summary>Какой компьютер нужен?</summary><p>Ноутбук или компьютер на Windows или macOS, наушники с микрофоном и стабильный интернет. Планшета для старших курсов недостаточно.</p></details>
-      <details name="faq"><summary>Сколько стоит обучение?</summary><p>Стоимость зависит от курса и абонемента. Точную цену и варианты рассрочки расскажем после пробного урока.</p></details>
-      <details name="faq"><summary>Что, если ребёнок пропустит урок?</summary><p>Запись каждого занятия остаётся в личном кабинете, а преподаватель поможет разобраться с пропущенной темой.</p></details>
-      <details name="faq"><summary>Можно ли вернуть деньги?</summary><p>Да, за неиспользованные занятия мы возвращаем деньги по условиям договора-оферты.</p></details>
+      <details name="faq"><summary>Нужен ли опыт программирования?</summary><p>Нет. Мы <strong class="hl">начинаем с нуля</strong> и подбираем курс по возрасту и уровню на пробном уроке.</p></details>
+      <details name="faq"><summary>Какой компьютер нужен?</summary><p>Ноутбук или компьютер на Windows или macOS, наушники с микрофоном и стабильный интернет. <strong class="hl">Планшета для старших курсов недостаточно</strong>.</p></details>
+      <details name="faq"><summary>Сколько стоит обучение?</summary><p>Стоимость зависит от курса и абонемента. Точную цену и <strong class="hl">варианты рассрочки</strong> расскажем после пробного урока.</p></details>
+      <details name="faq"><summary>Что, если ребёнок пропустит урок?</summary><p><strong class="hl">Запись каждого занятия</strong> остаётся в личном кабинете, а преподаватель поможет разобраться с пропущенной темой.</p></details>
+      <details name="faq"><summary>Можно ли вернуть деньги?</summary><p>Да, за неиспользованные занятия мы <strong class="hl">возвращаем деньги</strong> по условиям договора-оферты.</p></details>
     </div>
   </div>
 </section>
@@ -1539,9 +1602,9 @@ function paintPix(root=document){ root.querySelectorAll('[data-pix]').forEach(el
 
 /* ============ ДАННЫЕ КУРСОВ (меняйте здесь) ============ */
 const COURSES=[
- {id:'junior',name:'Junior',age:'6–8 лет',color:'var(--lilac)',pic:'joystick',img:'img/courses/course-junior.jpg',imgAlt:'Ноутбук с пиксельной игрой: котёнок прыгает по платформам, рядом блоки кода и кубики',
+ {id:'junior',logos:[['scratch','Scratch'],['','Minecraft'],['','Roblox']],name:'Junior',age:'6–8 лет',color:'var(--lilac)',pic:'joystick',img:'img/courses/middle-roblox.jpg',imgAlt:'Футбольный матч в Roblox: счёт «Синие 1 : 0 Красные»',
   title:'Первые игры и анимации',
-  text:['Ребёнок знакомится с компьютером и логикой программ через игру: собирает код из блоков, оживляет персонажей и создаёт первые миры.','Развиваем внимание, алгоритмическое и пространственное мышление — без сложного текста и скучной теории.'],
+  text:['Ребёнок знакомится с компьютером и логикой программ через игру: собирает код из блоков, оживляет персонажей и <strong class="hl">создаёт первые миры</strong>.','Развиваем внимание, алгоритмическое и пространственное мышление — <strong class="hl">без сложного текста и скучной теории</strong>.'],
   langs:['ScratchJr','Scratch','Minecraft','Tinkercad','Roblox Studio'],
   modules:[
    {tech:'ScratchJr',n:4,title:'Простые игры и мультики',li:['знакомство с блочным программированием','персонажи, сцены и сообщения','таймеры и первые условия'],res:'4 собственных мини-проекта'},
@@ -1550,9 +1613,9 @@ const COURSES=[
    {tech:'Tinkercad',n:8,title:'3D-моделирование',li:['фигуры, группы и отверстия','модели для игр и 3D-печати','переносим модели в Minecraft'],res:'проект «Моя комната мечты»'},
    {tech:'Roblox Studio',n:12,title:'Первая игра на Lua',li:['знакомство с текстовым кодом на Lua','физика объектов и спецэффекты','публикация игры для друзей'],res:'своя игра-обби в Roblox'}
   ]},
- {id:'middle',name:'Middle',age:'9–11 лет',color:'var(--mint)',pic:'monitor',img:'img/courses/course-middle.jpg',imgAlt:'Ноутбук с 3D-игрой про рыцаря и замок, рядом 3D-модель дракончика, макет сайта и геймпад',
+ {id:'middle',logos:[['scratch','Scratch'],['javascript','JavaScript'],['blender','Blender'],['unity','Unity'],['','Roblox']],name:'Middle',age:'9–11 лет',color:'var(--mint)',pic:'monitor',img:'img/courses/high-unity.jpg',imgAlt:'3D-зал египетской гробницы в Unity: статуи кошек, факелы и сундук',
   title:'От блоков к настоящему коду',
-  text:['Переходим от визуального программирования к текстовым языкам: Lua, JavaScript, C#. Делаем браузерные и 3D-игры, мобильные приложения и первый сайт.','Ученик пробует себя в роли геймдизайнера, веб-разработчика и 3D-художника.'],
+  text:['Переходим <strong class="hl">от визуального программирования к текстовым языкам</strong>: Lua, JavaScript, C#. Делаем браузерные и 3D-игры, мобильные приложения и первый сайт.','Ученик <strong class="hl">пробует себя в роли</strong> геймдизайнера, веб-разработчика и 3D-художника.'],
   langs:['Scratch','Lua','JavaScript','Blender','C# / Unity','HTML/CSS'],
   modules:[
    {tech:'Scratch',n:8,title:'Игры с меню и уровнями',li:['меню, жизни, таблица рекордов','клоны и списки','игровой баланс'],res:'полноценная аркада'},
@@ -1562,9 +1625,9 @@ const COURSES=[
    {tech:'Unity · C#',n:16,title:'3D-игры на Unity',li:['сцена, физика и коллайдеры','основы C#: классы и методы','меню, звук и интерфейс'],res:'собственная 3D-игра'},
    {tech:'HTML/CSS',n:10,title:'Первый сайт',li:['вёрстка страницы и стили','адаптив под телефон','публикация в интернете'],res:'сайт-визитка по ТЗ'}
   ]},
- {id:'high',name:'High',age:'12–15 лет',color:'var(--sun)',pic:'rocket',img:'img/courses/course-high.jpg',imgAlt:'Монитор с редактором кода, смартфон с приложением и схема веток разработки',
+ {id:'high',logos:[['python','Python'],['javascript','JavaScript'],['unity','Unity'],['git','Git']],name:'High',age:'12–15 лет',color:'var(--sun)',pic:'rocket',img:'img/courses/junior-platformer.jpg',imgAlt:'2D-платформер: героиня, ключ, дверь и шипы',
   title:'Языки профессионалов',
-  text:['Курс для подростков, которые хотят глубже: Python, веб-разработка, Unity и мобильные приложения. Работаем как в настоящей ИТ-команде — с техзаданием, Git и дедлайнами.','На выходе — портфолио проектов и понимание, какое направление в ИТ нравится больше всего.'],
+  text:['Курс для подростков, которые хотят глубже: Python, веб-разработка, Unity и мобильные приложения. Работаем <strong class="hl">как в настоящей ИТ-команде</strong> — с техзаданием, Git и дедлайнами.','На выходе — <strong class="hl">портфолио проектов</strong> и понимание, какое направление в ИТ нравится больше всего.'],
   langs:['Python','JavaScript','C# / Unity','Java','Git'],
   modules:[
    {tech:'Python',n:16,title:'Программы и 2D-игры',li:['синтаксис, функции и структуры данных','игры на Pygame','работа с файлами и API'],res:'игра и Telegram-бот'},
@@ -1574,6 +1637,9 @@ const COURSES=[
    {tech:'Git',n:4,title:'Командная разработка',li:['репозитории и коммиты','работа в команде','защита проекта'],res:'командный проект на GitHub'}
   ]}
 ];
+// картинки всех курсов грузим заранее, чтобы при переключении вкладок они показывались сразу
+const COURSE_IMGS=[];
+addEventListener('load',()=>COURSES.forEach(c=>{if(c.img){const im=new Image();im.src=c.img;im.decode&&im.decode().catch(()=>{});COURSE_IMGS.push(im)}}),{once:true});
 
 /* ============ ВКЛАДКИ И ПРОГРАММА ============ */
 (()=>{
@@ -1585,7 +1651,7 @@ const COURSES=[
     const c=COURSES[cur];
     tabs.querySelectorAll('button').forEach((b,i)=>b.setAttribute('aria-selected',i===cur));
     course.innerHTML=`<div class="course">
-      <div class="course__pic" style="background:${c.color}">${c.img?`<img src="${c.img}" width="1080" height="720" alt="${c.imgAlt}">`:`<span data-pix="${c.pic}"></span>`}<span class="chip">${c.age}</span></div>
+      <div class="course__pic" style="background:${c.color}">${c.img?`<img src="${c.img}" width="786" height="508" decoding="sync" alt="${c.imgAlt}">`:`<span data-pix="${c.pic}"></span>`}<span class="chip">${c.age}</span>${c.logos?`<span class="course__logos">${c.logos.map(([f,t])=>`<span class="lg${f?'':' lg--txt'}">${f?`<img src="img/logos/${f}.svg" width="16" height="16" alt="" aria-hidden="true">`:''}${t}</span>`).join('')}</span>`:''}</div>
       <div><h3>${c.title}</h3>${c.text.map(t=>`<p>${t}</p>`).join('')}
         <div class="course__langs">${c.langs.map(l=>`<span>${l}</span>`).join('')}</div>
         <div class="course__actions">
@@ -1965,6 +2031,36 @@ paintPix();
     requestAnimationFrame(f);
   };
   if(document.readyState==='complete')setTimeout(start,1200);else addEventListener('load',()=>setTimeout(start,1200),{once:true});
+})();
+
+/* ============ ПЛАВНОЕ РАСКРЫТИЕ «ПОДРОБНЕЕ» И ВОПРОСОВ ============ */
+(()=>{
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const EASE='cubic-bezier(.22,.8,.24,1)';
+  const groups={};
+  function animate(d,open){
+    if(d._anim){d._anim.cancel();d._anim=null}
+    const sum=d.querySelector('summary'), body=[...d.children].filter(x=>x!==sum);
+    const from=d.offsetHeight;
+    if(open)d.open=true;
+    d.open=open;const to=d.offsetHeight;d.open=true;   // замеряем конечную высоту
+    if(reduce){d.open=open;return}
+    d.classList.add('dt-anim');
+    const dur=Math.min(520,Math.max(300,Math.abs(to-from)*1.4));
+    d._anim=d.animate([{height:from+'px'},{height:to+'px'}],{duration:dur,easing:EASE});
+    body.forEach(b=>b.animate(open?[{opacity:0,transform:'translateY(-6px)'},{opacity:1,transform:'none'}]:[{opacity:1},{opacity:0}],{duration:open?dur:dur*.6,easing:EASE,fill:'both'}));
+    d._anim.onfinish=()=>{d.open=open;d.classList.remove('dt-anim');d._anim=null;body.forEach(b=>b.getAnimations().forEach(a=>a.cancel()))};
+  }
+  document.querySelectorAll('.need details, .faq details').forEach(d=>{
+    const g=d.getAttribute('name'); if(g){(groups[g]=groups[g]||[]).push(d);d.removeAttribute('name');d.dataset.group=g}
+    d.querySelector('summary').addEventListener('click',e=>{
+      e.preventDefault();
+      const opening=!d.open||d._closing===true;
+      d._closing=!opening;
+      if(opening&&d.dataset.group)groups[d.dataset.group].forEach(o=>{if(o!==d&&o.open){o._closing=true;animate(o,false)}});
+      animate(d,opening);
+    });
+  });
 })();
 </script>
 </body>
