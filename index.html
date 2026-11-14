@@ -1014,6 +1014,8 @@ html[data-theme="dark"]{background:#090D22 linear-gradient(#1E0E66 50%,#090D22 5
 html[data-theme="dark"] .hero--v2 .hero__text.glass{
   --g-tint:rgba(70,40,170,.13);--g-tint2:rgba(20,8,70,.22);
   --g-rim:rgba(190,170,255,.26);--g-rim-hi:rgba(235,225,255,.8);--g-line:rgba(200,180,255,.13);--g-shadow:rgba(2,0,20,.7)}
+/* текст на стекле первого экрана не выделяется и не копируется */
+.hero--v2 .hero__text.glass,.hero--v2 .hero__text.glass *{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 @media (prefers-reduced-motion:reduce){.hero--v2 .hero__text.glass{transform:none;will-change:auto}}
 
 /* ============ ОБЛЕГЧЁННЫЙ РЕЖИМ ДЛЯ СЛАБЫХ КОМПЬЮТЕРОВ ============ */
@@ -1044,6 +1046,7 @@ h1,h2,h3,h4{text-wrap:balance}
 .rcard__quote{font-size:15px;line-height:1.5}
 .rcard__who{font-size:13.5px}
 .license p{font-size:14px}
+.field label .opt{font-weight:400;opacity:.65}
 .field input,.field select{font-family:var(--body);font-size:16px}
 /* подписи «как в коде» остаются моноширинными */
 .course__langs span,.course__pic .chip,.test-badge,.demo-note,.cta__tz{font-family:var(--mono)}
@@ -1547,6 +1550,7 @@ dialog#docWin{max-width:min(860px,calc(100% - 24px))}
             <input id="fPhone" name="phone" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="(___) ___-__-__">
           </div>
           <div class="msg" id="phoneMsg">Введите номер полностью</div></div>
+        <div class="field"><label for="fEmail">Почта <span class="opt">— необязательно</span></label><input id="fEmail" name="email" type="email" inputmode="email" autocomplete="email" autocapitalize="none" spellcheck="false" placeholder="name@mail.ru"><div class="msg">Проверьте почту, например name@mail.ru</div></div>
         <div class="field"><label for="fAge">Возраст ребёнка</label>
           <select id="fAge" name="age"><option value="">Выберите</option><option>7 лет</option><option>8 лет</option><option>9 лет</option><option>10 лет</option><option>11 лет</option><option>12 лет</option><option>13 лет</option><option>14 лет</option><option>15 лет</option><option>16 лет</option></select>
           <div class="msg">Выберите возраст</div></div>
@@ -1871,13 +1875,14 @@ async function sendLead(data){
 }
 document.getElementById('leadForm').addEventListener('submit',async e=>{
   e.preventDefault();
-  const f=e.target, name=f.name.value.trim(), ph=phoneData(), age=f.age.value, agree=f.agree.checked;
+  const f=e.target, name=f.name.value.trim(), ph=phoneData(), email=f.email.value.trim(), age=f.age.value, agree=f.agree.checked;
+  const mailOk=!email||/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email); // почта необязательна, но если введена — проверяем
   const set=(el,bad)=>el.closest('.field').classList.toggle('err',bad);
-  set(f.name,name.length<2); set(f.phone,!ph.ok); set(f.age,!age);
+  set(f.name,name.length<2); set(f.phone,!ph.ok); set(f.email,!mailOk); set(f.age,!age);
   document.getElementById('agreeWrap').classList.toggle('err',!agree);
-  if(name.length<2||!ph.ok||!age||!agree) return;
+  if(name.length<2||!ph.ok||!mailOk||!age||!agree) return;
   const btn=f.querySelector('[type=submit]'); btn.disabled=true;
-  try{ await sendLead({name,phone:ph.full,country:ph.country,age,game:chosenGame,page:location.href}); f.reset(); refreshCountry(); f.hidden=true; document.getElementById('thanks').hidden=false; }
+  try{ await sendLead({name,phone:ph.full,country:ph.country,email,age,game:chosenGame,page:location.href}); f.reset(); refreshCountry(); f.hidden=true; document.getElementById('thanks').hidden=false; }
   catch(err){ alert('Не удалось отправить заявку. Позвоните нам: +7 (900) 000-00-00'); }
   finally{ btn.disabled=false; }
 });
@@ -2098,6 +2103,13 @@ paintPix();
       animate(d,opening);
     });
   });
+})();
+</script>
+<script>
+/* стекло первого экрана: не даём копировать и перетаскивать текст */
+(function(){const g=document.querySelector('.hero--v2 .hero__text.glass');if(!g)return;
+  ['copy','cut','dragstart','selectstart'].forEach(e=>g.addEventListener(e,ev=>ev.preventDefault()));
+  g.addEventListener('contextmenu',ev=>{if(!ev.target.closest('a'))ev.preventDefault()});
 })();
 </script>
 </body>

@@ -6,6 +6,7 @@
 <title>Админка — Уникум</title>
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#2A0A73">
+<script>try{const t=localStorage.getItem('unikum-admin-theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme: dark)').matches))document.documentElement.dataset.theme='dark'}catch(e){}</script>
 <link rel="icon" type="image/png" href="img/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -217,6 +218,55 @@ dialog::backdrop{background:rgba(25,5,70,.5);backdrop-filter:blur(3px)}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
+/* ============ ПЕРЕКЛЮЧАТЕЛЬ ТЕМЫ ============ */
+.theme-btn{flex:none;width:40px;height:40px;display:grid;place-items:center;border:0;border-radius:11px;background:var(--card);color:var(--ink);box-shadow:var(--glow);transition:transform .2s}
+.theme-btn:active{transform:rotate(-20deg) scale(.94)}
+.theme-btn .i-sun,html[data-theme="dark"] .theme-btn .i-moon{display:none}
+html[data-theme="dark"] .theme-btn .i-sun{display:block;color:var(--yellow)}
+
+/* ============ НОЧНОЙ РЕЖИМ ============ */
+html[data-theme="dark"]{
+  color-scheme:dark;
+  --ink:#B391FF;--bg:#090D22;--card:#111836;--text:#EEE8FF;--muted:#B3A5D9;--line:rgba(190,160,255,.14);--soft:#18203F;
+  --s3:#141B3B;--edge:#2A3460;
+  --glow:0 24px 50px -26px rgba(0,0,0,.85),0 0 0 1px rgba(190,160,255,.1);
+}
+html[data-theme="dark"] .side{background:radial-gradient(60% 50% at 80% 10%,rgba(90,27,208,.55) 0%,transparent 70%),linear-gradient(#170D45,#0B0A2A);box-shadow:1px 0 0 rgba(190,160,255,.1)}
+html[data-theme="dark"] .nav a[aria-current="page"]{background:rgba(255,255,255,.1);color:#fff;box-shadow:inset 0 0 0 1px rgba(190,160,255,.22)}
+html[data-theme="dark"] .top{background:rgba(9,13,34,.88)}
+html[data-theme="dark"] .top__menu,html[data-theme="dark"] .search input,html[data-theme="dark"] .who select,html[data-theme="dark"] .filters select,
+html[data-theme="dark"] .kpi,html[data-theme="dark"] .tbl-wrap,html[data-theme="dark"] .kid,html[data-theme="dark"] .group,html[data-theme="dark"] .item,
+html[data-theme="dark"] .tabs button,html[data-theme="dark"] .tog button,html[data-theme="dark"] .access code{background:var(--card)}
+html[data-theme="dark"] .top__menu{color:var(--text)}
+html[data-theme="dark"] .btn--ghost{background:var(--card);color:#E3D6FF;box-shadow:inset 0 0 0 1.5px rgba(179,145,255,.3)}
+html[data-theme="dark"] .btn--ghost:hover{box-shadow:inset 0 0 0 1.5px #B391FF}
+html[data-theme="dark"] .btn--danger{background:var(--card);color:#FF8DB2;box-shadow:inset 0 0 0 1.5px rgba(255,141,178,.35)}
+html[data-theme="dark"] .link{text-decoration-color:rgba(179,145,255,.4)}
+html[data-theme="dark"] .kpi--warn b{color:#FF8DB2}
+html[data-theme="dark"] .tabs button[aria-pressed="true"]{background:#6A2BE0;color:#fff}
+html[data-theme="dark"] th{background:var(--s3)}
+html[data-theme="dark"] tbody tr:hover{background:rgba(179,145,255,.06)}
+html[data-theme="dark"] .map tr:hover{background:none}
+html[data-theme="dark"] .input:focus,html[data-theme="dark"] .field select:focus,html[data-theme="dark"] .field textarea:focus{background:#1E2850}
+html[data-theme="dark"] .input[aria-invalid="true"]{border-color:#FF6F98}
+html[data-theme="dark"] .err{color:#FF8DB2}
+html[data-theme="dark"] .p-ok,html[data-theme="dark"] .tog button[aria-pressed="true"].y{background:rgba(47,199,154,.16);color:#72E6C3}
+html[data-theme="dark"] .p-wait{background:rgba(255,222,59,.14);color:#FFE07A}
+html[data-theme="dark"] .p-new,html[data-theme="dark"] .tog button[aria-pressed="true"].n{background:rgba(255,95,168,.16);color:#FF9CCB}
+html[data-theme="dark"] .p-mute{background:var(--soft)}
+html[data-theme="dark"] .p-lilac{background:rgba(179,145,255,.16);color:#D6C2FF}
+html[data-theme="dark"] .p-ice{background:rgba(63,182,255,.14);color:#93D5FF}
+html[data-theme="dark"] .p-bad{background:rgba(255,90,90,.15);color:#FF9A92}
+html[data-theme="dark"] .demo{background:rgba(255,222,59,.14);color:#FFE07A}
+html[data-theme="dark"] .bar{background:var(--edge)}
+html[data-theme="dark"] .stars button{color:var(--edge)}
+html[data-theme="dark"] .seg input:checked + span{background:var(--card)}
+html[data-theme="dark"] .msg{background:rgba(47,199,154,.08);box-shadow:inset 0 0 0 1px rgba(47,199,154,.3)}
+html[data-theme="dark"] dialog{background:var(--card);box-shadow:0 40px 80px -30px rgba(0,0,0,.9),0 0 0 1px rgba(190,160,255,.16)}
+html[data-theme="dark"] dialog::backdrop,html[data-theme="dark"] .drawer{background:rgba(2,3,14,.6)}
+html[data-theme="dark"] .drawer__head{background:radial-gradient(60% 80% at 90% 0%,rgba(90,27,208,.7),transparent 70%),#1C0E55}
+html[data-theme="dark"] .toast{background:#2A1A6E;box-shadow:0 20px 40px -16px rgba(0,0,0,.9),0 0 0 1px rgba(190,160,255,.2)}
+
 /* отскок при прокрутке за край — в цвет фона админки */
 html{background:var(--bg)}
 </style>
@@ -252,7 +302,7 @@ html{background:var(--bg)}
           <option value="manager">Менеджер · Светлана</option>
           <option value="curator">Куратор · Елена</option>
           <option value="teacher">Преподаватель · Мария В.</option>
-        </select></div>
+        </select><button class="theme-btn" type="button" data-theme-toggle aria-label="Включить ночной режим" aria-pressed="false" title="Ночной режим"><svg class="i-moon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M20.5 14.6A8.5 8.5 0 0 1 9.4 3.5a.6.6 0 0 0-.8-.7A9.5 9.5 0 1 0 21.2 15.4a.6.6 0 0 0-.7-.8z"/></svg><svg class="i-sun" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></g></svg></button></div>
     </header>
     <main class="content" id="view" tabindex="-1"></main>
   </div>
@@ -900,6 +950,21 @@ $('#resetDemo').onclick=()=>{D=seed();save();toast('Демо-данные сбр
 $('#dlg').addEventListener('click',e=>{if(e.target===e.currentTarget)e.currentTarget.close()});
 window.addEventListener('hashchange',route);
 route();
+</script>
+<script>
+/* ночной режим админки: выбор запоминается в этом браузере */
+(function(){
+  const root=document.documentElement, meta=document.querySelector('meta[name=theme-color]');
+  const apply=t=>{
+    if(t==='dark')root.dataset.theme='dark';else delete root.dataset.theme;
+    meta&&meta.setAttribute('content',t==='dark'?'#090D22':'#2A0A73');
+    document.querySelectorAll('[data-theme-toggle]').forEach(b=>{b.setAttribute('aria-pressed',t==='dark');const l=t==='dark'?'Включить дневной режим':'Включить ночной режим';b.setAttribute('aria-label',l);b.title=l});
+  };
+  apply(root.dataset.theme==='dark'?'dark':'light');
+  document.querySelectorAll('[data-theme-toggle]').forEach(b=>b.addEventListener('click',()=>{
+    const t=root.dataset.theme==='dark'?'light':'dark';apply(t);try{localStorage.setItem('unikum-admin-theme',t)}catch(e){}
+  }));
+})();
 </script>
 </body>
 </html>

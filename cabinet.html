@@ -521,6 +521,244 @@ html[data-theme="dark"]{background:#090D22 linear-gradient(#1E0E66 50%,#090D22 5
   .plan__lessons li{grid-template-columns:24px minmax(0,1fr)}
   .plan__lessons li span{grid-column:2}
 }
+
+/* ============ СПОКОЙНЫЙ КОМПАКТНЫЙ ВИД ============ */
+/* меньше рамок и крупных заголовков, плотнее строки — страница читается с первого взгляда */
+:root{--r:18px}
+.top__in{height:58px;gap:14px}
+.top .logo .b{height:36px}.top .logo .w{height:16px}
+.top__tag{font-size:10px;padding:6px 9px}
+.kid{padding:5px 11px 5px 5px;border-radius:12px}
+.kid__ava{width:28px;height:28px;border-radius:9px;font-size:13px}
+.coinpill{padding:7px 11px;font-size:14px}
+.me__ava,.theme-btn{width:34px;height:34px;border-radius:11px}
+
+.layout{grid-template-columns:212px minmax(0,1fr);gap:24px;padding-top:20px}
+.view{gap:16px;align-content:start}
+.grid2,.grid-main,.xc-grid{gap:16px}
+.stack{display:grid;gap:16px;align-content:start;min-width:0}
+.card{padding:18px 20px}
+.card__h{margin-bottom:10px;min-height:22px}
+.card__h h2{font-size:15px;letter-spacing:.05em}
+.card__h a.link,.card__h button.link{font-size:12.5px;font-weight:600;text-decoration:none}
+.card__h a.link::after{content:" →"}
+.card__h a.link:hover{color:var(--sun)}
+.vhead{align-items:center}
+.vhead h1{font-size:clamp(20px,2.3vw,25px)}
+.vhead p{font-size:13.5px;margin-top:4px;max-width:86ch;text-wrap:pretty}
+.pill{padding:4px 9px;font-size:11px}
+.tabs button{padding:7px 12px;font-size:13px;border-radius:10px}
+.bar{height:6px}
+
+/* меню слева: группы и плотные строки */
+.side{gap:2px}
+.side a{padding:8px 12px;border-radius:11px;gap:11px;font-size:14px}
+.side a svg{width:18px;height:18px}
+.side a[aria-current="page"]{box-shadow:0 0 0 1px var(--line)}
+.side a .cnt{min-width:19px;height:19px;font-size:10.5px}
+.side__lbl{display:block;margin:14px 12px 4px;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);opacity:.75}
+.side__foot{display:grid;gap:2px;margin-top:14px;padding-top:10px;border-top:1px solid var(--line)}
+.side a small{display:block;font-size:11px;font-weight:400;line-height:1.3;color:var(--muted)}
+.side__out{margin-top:0}
+
+/* тихая кнопка в строках списков */
+.btn-q{flex:none;display:inline-flex;align-items:center;gap:6px;border:0;border-radius:9px;padding:7px 11px;background:transparent;color:var(--muted);
+  font:600 12.5px/1.2 "Golos Text",system-ui,sans-serif;text-decoration:none;white-space:nowrap;box-shadow:inset 0 0 0 1px var(--line);transition:color .15s,box-shadow .15s,background .15s}
+html:not([data-theme="dark"]) .btn-q{color:#4E3A86;box-shadow:inset 0 0 0 1px rgba(65,14,173,.22)}
+.btn-q:hover,html:not([data-theme="dark"]) .btn-q:hover{color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.btn-q[disabled]{opacity:.5;cursor:not-allowed}
+.btn-q svg{width:15px;height:15px}
+
+/* списки внутри карточек — строки с тонкой линией вместо карточек в карточках */
+.card .list{gap:0}
+.card .list > .item,.card > .item{padding:10px 0;border-radius:0;background:none;box-shadow:none;border-top:1px solid var(--line);gap:12px}
+.card .list > .item:first-child,.card > .item:first-of-type{border-top:0;padding-top:2px}
+.card .list > .item:last-child,.card > .item:last-of-type{padding-bottom:2px}
+.item__main b{font-size:14px;font-weight:600}
+.item__main small{font-size:12.5px;margin-top:1px}
+.item__em{flex:none;width:32px;height:32px;border-radius:10px;display:grid;place-items:center;font-size:17px;background:var(--paper)}
+.date{width:44px;padding:6px 0 5px;border-radius:11px;box-shadow:inset 0 0 0 1px var(--line);background:transparent}
+.date b{font-size:17px}
+.date small{font-size:9.5px;margin-top:2px}
+.card .list > .item:not(.item--on) .paymark{opacity:.55}
+
+/* главная: следующий урок */
+.next{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px 28px;align-items:center;padding:20px 24px;border-radius:20px}
+.next__main{min-width:0}
+.next__hello{font-size:11.5px}
+.next h2{font-size:clamp(20px,2.4vw,26px);margin:8px 0 4px;max-width:none}
+.next__meta{margin:8px 0 16px;font-size:13.5px;gap:6px 16px}
+.next__meta svg{width:15px;height:15px}
+.next__note{margin:0 0 14px;font-size:13.5px}
+.next .btn{padding:12px 18px;font-size:13px}
+.next__side{position:relative;display:grid;gap:8px;justify-items:center}
+.next__side > small{font:700 10.5px/1 var(--display);text-transform:uppercase;letter-spacing:.1em;color:#CFC2FF}
+.timer{margin:0;gap:6px}
+.timer div{min-width:58px;padding:9px 6px;border-radius:12px}
+.timer b{font-size:22px}
+.timer small{font-size:10px}
+
+/* статистика — одна тонкая полоса вместо четырёх плиток */
+.stats,.paygrid{gap:0;padding:6px 0;background:var(--card);border-radius:var(--r);box-shadow:var(--glow)}
+.stats > .stat,.paygrid > .stat,html[data-theme="dark"] .stats > .stat,html[data-theme="dark"] .paygrid > .stat{background:none;box-shadow:none;border-radius:0;overflow:visible}
+.stats > .stat{padding:8px 18px;grid-template-columns:auto minmax(0,1fr);gap:0 12px;align-items:center}
+.stats > .stat + .stat,.paygrid > .stat + .stat{border-left:1px solid var(--line)}
+.stats > .stat i{position:static;grid-row:1/span 2;width:34px;height:34px;border-radius:10px;font-weight:700}
+.stats > .stat b{font-size:20px;align-self:end}
+.stats > .stat span{font-size:12px;line-height:1.3;align-self:start}
+.stat .bar{display:none}
+.paygrid > .stat{padding:8px 18px;gap:2px;align-content:start}
+.paygrid > .stat b{font-size:20px}
+.paygrid > .stat b.sm{font-size:15px}
+.paygrid .stat > span:first-child{font-size:10.5px}
+.paygrid > .stat span{font-size:12px;line-height:1.3}
+
+/* преподаватель и курс */
+.teacher{gap:12px}
+.teacher__ava{width:44px;height:44px;border-radius:14px;font-size:16px}
+.teacher h3{font-size:15px}
+.quote{margin-top:12px;padding:11px 14px;border-radius:13px;font-size:13px}
+.quote small{margin-top:4px;font-size:12px}
+.course-line{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.course-line h3{font-size:15px}
+.course-line span{font-size:12.5px;color:var(--muted)}
+
+/* задания */
+.hw{gap:10px}
+.hw h3{font-size:15px}
+.hw__top small{font-size:12.5px}
+.hw__task{font-size:14px}
+.hw__send .input{padding:10px 13px}
+
+/* журнал посещений: месяцы сворачиваются */
+.jm{border-top:1px solid var(--line)}
+.jm:first-child{border-top:0}
+.jm summary{list-style:none;display:flex;align-items:center;gap:10px;padding:10px 4px;cursor:pointer;border-radius:8px}
+.jm:first-child summary{padding-top:2px}
+.jm summary::-webkit-details-marker{display:none}
+.jm summary b{font:700 12.5px/1 var(--display);text-transform:uppercase;letter-spacing:.08em}
+.jm summary span{color:var(--muted);font-size:12.5px}
+.jm summary::after{content:"";flex:none;margin-left:auto;margin-right:4px;width:8px;height:8px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg) translateY(-2px);transition:transform .2s}
+.jm[open] summary::after{transform:rotate(-135deg) translateY(-2px)}
+.jm[open]{padding-bottom:6px}
+.jm summary:hover b{color:var(--ink)}
+.jrow{grid-template-columns:30px 92px minmax(0,1fr) auto;gap:10px;padding:7px 4px}
+.jm summary + .jrow{border-top:0}
+.jrow__n{width:26px;height:26px;border-radius:8px;font-size:11.5px}
+.jrow__d{font-size:12.5px}
+.jrow__t b{display:inline;font-weight:600}
+.jrow__t small{margin-left:6px}
+
+/* прогресс */
+.road,.road.road--wrap{grid-template-columns:repeat(auto-fit,minmax(84px,1fr))!important;gap:14px 8px}
+.road::before{display:none}
+.node{gap:6px}
+.node__dot{width:46px;height:46px;border-radius:14px;font-size:12px}
+.node--now .node__dot{box-shadow:0 0 0 4px rgba(255,95,168,.2),0 10px 20px -10px rgba(255,79,158,.9)}
+.node b{font-size:12px}
+.node small{font-size:10.5px}
+.lessons{gap:2px}
+.lesson{padding:7px 10px;font-size:13.5px;gap:10px}
+.lesson i{width:24px;height:24px;border-radius:8px;font-size:11px}
+.skills{gap:11px}
+.badges{grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:8px}
+.badge{padding:12px 8px;border-radius:14px;gap:6px;box-shadow:none}
+.badge span{width:42px;height:42px;border-radius:13px;font-size:21px}
+.badge b{font-size:12px}
+.badge small{font-size:11px;line-height:1.3}
+
+/* программа обучения */
+.plan-stats{gap:0}
+.plan-stats div,html[data-theme="dark"] .plan-stats div{padding:2px 16px;border-radius:0;background:none;gap:2px}
+.plan-stats div + div{border-left:1px solid var(--line)}
+.plan-stats div:first-child{padding-left:0}
+.plan-stats b{font-size:20px}
+.plan-stats span{font-size:12px;line-height:1.3}
+.plan-note{margin-top:14px;padding-top:12px;border-top:1px solid var(--line);font-size:13px;max-width:none}
+.plans{gap:8px}
+.plan{border-radius:14px}
+.plan summary{padding:10px 14px;gap:12px}
+.plan__n{width:32px;height:32px;border-radius:10px;font-size:13px}
+.plan__h b{font-size:14.5px}
+.plan__h small{font-size:12px}
+.plan__body{padding:2px 14px 14px 58px;gap:10px}
+.plan__goal{font-size:13.5px}
+.plan__lessons li{padding:6px 10px;font-size:13.5px}
+
+/* оплата */
+.payhero{padding:20px 24px;gap:22px;border-radius:20px}
+.payhero h2{font-size:clamp(19px,2.2vw,24px);margin:10px 0 6px}
+.payhero p{font-size:14px}
+.ring{width:104px;height:104px}
+.ring::before{inset:9px}
+.ring b{font-size:28px}
+.ring small{font-size:10.5px;line-height:1.2;display:block}
+
+/* мастер-классы и доп. курсы */
+.mc-grid{gap:16px;grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
+.mc__play{width:46px;height:46px}
+.mc__body{padding:12px 14px 14px;gap:4px}
+.mc__body b{font-size:15px}
+.xc{border-radius:20px}
+.xc__head{padding:18px 20px;gap:12px}
+.xc__head span{font-size:34px}
+.xc__head h2{font-size:19px}
+.xc__body{padding:16px 20px 20px;gap:12px}
+.xc__body p{font-size:14px}
+
+/* профиль */
+.field{margin-bottom:12px}
+.input{padding:11px 13px;border-radius:12px;border-width:1.5px}
+.switch{padding:10px 0;font-size:14px}
+.switch small{font-size:12.5px}
+.freeze{padding:12px 16px}
+.freeze__ic{width:38px;height:38px;border-radius:12px;font-size:19px}
+.freeze b{font-size:15px}
+
+/* плюсики не заходят под таймер */
+@media (min-width:641px){.next::before{-webkit-mask:linear-gradient(90deg,transparent 0 46%,#000 58%,#000 68%,transparent 78%);mask:linear-gradient(90deg,transparent 0 46%,#000 58%,#000 68%,transparent 78%)}}
+@media (max-width:1080px){
+  .stats > .stat,.paygrid > .stat{border-left:0!important}
+  .stats > .stat:nth-child(even),.paygrid > .stat:nth-child(even){border-left:1px solid var(--line)!important}
+  .stats > .stat:nth-child(n+3),.paygrid > .stat:nth-child(n+3){border-top:1px solid var(--line);margin-top:6px;padding-top:14px}
+}
+@media (max-width:900px){
+  .layout{grid-template-columns:1fr;padding-top:16px}
+}
+@media (max-width:760px){
+  .plan-stats{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:12px}
+  .plan-stats div:nth-child(odd){padding-left:0;border-left:0}
+  .plan__body{padding:0 14px 14px}
+}
+@media (max-width:640px){
+  .card{padding:16px}
+  .next{grid-template-columns:1fr;gap:0;padding:18px}
+  .next::before,.payhero::before,.xc__head::before{display:none}
+  .next__main{display:contents}
+  .next__side{order:4;justify-items:start;margin-bottom:16px;grid-template-columns:auto 1fr;align-items:center;gap:12px}
+  .next__act,.next__note{order:5}
+  .timer div{flex:none;min-width:52px;padding:7px 6px}
+  .timer b{font-size:19px}
+  .stats > .stat,.paygrid > .stat{padding-inline:14px}
+  .stats > .stat i{width:30px;height:30px}
+  .stats > .stat b,.paygrid > .stat b{font-size:18px}
+  .item{flex-wrap:nowrap}
+  .item__main{flex:1 1 auto}
+  .item > .btn,.item > .pill{margin-left:0}
+  .item--wrap{flex-wrap:wrap}
+  .item--wrap .item__main{flex:1 1 calc(100% - 60px)}
+  .item--wrap > .btn-q,.item--wrap > .pill{margin-left:56px}
+  .item--wrap > .pill + .btn-q{margin-left:0}
+  .jrow{grid-template-columns:26px minmax(0,1fr) auto;gap:2px 10px}
+  .jrow__d{grid-column:2;grid-row:1;font-size:12px}
+  .jrow__t{grid-column:2;grid-row:2}
+  .jrow .pill{grid-column:3;grid-row:1/span 2;justify-self:end;align-self:center}
+  .jrow__n{grid-row:1/span 2;align-self:center}
+  .jrow__t small{display:block;margin-left:0}
+  .payhero{padding:18px;gap:14px}
+  .tabbar a{padding:6px 2px}
+}
+@media (max-width:360px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
 </head>
 <body>
@@ -543,6 +781,7 @@ html[data-theme="dark"]{background:#090D22 linear-gradient(#1E0E66 50%,#090D22 5
   <symbol id="i-video" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="2.5" y="6" width="13" height="12" rx="3"/><path d="m15.5 10.5 6-3.5v10l-6-3.5z"/></g></symbol>
   <symbol id="i-eye" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></g></symbol>
   <symbol id="i-coin" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="#FFDE3B"/><circle cx="12" cy="12" r="6" fill="none" stroke="#C99A00" stroke-width="2"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M4 5.5h16a1.5 1.5 0 0 1 1.5 1.5v9a1.5 1.5 0 0 1-1.5 1.5h-7l-4.5 3.5V17.5H4A1.5 1.5 0 0 1 2.5 16V7A1.5 1.5 0 0 1 4 5.5z"/></symbol>
   <symbol id="i-fire" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2s5 4.5 5 10a5 5 0 0 1-10 0c0-2 1-3.5 1-3.5S9 11 11 11c0-4 1-9 1-9z"/></symbol>
 </svg>
 
@@ -1001,14 +1240,14 @@ function courseLessons(st){ // занятия текущего модуля
 /* ---------- навигация ---------- */
 const ROUTES=[
   {id:'home',t:'Главная',i:'i-home',tab:1},
-  {id:'schedule',t:'Расписание',s:'Уроки',i:'i-cal',tab:1},
+  {id:'schedule',t:'Расписание',s:'Уроки',i:'i-cal',tab:1,g:'Занятия'},
   {id:'journal',t:'Журнал посещений',i:'i-journal'},
   {id:'homework',t:'Задания',i:'i-hw',tab:1},
-  {id:'progress',t:'Прогресс',i:'i-prog'},
+  {id:'progress',t:'Прогресс',i:'i-prog',g:'Курс'},
   {id:'program',t:'Программа обучения',s:'Программа',i:'i-book'},
   {id:'masterclasses',t:'Мастер-классы',s:'Видео',i:'i-play',tab:1},
   {id:'extra',t:'Доп. курсы',i:'i-spark'},
-  {id:'pay',t:'Оплата',i:'i-pay'},
+  {id:'pay',t:'Оплата',i:'i-pay',g:'Аккаунт'},
   {id:'profile',t:'Профиль',i:'i-user'},
   {id:'more',t:'Ещё',i:'i-more',hidden:1}
 ];
@@ -1017,9 +1256,9 @@ function renderNav(curId){
   const newMc=S&&S.masterclasses?S.masterclasses.filter(m=>m.isNew&&!m.seen).length:0;
   const badge=r=>r.id==='homework'&&cnt?`<span class="cnt">${cnt}</span>`:r.id==='masterclasses'&&newMc?`<span class="cnt">${newMc}</span>`:'';
   const a=(r,mob,on)=>`<a href="#${r.id}" ${on?'aria-current="page"':''}>${icon(r.i,mob?22:20)}<span>${mob&&r.s||r.t}</span>${badge(r)}</a>`;
-  $('#side').innerHTML=ROUTES.filter(r=>!r.hidden).map(r=>a(r,false,r.id===curId)).join('')+
-    `<div class="side__help"><b>Нужна помощь?</b>Куратор ответит в Telegram с 9:00 до 21:00.<a class="btn btn--ghost btn--sm" href="${esc(safeUrl(tg)||CURATOR_TG)}" target="_blank" rel="noopener">Написать куратору</a></div>
-     <a href="#logout" class="side__out">${icon('i-out')}<span>${MODE==='demo'?'Выйти из демо':'Выйти'}</span></a>`;
+  $('#side').innerHTML=ROUTES.filter(r=>!r.hidden).map(r=>(r.g?`<span class="side__lbl">${r.g}</span>`:'')+a(r,false,r.id===curId)).join('')+
+    `<div class="side__foot"><a href="${esc(safeUrl(tg)||CURATOR_TG)}" target="_blank" rel="noopener">${icon('i-chat')}<span>Написать куратору<small>Telegram · 9:00–21:00</small></span></a>
+     <a href="#logout" class="side__out">${icon('i-out')}<span>${MODE==='demo'?'Выйти из демо':'Выйти'}</span></a></div>`;
   // на телефоне: 4 главных раздела + «Ещё»
   const tabs=ROUTES.filter(r=>r.tab), inTabs=tabs.some(r=>r.id===curId);
   $('#tabbar').innerHTML=tabs.map(r=>a(r,true,r.id===curId)).join('')+a(ROUTES.find(r=>r.id==='more'),true,!inTabs);
@@ -1052,10 +1291,10 @@ function lessonItem(l,first){
   let right;
   if(isLocked(st,l))right='<a class="pill pill--muted" href="#pay">🔒 Откроется после оплаты</a>';
   else if(isFrozen(st,l))right=`<span class="pill pill--ice">❄ Заморозка${st.freeze.status==='requested'?' · на рассмотрении':''}</span>`;
-  else if(a)right=`<span class="pill pill--wait">Не придёт · ${esc(a.reason)}</span><button class="btn btn--ghost btn--sm" data-unabs="${esc(l.id)}">Отменить</button>`;
-  else right=`${first?'<span class="pill pill--new">Следующий</span>':''}<button class="btn btn--ghost btn--sm" data-abs="${esc(l.id)}">Не смогу присутствовать</button>`;
-  return `<div class="item"><div class="date"><b>${l.date.getDate()}</b><small>${MON[l.date.getMonth()]}, ${WD[l.date.getDay()]}</small></div>
-    <div class="item__main"><b>Урок ${l.n}. ${esc(l.title)}</b><small>${t2(l.date)} · ${esc(l.course)}${a&&a.makeup?' · хотим отработать':''}</small></div>${right}</div>`;
+  else if(a)right=`<span class="pill pill--wait">Не придёт · ${esc(a.reason)}</span><button class="btn-q" data-unabs="${esc(l.id)}">Отменить</button>`;
+  else right=`${first?'<span class="pill pill--new">Следующий</span>':''}<button class="btn-q" data-abs="${esc(l.id)}">Не смогу прийти</button>`;
+  return `<div class="item item--wrap"><div class="date"><b>${l.date.getDate()}</b><small>${MON[l.date.getMonth()]}</small></div>
+    <div class="item__main"><b>Урок ${l.n}. ${esc(l.title)}</b><small>${WD[l.date.getDay()]}, ${t2(l.date)} · ${esc(l.course)}${a&&a.makeup?' · хотим отработать':''}</small></div>${right}</div>`;
 }
 function attText(l){
   if(l.status==='missed')return l.absence&&l.absence.makeupDone?'пропуск отработан':'пропуск'+(l.absence?' · '+esc(l.absence.reason.toLowerCase()):'');
@@ -1082,10 +1321,10 @@ home(){
   const who=S.parent.name||'';
   return `
   <div class="next">
-    <span class="next__hello">${hello()}${who?', '+esc(who):''}!</span>
+    <div class="next__main">
+    <span class="next__hello">${hello()}${who?', '+esc(who):''}!${next?' Следующий урок':''}</span>
     ${next?`<h2>Урок ${next.n}. ${esc(next.title)}</h2>
     <div class="next__meta"><span>${icon('i-cal',16)} ${dLong(next.date)}</span><span>${icon('i-clock',16)} ${t2(next.date)} — ${next.dur} минут</span>${st.teacher.name?`<span>${icon('i-user',16)} ${esc(st.teacher.name)}</span>`:''}</div>
-    <div class="timer" id="timer" aria-label="До урока осталось"></div>
     ${isFrozen(st,next)?`<p class="next__note">❄ Это занятие попадает в заморозку с ${dDay(st.freeze.from)} по ${dDay(st.freeze.to)}.</p>`
     :next.absence?`<p class="next__note">Вы предупредили, что ${esc(st.name)} не сможет присутствовать: ${esc(next.absence.reason.toLowerCase())}.${next.absence.makeup?' Куратор предложит время для отработки.':' Запись урока появится в расписании.'}</p>
     <div class="next__act"><button class="btn btn--ghost" data-unabs="${esc(next.id)}">Всё-таки придём</button></div>`
@@ -1093,37 +1332,41 @@ home(){
       <button class="btn" id="joinBtn">${isLocked(st,next)?'🔒 Открыть после оплаты':icon('i-video',18)+' Подключиться к уроку'}</button>
       ${isLocked(st,next)?'':`<button class="btn btn--ghost" data-abs="${esc(next.id)}">Не смогу присутствовать</button>`}
     </div>`}`:`<h2>Новых уроков пока нет</h2><p style="position:relative;color:#DCD0FF">Куратор добавит расписание следующего курса.</p>`}
+    </div>
+    ${next?'<div class="next__side"><small>До урока</small><div class="timer" id="timer" aria-label="До урока осталось"></div></div>':''}
   </div>
   ${freezeBanner(st)}
   <div class="stats">
-    <div class="stat"><i style="background:#EDE3FF;color:var(--ink)">${icon('i-prog',18)}</i><b>${done}/${st.total}</b><span>${plural(st.total,'занятия','занятий','занятий')} курса пройдено</span><div class="bar"><span style="width:${pct}%"></span></div></div>
+    <div class="stat"><i style="background:#EDE3FF;color:var(--ink)">${icon('i-prog',18)}</i><b>${done}/${st.total}</b><span>${plural(st.total,'занятия','занятий','занятий')} курса пройдено</span></div>
     <div class="stat"><i style="background:#DBF7EE;color:#0E7A5A">${icon('i-hw',18)}</i><b>${st.homework.filter(h=>h.status==='ok').length}</b><span>${plural(st.homework.filter(h=>h.status==='ok').length,'задание проверено','задания проверено','заданий проверено')}</span></div>
     <div class="stat"><i style="background:#FFF6CC">${icon('i-coin',18)}</i><b>${st.coins}</b><span>${plural(st.coins,'монетка','монетки','монеток')} за задания</span></div>
     <div class="stat"><i style="background:#FFEBDD;color:var(--coral)">${icon('i-fire',18)}</i><b>${st.streak}</b><span>${plural(st.streak,'неделя','недели','недель')} без пропусков</span></div>
   </div>
   <div class="grid-main">
+    <div class="stack">
     <section class="card">
       <div class="card__h"><h2>Задания</h2><a class="link" href="#homework">Все задания</a></div>
       <div class="list">${hw.length?hw.map(h=>`
         <div class="item"><div class="item__main"><b>${esc(h.title)}</b><small>Урок ${h.lesson}${h.lessonTitle?' · '+esc(h.lessonTitle):''}</small></div>
         ${h.status==='todo'?'<span class="pill pill--new">Нужно сделать</span>':'<span class="pill pill--wait">На проверке</span>'}</div>`).join(''):'<p style="color:var(--muted)">Все задания сданы — отличная работа! 🎉</p>'}
       </div>
-      <div class="card__h" style="margin:22px 0 14px"><h2>Ближайшие уроки</h2><a class="link" href="#schedule">Расписание</a></div>
+    </section>
+    <section class="card">
+      <div class="card__h"><h2>Ближайшие уроки</h2><a class="link" href="#schedule">Расписание</a></div>
       <div class="list">${up.slice(1,4).map(l=>lessonItem(l)).join('')||'<p style="color:var(--muted)">Пока не запланированы.</p>'}</div>
     </section>
-    <div style="display:grid;gap:22px;align-content:start">
+    </div>
+    <div class="stack">
       <section class="card">
         <div class="teacher"><span class="teacher__ava">${esc(initials(st.teacher.name))}</span><div><h3>${esc(st.teacher.name||'Преподаватель')}</h3><small style="color:var(--muted)">${esc(st.teacher.role)}</small></div></div>
         ${last?`<div class="quote">«${esc(last.comment)}»<small>Отзыв на задание «${esc(last.title)}»</small></div>`:''}
-        <a class="btn btn--ghost btn--block" style="margin-top:14px" href="${esc(safeUrl(st.teacher.tg)||CURATOR_TG)}" target="_blank" rel="noopener">Написать преподавателю</a>
+        <a class="btn btn--ghost btn--sm btn--block" style="margin-top:12px" href="${esc(safeUrl(st.teacher.tg)||CURATOR_TG)}" target="_blank" rel="noopener">Написать преподавателю</a>
       </section>
       <section class="card">
         <div class="card__h"><h2>Курс</h2><a class="link" href="#progress">Прогресс</a></div>
-        <h3>${esc(courseName(st))}</h3>
-        <p style="color:var(--muted);font-size:13px;margin-top:4px">${st.total} ${plural(st.total,'занятие','занятия','занятий')} · ${(PROGRAMS[st.program]||PROGRAMS.Middle).modules.length} модулей</p>
-        <div class="bar" style="height:10px;margin-top:12px"><span style="width:${pct}%"></span></div>
-        <p style="margin-top:10px;font-size:13px"><b>${pct}% курса</b> <span style="color:var(--muted)">· ${done} из ${st.total}</span></p>
-        <p style="color:var(--muted);margin-top:8px;font-size:13px">${done>=st.total?'Курс пройден — поздравляем! 🎉':`Сейчас модуль <b style="color:var(--text)">${esc(mod.tech)}</b> — ${esc(mod.title)}: пройдено ${inMod} из ${mod.count}.`}</p>
+        <div class="course-line"><h3>${esc(courseName(st))}</h3><span>${done} из ${st.total} · ${pct}%</span></div>
+        <div class="bar" style="margin-top:10px"><span style="width:${pct}%"></span></div>
+        <p style="color:var(--muted);margin-top:10px;font-size:13px">${done>=st.total?'Курс пройден — поздравляем! 🎉':`Сейчас модуль <b style="color:var(--text)">${esc(mod.tech)}</b> — ${esc(mod.title)}: пройдено ${inMod} из ${mod.count}.`}</p>
       </section>
     </div>
   </div>`;
@@ -1136,9 +1379,9 @@ schedule(){
   ${freezeBanner(st)}
   <section class="card"><div class="card__h"><h2>Предстоящие</h2></div><div class="list">${fut.map((l,i)=>lessonItem(l,i===0)).join('')||'<p style="color:var(--muted)">Новых уроков пока нет.</p>'}</div></section>
   <section class="card"><div class="card__h"><h2>Прошедшие</h2><a class="link" href="#journal">Весь журнал посещений</a></div><div class="list">${past.map(l=>`
-    <div class="item"><div class="date date--past"><b>${l.date.getDate()}</b><small>${MON[l.date.getMonth()]}</small></div>
+    <div class="item item--wrap"><div class="date date--past"><b>${l.date.getDate()}</b><small>${MON[l.date.getMonth()]}</small></div>
     <div class="item__main"><b>Урок ${l.n}. ${esc(l.title)}</b><small>${WDF[l.date.getDay()]}, ${t2(l.date)} · ${attText(l)}</small></div>
-    <button class="btn btn--ghost btn--sm" data-rec="${esc(l.id)}">${icon('i-video',16)} Запись</button></div>`).join('')||'<p style="color:var(--muted)">Здесь появятся прошедшие уроки и их записи.</p>'}</div></section>`;
+    <button class="btn-q" data-rec="${esc(l.id)}">${icon('i-video',15)} Запись</button></div>`).join('')||'<p style="color:var(--muted)">Здесь появятся прошедшие уроки и их записи.</p>'}</div></section>`;
 },
 journal(){
   const st=stu(), past=pastL(st);
@@ -1162,7 +1405,7 @@ homework(){
   <div class="vhead"><div><h1>Домашние задания</h1><p>За каждое проверенное задание — монетки. Их можно обменять на бонусы школы.</p></div>
   <div class="tabs" id="hwTabs" role="group" aria-label="Фильтр заданий">
     <button aria-pressed="true" data-f="all">Все</button><button aria-pressed="false" data-f="todo">Сделать</button><button aria-pressed="false" data-f="wait">На проверке</button><button aria-pressed="false" data-f="ok">Проверено</button></div></div>
-  <div class="list" id="hwList" style="gap:16px"></div>`;
+  <div class="list" id="hwList" style="gap:12px"></div>`;
 },
 program(){
   const st=stu(), prog=st.program||'Middle', cur=CURRICULUM[prog], ms=modulesOf(st), done=doneCount(st), mod=curModule(st);
@@ -1202,11 +1445,12 @@ progress(){
   <div class="vhead"><div><h1>Прогресс</h1><p>Ученик: ${esc(st.name)} · курс ${esc(courseName(st))}, ${st.total} ${plural(st.total,'занятие','занятия','занятий')}.</p></div></div>
   <section class="card">
     <div class="card__h"><h2>Курс ${esc(st.program||'Middle')}</h2><span class="pill pill--lilac">${done} из ${st.total} · ${pct}%</span></div>
-    <div class="bar" style="height:12px;margin:0 0 22px"><span style="width:${pct}%"></span></div>
+    <div class="bar" style="margin:0 0 18px"><span style="width:${pct}%"></span></div>
     <div class="road${ms.length>6?' road--wrap':''}" style="--cols:${ms.length>6?Math.ceil(ms.length/2):ms.length}">${ms.map(m=>{const s=done>=m.to?'done':m.from===mod.from?'now':'';const mp=Math.round(Math.max(0,done-m.from+1)/m.count*100);
-      return `<div class="node ${s?'node--'+s:''}"><span class="node__dot">${s==='done'?'✓':s==='now'?mp+'%':'🔒'}</span><b>${esc(m.tech)}</b><small>${esc(m.title)}<br>${m.count} ${plural(m.count,'занятие','занятия','занятий')}</small></div>`}).join('')}</div>
+      return `<div class="node ${s?'node--'+s:''}" title="${esc(m.title)}"><span class="node__dot">${s==='done'?'✓':s==='now'?mp+'%':'🔒'}</span><b>${esc(m.tech)}</b><small>${m.count} ${plural(m.count,'занятие','занятия','занятий')}</small></div>`}).join('')}</div>
   </section>
   <div class="grid2">
+    <div class="stack">
     <section class="card"><div class="card__h"><h2>${esc(mod.tech)}</h2><span class="pill pill--muted">${Math.max(0,done-mod.from+1)} из ${mod.count}</span></div>
       <p style="color:var(--muted);font-size:13px;margin:-4px 0 12px">Модуль ${ms.findIndex(m=>m.from===mod.from)+1} из ${ms.length} · занятия ${mod.from}–${mod.to} курса</p>
       <div class="lessons">
@@ -1215,18 +1459,20 @@ progress(){
         ${b<cl.length?`<div class="lesson"><i>…</i><span>Ещё ${cl.length-b} ${plural(cl.length-b,'занятие','занятия','занятий')} до конца модуля</span></div>`:''}
       </div>
     </section>
-    <div style="display:grid;gap:22px;align-content:start">
+    <section class="card"><div class="card__h"><h2>Достижения</h2><span class="pill pill--muted">${ACHIEVE.filter(a=>st.achievements.includes(a.k)).length} из ${ACHIEVE.length}</span></div>
+      <div class="badges">${ACHIEVE.map(a=>`<div class="badge ${st.achievements.includes(a.k)?'':'badge--off'}"><span>${a.e}</span><b>${a.t}</b><small style="color:var(--muted)">${a.d}</small></div>`).join('')}</div>
+    </section>
+    </div>
+    <div class="stack">
       <section class="card"><div class="card__h"><h2>Навыки</h2></div><div class="skills">
         ${st.skills.length?st.skills.map(([t,p])=>`<div class="skill"><div><span>${esc(t)}</span><b>${+p||0}%</b></div><div class="bar" style="margin:0"><span style="width:${Math.min(100,+p||0)}%"></span></div></div>`).join(''):'<p style="color:var(--muted)">Преподаватель оценит навыки после первого модуля.</p>'}
       </div>${st.skills.length?'<p style="color:var(--muted);font-size:12.5px;margin-top:14px">Оценку обновляет преподаватель после каждого модуля.</p>':''}</section>
       <section class="card"><div class="card__h"><h2>Сертификаты</h2></div>
-        <div class="list">${finished.length?finished.map(m=>`<div class="item"><span style="font-size:28px">📜</span><div class="item__main"><b>${esc(m.tech)} · ${esc(m.title)}</b><small>модуль пройден · ${m.count} ${plural(m.count,'занятие','занятия','занятий')}</small></div><button class="btn btn--ghost btn--sm" data-cert>Получить</button></div>`).join(''):'<p style="color:var(--muted)">Сертификат появится после первого пройденного модуля.</p>'}</div>
+        <div class="list">${finished.length?finished.map(m=>`<div class="item"><span class="item__em">📜</span><div class="item__main"><b>${esc(m.tech)} · ${esc(m.title)}</b><small>модуль пройден · ${m.count} ${plural(m.count,'занятие','занятия','занятий')}</small></div><button class="btn-q" data-cert>Получить</button></div>`).join(''):'<p style="color:var(--muted)">Сертификат появится после первого пройденного модуля.</p>'}</div>
       </section>
     </div>
   </div>
-  <section class="card"><div class="card__h"><h2>Достижения</h2><span class="pill pill--muted">${ACHIEVE.filter(a=>st.achievements.includes(a.k)).length} из ${ACHIEVE.length}</span></div>
-    <div class="badges">${ACHIEVE.map(a=>`<div class="badge ${st.achievements.includes(a.k)?'':'badge--off'}"><span>${a.e}</span><b>${a.t}</b><small style="color:var(--muted)">${a.d}</small></div>`).join('')}</div>
-  </section>`;
+`;
 },
 pay(){
   const st=stu(), pl=planOf(st), pay=payOf(st), done=doneCount(st), open=openUpTo(st), left=Math.max(0,st.total-done);
@@ -1262,7 +1508,7 @@ pay(){
     </section>
   </div>
   <section class="card"><div class="card__h"><h2>Документы</h2></div>
-    <div class="item"><span style="font-size:26px">📄</span><div class="item__main"><b>Договор, чеки и справка для налогового вычета</b><small>Пришлём по запросу в течение одного рабочего дня</small></div><a class="btn btn--ghost btn--sm" href="${CURATOR_TG}" target="_blank" rel="noopener">Запросить</a></div>
+    <div class="item"><span class="item__em">📄</span><div class="item__main"><b>Договор, чеки и справка для налогового вычета</b><small>Пришлём по запросу в течение одного рабочего дня</small></div><a class="btn-q" href="${CURATOR_TG}" target="_blank" rel="noopener">Запросить</a></div>
   </section>`;
 },
 masterclasses(){
@@ -1306,7 +1552,7 @@ profile(){
         <label class="field"><span>Дата рождения</span><input class="input" name="birth" type="date" value="${esc(c.birth)}"></label>
       </div>`:''}
     </section>
-    <div style="display:grid;gap:22px;align-content:start">
+    <div style="display:grid;gap:16px;align-content:start">
       <section class="card"><div class="card__h"><h2>Уведомления</h2></div>
         <label class="switch"><span>Напоминать об уроке<small>за час до начала, в Telegram и по SMS</small></span><input type="checkbox" name="n_lesson" ${n.lesson?'checked':''}></label>
         <label class="switch"><span>Новые задания и отзывы<small>когда преподаватель проверил работу</small></span><input type="checkbox" name="n_hw" ${n.hw?'checked':''}></label>
@@ -1370,13 +1616,17 @@ journal(){
   const MONN=['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
   const draw=()=>{
     const list=pastL(stu()).filter(l=>f==='all'||l.status===f);
-    let html='',cur='';
+    const groups=[];
     list.forEach(l=>{
       const m=MONN[l.date.getMonth()]+' '+l.date.getFullYear();
-      if(m!==cur){html+=`<h3 class="jmonth">${m}</h3>`;cur=m}
-      html+=`<div class="jrow"><span class="jrow__n">${l.n}</span><span class="jrow__d">${l.date.getDate()} ${MON[l.date.getMonth()]}, ${WD[l.date.getDay()]}</span>
-        <span class="jrow__t"><b>${esc(l.title)}</b><small>${esc(l.course)}${l.absence&&l.absence.comment?' · '+esc(l.absence.comment):''}</small></span>${attPill(l)}</div>`;
+      let g=groups[groups.length-1];
+      if(!g||g.m!==m){g={m,rows:[],miss:0};groups.push(g)}
+      if(l.status==='missed')g.miss++;
+      g.rows.push(`<div class="jrow"><span class="jrow__n">${l.n}</span><span class="jrow__d">${l.date.getDate()} ${MON[l.date.getMonth()]}, ${WD[l.date.getDay()]}</span>
+        <span class="jrow__t"><b>${esc(l.title)}</b><small>${esc(l.course)}${l.absence&&l.absence.comment?' · '+esc(l.absence.comment):''}</small></span>${attPill(l)}</div>`);
     });
+    // свежие два месяца открыты, остальные свёрнуты; при фильтре открыто всё
+    const html=groups.map((g,i)=>`<details class="jm" ${i<2||f!=='all'?'open':''}><summary><b>${g.m}</b><span>${g.rows.length} ${plural(g.rows.length,'занятие','занятия','занятий')}${g.miss&&f==='all'?` · ${g.miss} ${plural(g.miss,'пропуск','пропуска','пропусков')}`:''}</span></summary>${g.rows.join('')}</details>`).join('');
     $('#jList').innerHTML=html||'<p style="color:var(--muted)">Здесь пока пусто.</p>';
   };
   $$('#jTabs button').forEach(b=>b.onclick=()=>{f=b.dataset.f;$$('#jTabs button').forEach(x=>x.setAttribute('aria-pressed',x===b));draw()});
