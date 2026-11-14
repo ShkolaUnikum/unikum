@@ -4,14 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Уникум — онлайн-школа программирования для детей</title>
-<meta name="description" content="Онлайн-школа программирования «Уникум»: дети 6–15 лет создают игры, сайты и приложения. Запишитесь на бесплатный вводный урок.">
+<meta name="description" content="Онлайн-школа программирования «Уникум»: дети 7–16 лет создают игры, сайты и приложения. Запишитесь на бесплатный вводный урок.">
 <meta property="og:title" content="Уникум — онлайн-школа программирования для детей">
-<meta property="og:description" content="Дети создают свои игры, сайты и приложения. Первый урок — бесплатно.">
+<meta property="og:description" content="Дети 7–16 лет создают свои игры, сайты и приложения. Первый урок — бесплатно.">
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#5B1AB5">
 <script>try{var n=navigator,c=n.connection;if((n.hardwareConcurrency&&n.hardwareConcurrency<=4)||(n.deviceMemory&&n.deviceMemory<=4)||(c&&c.saveData))document.documentElement.classList.add('perf-lite')}catch(e){}</script>
 <script>try{if(localStorage.getItem('unikum-theme')!=='light')document.documentElement.dataset.theme='dark'}catch(e){document.documentElement.dataset.theme='dark'}</script>
 <link rel="icon" type="image/png" href="img/favicon.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"EducationalOrganization","name":"Уникум","legalName":"ООО «Точка Роста»","email":"Sk.Unikum@yandex.com","taxID":"7838092605","identifier":"ОГРН 1207800098593","address":{"@type":"PostalAddress","postalCode":"190031","addressLocality":"Санкт-Петербург","streetAddress":"Московский пр-кт, д. 2/6, литер А, пом. 2-Н/100","addressCountry":"RU"}}</script>
 <link rel="apple-touch-icon" href="img/logo-brain-lg.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1187,6 +1188,20 @@ dialog .field.err input,dialog .field.err select,dialog .field.err .phone,
 html[data-theme="dark"] dialog .field.err input,html[data-theme="dark"] dialog .field.err select,html[data-theme="dark"] dialog .field.err .phone{background:rgba(255,138,61,.16);border-color:#FF9A5C}
 dialog .field .msg,dialog .check.err,html[data-theme="dark"] dialog .field .msg,html[data-theme="dark"] dialog .check.err{color:#FFB48A}
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){dialog .win{background:#2A1572}}
+
+/* кнопка телефона в шапке — такая же, как кнопка кабинета */
+@media (max-width:430px){
+  .header__phone{background:rgba(255,255,255,.1);box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.28);transition:background .15s,box-shadow .15s}
+  .header__phone:hover{background:rgba(255,255,255,.18);box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.6)}
+  .header__phone{position:relative;line-height:0}
+  .header__phone::before{position:absolute;inset:0;margin:auto;width:18px;height:18px}
+}
+
+/* ============ ОКНО ДОКУМЕНТА (согласие, политика) ============ */
+dialog#docWin{max-width:min(860px,calc(100% - 24px))}
+#docWin .doc-body{padding:0}
+#docWin iframe{display:block;width:100%;height:min(78vh,820px);border:0;background:transparent}
+@media (max-width:600px){#docWin iframe{height:80vh}}
 </style>
 </head>
 <body>
@@ -1450,7 +1465,7 @@ dialog .field .msg,dialog .check.err,html[data-theme="dark"] dialog .field .msg,
     <div class="reveal">
       <div class="cta__brand"><img src="img/logo-brain-lg.png" width="320" height="263" alt="" loading="lazy"></div>
       <h2>Бесплатный вводный урок</h2>
-      <p class="cta__meta">7–12&nbsp;лет · 60&nbsp;минут · онлайн</p>
+      <p class="cta__meta">7–16&nbsp;лет · 60&nbsp;минут · онлайн</p>
       <p class="cta__text">На уроке ребёнок соберёт в Scratch одну из двух игр — выберите, какую.</p>
       <button class="btn" data-open="lead">Выбрать время <span class="arr">→</span></button>
       <small class="cta__tz">Расписание по Москве (МСК)</small>
@@ -1477,33 +1492,35 @@ dialog .field .msg,dialog .check.err,html[data-theme="dark"] dialog .field .msg,
 </main>
 
 <!-- ===================== ФУТЕР ===================== -->
-<!-- ЗАМЕНИТЕ реквизиты и ссылки -->
+<!-- Реквизиты: ООО «Точка Роста» (ЕГРЮЛ). Ссылки на документы — ЗАМЕНИТЕ, когда будут готовы -->
 <footer class="footer">
   <div class="wrap">
     <div class="footer__grid">
       <div class="footer__brand">
         <a class="logo" href="#top" aria-label="Уникум — наверх"><img class="logo__brain" src="img/logo-brain.png" width="320" height="263" alt="" loading="lazy"><img class="logo__word" src="img/logo-word.png" width="520" height="89" alt="Уникум" loading="lazy"></a>
-        <small>ООО «Название», ИНН 0000000000</small>
-        <small>Адрес: город, улица, дом</small>
+        <small>ООО «Точка Роста»</small>
+        <small>ИНН 7838092605 · КПП 783801001<br>ОГРН 1207800098593</small>
+        <small>Юридический адрес: 190031, г.&nbsp;Санкт&#8209;Петербург, Московский пр-кт, д.&nbsp;2/6, литер&nbsp;А, пом.&nbsp;2-Н/100</small>
       </div>
       <div class="fcol"><h4>Контакты <span>01</span></h4>
         <a href="tel:+79000000000">+7 (900) 000-00-00</a>
-        <a href="mailto:hello@example.ru">hello@example.ru</a>
+        <a href="mailto:Sk.Unikum@yandex.com">Sk.Unikum@yandex.com</a>
         <a href="cabinet.html">Личный кабинет</a>
       </div>
       <div class="fcol"><h4>Курсы <span>02</span></h4>
-        <a href="#courses">Junior 6–8 лет</a>
-        <a href="#courses">Middle 9–11 лет</a>
-        <a href="#courses">High 12–15 лет</a>
+        <a href="#courses">Junior</a>
+        <a href="#courses">Middle</a>
+        <a href="#courses">High</a>
       </div>
       <div class="fcol"><h4>Документы <span>03</span></h4>
         <a href="#">Договор-оферта</a>
-        <a href="#">Политика конфиденциальности</a>
-        <a href="#">Согласие на обработку данных</a>
+        <a href="politika.html" target="_blank" rel="noopener">Политика конфиденциальности</a>
+        <a href="soglasie.html" target="_blank" rel="noopener">Согласие на обработку данных</a>
       </div>
       <div class="fcol"><h4>Соцсети <span>04</span></h4>
         <a href="#">ВКонтакте</a>
         <a href="#">Telegram</a>
+        <a href="#">MAX</a>
       </div>
     </div>
     <div class="footer__bottom">
@@ -1531,9 +1548,9 @@ dialog .field .msg,dialog .check.err,html[data-theme="dark"] dialog .field .msg,
           </div>
           <div class="msg" id="phoneMsg">Введите номер полностью</div></div>
         <div class="field"><label for="fAge">Возраст ребёнка</label>
-          <select id="fAge" name="age"><option value="">Выберите</option><option>6–8 лет</option><option>9–11 лет</option><option>12–15 лет</option></select>
+          <select id="fAge" name="age"><option value="">Выберите</option><option>7 лет</option><option>8 лет</option><option>9 лет</option><option>10 лет</option><option>11 лет</option><option>12 лет</option><option>13 лет</option><option>14 лет</option><option>15 лет</option><option>16 лет</option></select>
           <div class="msg">Выберите возраст</div></div>
-        <label class="check" id="agreeWrap"><input type="checkbox" id="fAgree" name="agree"><span>Согласен на обработку персональных данных и с <a href="#">политикой конфиденциальности</a></span></label>
+        <label class="check" id="agreeWrap"><input type="checkbox" id="fAgree" name="agree"><span>Согласен на <a href="soglasie.html" target="_blank" rel="noopener">обработку персональных данных</a> и с <a href="politika.html" target="_blank" rel="noopener">политикой конфиденциальности</a></span></label>
         <button class="btn" type="submit">Записаться <span class="arr">↗</span></button>
       </form>
       <div class="thanks" id="thanks" hidden>
@@ -1555,6 +1572,15 @@ dialog .field .msg,dialog .check.err,html[data-theme="dark"] dialog .field .msg,
   </div>
 </dialog>
 
+<!-- ===================== МОДАЛКА: ДОКУМЕНТЫ (согласие, политика) ===================== -->
+<dialog id="docWin" aria-label="Документ">
+  <div class="win">
+    <div class="win__bar"><span class="dots"><i></i><i></i><i></i></span><span id="docWinName">document.html</span></div>
+    <button class="x" data-close aria-label="Закрыть">✕</button>
+    <div class="win__body doc-body"><iframe id="docFrame" title="Документ" loading="lazy"></iframe></div>
+  </div>
+</dialog>
+
 <!-- ===================== МОДАЛКА: ЛИЦЕНЗИЯ ===================== -->
 <dialog id="license" aria-label="Лицензия">
   <div class="win">
@@ -1565,7 +1591,7 @@ dialog .field .msg,dialog .check.err,html[data-theme="dark"] dialog .field .msg,
 </dialog>
 
 <div class="cookie" id="cookie" role="region" aria-label="Cookie">
-  <p>Мы используем cookie, чтобы сайт работал удобнее. Продолжая, вы соглашаетесь с <a href="#">политикой обработки данных</a>.</p>
+  <p>Мы используем cookie, чтобы сайт работал удобнее. Продолжая, вы соглашаетесь с <a href="politika.html" target="_blank" rel="noopener">политикой обработки данных</a>.</p>
   <button class="btn btn--sm" id="cookieOk">ОК</button>
 </div>
 
@@ -1602,7 +1628,7 @@ function paintPix(root=document){ root.querySelectorAll('[data-pix]').forEach(el
 
 /* ============ ДАННЫЕ КУРСОВ (меняйте здесь) ============ */
 const COURSES=[
- {id:'junior',logos:[['scratch','Scratch'],['','Minecraft'],['','Roblox']],name:'Junior',age:'6–8 лет',color:'var(--lilac)',pic:'joystick',img:'img/courses/middle-roblox.jpg',imgAlt:'Футбольный матч в Roblox: счёт «Синие 1 : 0 Красные»',
+ {id:'junior',logos:[['scratch','Scratch'],['','Minecraft'],['','Roblox']],name:'Junior',color:'var(--lilac)',pic:'joystick',img:'img/courses/middle-roblox.jpg',imgAlt:'Футбольный матч в Roblox: счёт «Синие 1 : 0 Красные»',
   title:'Первые игры и анимации',
   text:['Ребёнок знакомится с компьютером и логикой программ через игру: собирает код из блоков, оживляет персонажей и <strong class="hl">создаёт первые миры</strong>.','Развиваем внимание, алгоритмическое и пространственное мышление — <strong class="hl">без сложного текста и скучной теории</strong>.'],
   langs:['ScratchJr','Scratch','Minecraft','Tinkercad','Roblox Studio'],
@@ -1613,7 +1639,7 @@ const COURSES=[
    {tech:'Tinkercad',n:8,title:'3D-моделирование',li:['фигуры, группы и отверстия','модели для игр и 3D-печати','переносим модели в Minecraft'],res:'проект «Моя комната мечты»'},
    {tech:'Roblox Studio',n:12,title:'Первая игра на Lua',li:['знакомство с текстовым кодом на Lua','физика объектов и спецэффекты','публикация игры для друзей'],res:'своя игра-обби в Roblox'}
   ]},
- {id:'middle',logos:[['scratch','Scratch'],['javascript','JavaScript'],['blender','Blender'],['unity','Unity'],['','Roblox']],name:'Middle',age:'9–11 лет',color:'var(--mint)',pic:'monitor',img:'img/courses/high-unity.jpg',imgAlt:'3D-зал египетской гробницы в Unity: статуи кошек, факелы и сундук',
+ {id:'middle',logos:[['scratch','Scratch'],['javascript','JavaScript'],['blender','Blender'],['unity','Unity'],['','Roblox']],name:'Middle',color:'var(--mint)',pic:'monitor',img:'img/courses/high-unity.jpg',imgAlt:'3D-зал египетской гробницы в Unity: статуи кошек, факелы и сундук',
   title:'От блоков к настоящему коду',
   text:['Переходим <strong class="hl">от визуального программирования к текстовым языкам</strong>: Lua, JavaScript, C#. Делаем браузерные и 3D-игры, мобильные приложения и первый сайт.','Ученик <strong class="hl">пробует себя в роли</strong> геймдизайнера, веб-разработчика и 3D-художника.'],
   langs:['Scratch','Lua','JavaScript','Blender','C# / Unity','HTML/CSS'],
@@ -1625,7 +1651,7 @@ const COURSES=[
    {tech:'Unity · C#',n:16,title:'3D-игры на Unity',li:['сцена, физика и коллайдеры','основы C#: классы и методы','меню, звук и интерфейс'],res:'собственная 3D-игра'},
    {tech:'HTML/CSS',n:10,title:'Первый сайт',li:['вёрстка страницы и стили','адаптив под телефон','публикация в интернете'],res:'сайт-визитка по ТЗ'}
   ]},
- {id:'high',logos:[['python','Python'],['javascript','JavaScript'],['unity','Unity'],['git','Git']],name:'High',age:'12–15 лет',color:'var(--sun)',pic:'rocket',img:'img/courses/junior-platformer.jpg',imgAlt:'2D-платформер: героиня, ключ, дверь и шипы',
+ {id:'high',logos:[['python','Python'],['javascript','JavaScript'],['unity','Unity'],['git','Git']],name:'High',color:'var(--sun)',pic:'rocket',img:'img/courses/junior-platformer.jpg',imgAlt:'2D-платформер: героиня, ключ, дверь и шипы',
   title:'Языки профессионалов',
   text:['Курс для подростков, которые хотят глубже: Python, веб-разработка, Unity и мобильные приложения. Работаем <strong class="hl">как в настоящей ИТ-команде</strong> — с техзаданием, Git и дедлайнами.','На выходе — <strong class="hl">портфолио проектов</strong> и понимание, какое направление в ИТ нравится больше всего.'],
   langs:['Python','JavaScript','C# / Unity','Java','Git'],
@@ -1646,12 +1672,12 @@ addEventListener('load',()=>COURSES.forEach(c=>{if(c.img){const im=new Image();i
   const tabs=document.getElementById('tabs'),course=document.getElementById('course'),program=document.getElementById('program'),
         mods=document.getElementById('modules'),more=document.getElementById('moreBtn');
   const SHOW=4; let cur=0, expanded=false;
-  tabs.innerHTML=COURSES.map((c,i)=>`<button role="tab" id="tab-${c.id}" aria-selected="${i===0}">${c.name}<small>${c.age}</small></button>`).join('');
+  tabs.innerHTML=COURSES.map((c,i)=>`<button role="tab" id="tab-${c.id}" aria-selected="${i===0}">${c.name}</button>`).join('');
   function render(){
     const c=COURSES[cur];
     tabs.querySelectorAll('button').forEach((b,i)=>b.setAttribute('aria-selected',i===cur));
     course.innerHTML=`<div class="course">
-      <div class="course__pic" style="background:${c.color}">${c.img?`<img src="${c.img}" width="786" height="508" decoding="sync" alt="${c.imgAlt}">`:`<span data-pix="${c.pic}"></span>`}<span class="chip">${c.age}</span>${c.logos?`<span class="course__logos">${c.logos.map(([f,t])=>`<span class="lg${f?'':' lg--txt'}">${f?`<img src="img/logos/${f}.svg" width="16" height="16" alt="" aria-hidden="true">`:''}${t}</span>`).join('')}</span>`:''}</div>
+      <div class="course__pic" style="background:${c.color}">${c.img?`<img src="${c.img}" width="786" height="508" decoding="sync" alt="${c.imgAlt}">`:`<span data-pix="${c.pic}"></span>`}${c.logos?`<span class="course__logos">${c.logos.map(([f,t])=>`<span class="lg${f?'':' lg--txt'}">${f?`<img src="img/logos/${f}.svg" width="16" height="16" alt="" aria-hidden="true">`:''}${t}</span>`).join('')}</span>`:''}</div>
       <div><h3>${c.title}</h3>${c.text.map(t=>`<p>${t}</p>`).join('')}
         <div class="course__langs">${c.langs.map(l=>`<span>${l}</span>`).join('')}</div>
         <div class="course__actions">
@@ -1752,6 +1778,17 @@ document.getElementById('reviewsList').addEventListener('click',e=>{
 
 /* ============ МОДАЛКИ ============ */
 let chosenGame='';
+/* Согласие и политика открываются окном поверх сайта — страница остаётся на месте, форма не теряется */
+document.addEventListener('click',e=>{
+  const a=e.target.closest('a[href="soglasie.html"],a[href="politika.html"]');
+  if(!a||e.ctrlKey||e.metaKey||e.shiftKey||e.button)return;
+  const d=document.getElementById('docWin'); if(!d||!d.showModal)return;
+  e.preventDefault(); e.stopPropagation();
+  const f=document.getElementById('docFrame'), href=a.getAttribute('href');
+  if(f.getAttribute('src')!==href) f.src=href;
+  document.getElementById('docWinName').textContent=href;
+  d.showModal();
+},true);
 document.addEventListener('click',e=>{
   const o=e.target.closest('[data-open]');
   if(o){
