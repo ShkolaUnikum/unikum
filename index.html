@@ -1912,7 +1912,7 @@ refreshCountry();
 
 /* Куда уходят заявки: сервер бота «Уникума» (он же показывает их в админке и присылает в Telegram).
    ▸ НАСТРОЙКА: когда бот переедет на сервер, впишите сюда его адрес, например 'https://bot.example.ru'.
-   Пока адреса нет, на опубликованном сайте форма предлагает записаться через Telegram-бота. */
+   Пока адреса нет, заявка с опубликованного сайта уходит зашифрованной через ntfy.sh (см. relayLead). */
 const LEAD_SERVER='';
 const LEAD_BOT_URL='https://t.me/unikum_school_bot';
 function leadServer(){ return /^(localhost|127\.0\.0\.1)$/.test(location.hostname)?'http://localhost:8787':LEAD_SERVER; }
@@ -1926,8 +1926,20 @@ function leadBotLink(name,phone,age){
   while(n.length&&(head+b64(n.join(''))).length>64)n.pop();
   return LEAD_BOT_URL+'?start='+head+b64(n.join(''));
 }
+/* Заявка с опубликованного сайта: шифруем открытым ключом бота (RSA-OAEP-256) и кладём в ntfy.sh.
+   Бот на Mac забирает её раз в 15 секунд и расшифровывает; ntfy видит только шифр. */
+const LEAD_RELAY={"topic": "unikum-ea7db8f4a192f46cd601af1675b3c2f5", "jwk": {"kty": "RSA", "alg": "RSA-OAEP-256", "e": "AQAB", "n": "wi6lci5uQ1sH_rCFU94THDjjUxmhTuGbcIKVKzwjOLYdIdd_E6XUJtHyE4ZTvY8iBjoX3g5TVcyutboV87Y7uO05POS1Oa52tFpJHCWyKei8Vnk5_5YgrFmc6oB5j2D4Ghhid1FcbbirhahjluCQSMByI3iH1MwNUoOtpLcPrjUxjvu4YD5iQc16KQlqRstKjTIcJ89As3ug5MzFiKBo9BR-vn517lQM2vp_K9eUH1bbeW_XhAG1WVU0-jqhSw7gYdfUA7nqPoUN17GlwA8zrfXL5DQzDd12ozl9hGDW-iC7DVZq4Gm13KHPI-MM2uOVcjfrMfHNSPz6sD4LrmDiFByNCUd7f6w_dDvHHfJ2V6hi0ySrWurwtbWEvg15tYdiFjjuYxr83HZK7z7NZjqw35_OvuEvCrE46f-vp6V8ZpXJCdrmuKpamy__NkerBXGQ7xk__RLXkpw0zvSmw3tPBWy9ItkJrVojkW8bDMix-4PYm0nmo369YEDNB5PF5b9kzQj9gvyJGqFxnNik7EO2gFzWoENvsTPtUIGuT0YYVAAmv_rBu54XobwiVGAeeIwFOa6d4k5gNAi5t3tnQOO6N_Lh_r6aCkewKscsiBeLz_EPBxqOHKvv8gXxRACmgqblwop0omNn-Dx6wD2PwGyPpDvyz3xA60_WgJ0EU0Peeyk"}};
+async function relayLead(data){
+  const key=await crypto.subtle.importKey('jwk',Object.assign({ext:true},LEAD_RELAY.jwk),{name:'RSA-OAEP',hash:'SHA-256'},false,['encrypt']);
+  const bytes=new TextEncoder().encode(JSON.stringify(data)), parts=[];
+  const b64=b=>{let s='';new Uint8Array(b).forEach(x=>s+=String.fromCharCode(x));return btoa(s).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'')};
+  for(let i=0;i<bytes.length;i+=400)parts.push(b64(await crypto.subtle.encrypt({name:'RSA-OAEP'},key,bytes.slice(i,i+400))));
+  if(parts.length>4)throw new Error('too-long');
+  const r=await fetch('https://ntfy.sh/'+LEAD_RELAY.topic,{method:'POST',body:'u1.'+parts.join('.')});
+  if(!r.ok)throw new Error('HTTP '+r.status);
+}
 async function sendLead(data){
-  const url=leadServer(); if(!url) throw new Error('no-server');
+  const url=leadServer(); if(!url) return relayLead(data);
   const r=await fetch(url.replace(/\/$/,'')+'/api/site-lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
   if(!r.ok) throw new Error('HTTP '+r.status);
 }
@@ -1941,20 +1953,7 @@ document.getElementById('leadForm').addEventListener('submit',async e=>{
   if(name.length<2||!ph.ok||!mailOk||!age||!agree) return;
   const btn=f.querySelector('[type=submit]'); btn.disabled=true;
   const fail=document.getElementById('leadFail'); fail.hidden=true;
-  const tg=leadBotLink(name,ph.full,age);
-  fail.querySelector('a').href=tg;
-  if(!leadServer()){
-    // сервера заявок нет (сайт на GitHub) — отправляем заявку через Telegram-бота
-    if(f.website.value){btn.disabled=false;return}
-    window.open(tg,'_blank','noopener');
-    const th=document.getElementById('thanks');
-    th.querySelector('h3').textContent='Остался один шаг';
-    th.querySelector('p').innerHTML='Открылся наш Telegram-бот — нажмите в нём <b>«Старт»</b>, и заявка сразу придёт менеджеру.';
-    let go=th.querySelector('.thanks__tg');
-    if(!go){go=document.createElement('a');go.className='btn btn--sm thanks__tg';go.target='_blank';go.rel='noopener';go.textContent='Открыть Telegram';th.insertBefore(go,th.querySelector('[data-close]'))}
-    go.href=tg;
-    f.reset(); refreshCountry(); f.hidden=true; th.hidden=false; btn.disabled=false; return;
-  }
+  fail.querySelector('a').href=leadBotLink(name,ph.full,age);
   try{ await sendLead({name,phone:ph.full,country:ph.country,email,age,agree:true,game:chosenGame,page:location.href,website:f.website.value}); f.reset(); refreshCountry(); f.hidden=true; document.getElementById('thanks').hidden=false; }
   catch(err){ fail.hidden=false; fail.scrollIntoView({block:'nearest'}); }
   finally{ btn.disabled=false; }
