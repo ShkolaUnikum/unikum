@@ -346,6 +346,14 @@ dialog:has(.sale-sec){width:min(680px,calc(100% - 24px))}
 .st-act{white-space:nowrap}
 .st-act .btn{margin:0 4px 4px 0}
 .st-hint{margin:-4px 0 0;font-size:12.5px;color:var(--muted)}
+
+/* пароль и удаление сотрудника */
+.pw-meter{display:grid;grid-template-columns:110px 1fr;align-items:center;gap:10px;margin-top:6px}
+.pw-meter i{display:block;height:6px;border-radius:6px;background:#ff6b8b;width:12%;transition:width .2s,background .2s}
+.pw-meter i[data-s="1"]{background:#ffb02e}.pw-meter i[data-s="2"]{background:#7dd3a8}.pw-meter i[data-s="3"]{background:#2fc79a}
+.pw-meter small{font-size:12px;color:var(--muted)}
+.pw-in{font-family:ui-monospace,Menlo,monospace;letter-spacing:.02em}
+.st-warn{margin:0;padding:10px 12px;border-radius:12px;background:rgba(255,107,139,.12);font-size:13px}
 </style>
 </head>
 <body>
@@ -584,7 +592,7 @@ const noAccess=()=>D.clients.filter(c=>c.access.status==='none').length;
 
 /* ---------- навигация ---------- */
 function renderNav(cur){
-  const badge={dozhim:dozhimDue(),newleads:(D.sales||[]).filter(x=>!x.placed).length,requests:pendingReq(),homework:pendingHw(),payments:overdue(),clients:noAccess()};
+  const badge={dozhim:dozhimDue(),newleads:(D.sales||[]).filter(x=>!x.placed&&!x.removed).length,requests:pendingReq(),homework:pendingHw(),payments:overdue(),clients:noAccess()};
   $('#nav').innerHTML=ROUTES.filter(r=>ROLES[role].routes.includes(r.id)).map(r=>
     `<a href="#${r.id}" ${r.id===cur?'aria-current="page"':''}>${icon(r.i)}<span>${r.t}</span>${badge[r.id]?`<span class="cnt">${badge[r.id]}</span>`:''}</a>`).join('');
 }
@@ -959,13 +967,13 @@ function openClient(id){
         ${canEdit?`<div class="row" style="margin-top:12px"><button class="btn btn--ghost btn--xs" id="aReset">Сбросить пароль</button>${a.status==='blocked'?'<button class="btn btn--ghost btn--xs" id="aUnblock">Разблокировать</button>':'<button class="btn btn--danger btn--xs" id="aBlock">Заблокировать</button>'}</div>`:''}`}
     </section>
     ${kids.map(k=>{const tot=PLANS[k.plan].n,open=openUpTo(k),p=payState(k);
-      return `<section class="kid" data-sid="${k.id}"><div class="card__h" style="margin:0"><h3>${esc(k.name)}, ${age(k.birth)} ${plural(age(k.birth),'год','года','лет')}</h3><span class="pill p-lilac">${k.program}</span></div>
+      return `<section class="kid" data-sid="${k.id}"><div class="card__h" style="margin:0"><h3>${esc(k.name)}, ${age(k.birth)} ${plural(age(k.birth),'год','года','лет')}</h3><span class="row" style="gap:6px"><span class="pill p-lilac">${k.program}</span>${role==='admin'?`<button class="btn btn--danger btn--xs" data-del-kid="${k.id}">Удалить</button>`:''}</span></div>
       <div><small style="color:var(--muted)">Пройдено ${k.done} из ${tot} · открыто ${open}</small><div class="bar" style="margin-top:5px"><span style="width:${Math.round(k.done/tot*100)}%"></span></div></div>
       ${canEdit?`<div class="fgrid">
         <label class="field"><span>Программа</span><select data-k="program">${PROGRAMS.map(x=>`<option ${x===k.program?'selected':''}>${x}</option>`).join('')}</select></label>
         <label class="field"><span>Вариант обучения</span><select data-k="plan">${Object.entries(PLANS).map(([v,x])=>`<option value="${v}" ${v===k.plan?'selected':''}>${x.t} · ${x.n}</option>`).join('')}</select></label>
         <label class="field"><span>Способ оплаты</span><select data-k="payment">${Object.entries(PAYS).map(([v,x])=>`<option value="${v}" ${v===k.payment?'selected':''}>${x.t}</option>`).join('')}</select></label>
-        <label class="field"><span>Группа</span><select data-k="group">${D.groups.map(g=>`<option value="${g.id}" ${g.id===k.group?'selected':''}>${esc(g.name)}</option>`).join('')}</select></label>
+        <label class="field"><span>Группа</span><select data-k="group"><option value="" ${!k.group?'selected':''}>Без группы</option>${D.groups.map(g=>`<option value="${g.id}" ${g.id===k.group?'selected':''}>${esc(g.name)}</option>`).join('')}</select></label>
         ${k.payment==='internal'?`<label class="field"><span>Оплачено занятий</span><input class="input" type="number" min="0" max="${tot}" data-k="paid" value="${k.paid}"></label><div class="field"><span>Следующий платёж</span><div style="padding-top:8px">${p?`<span class="pill p-${p.k}">${p.t}</span>`:'—'}</div></div>`:''}
       </div>`:`<dl class="kv"><dt>Вариант</dt><dd>${PLANS[k.plan].t}</dd><dt>Оплата</dt><dd>${PAYS[k.payment].t}</dd><dt>Группа</dt><dd>${esc(groupOf(k.group)?.name)}</dd></dl>`}
       </section>`}).join('')}
@@ -977,6 +985,7 @@ function openClient(id){
   const on=(sel,fn)=>{const el=$(sel);if(el)el.onclick=fn};
   on('#aCreate',()=>accessDialog(c,'create'));
   on('#aReset',()=>accessDialog(c,'reset'));
+  document.querySelectorAll('[data-del-kid]').forEach(b=>b.onclick=()=>openStudentDelDlg(b.dataset.delKid));
   on('#aBlock',()=>{c.access.status='blocked';log(`Доступ заблокирован: ${c.parent}`);save();toast('Вход в кабинет заблокирован');openClient(id);refresh()});
   on('#aUnblock',()=>{c.access.status=c.access.last?'active':'issued';log(`Доступ разблокирован: ${c.parent}`);save();toast('Вход снова разрешён');openClient(id);refresh()});
   on('#dSave',()=>{
@@ -1594,13 +1603,13 @@ function openGroupDlg(){
 /* =====================================================================
    НОВЫЕ ЛИДЫ — купили у МВУ, первая линия записывает в группу
    ===================================================================== */
-const newLeads=()=>{ensureSales();return D.sales.filter(x=>!x.placed)};
+const newLeads=()=>{ensureSales();return D.sales.filter(x=>!x.placed&&!x.removed)};
 function seatsOf(g){return D.students.filter(x=>x.group===g.id).length}
 function groupFits(g){const n=seatsOf(g),max=g.max||6;return {n,max,free:Math.max(0,max-n)}}
 function saleStudent(x){return D.students.find(s=>s.id===x.sid)||{}}
 function saleClient(x){return D.clients.find(c=>c.id===x.fid)||{}}
 VIEWS.newleads=function(){
-  const list=newLeads(), done=D.sales.filter(x=>x.placed).sort((a,b)=>new Date(b.placed)-new Date(a.placed)).slice(0,8);
+  const list=newLeads(), done=D.sales.filter(x=>x.placed&&!x.removed).sort((a,b)=>new Date(b.placed)-new Date(a.placed)).slice(0,8);
   const card=x=>{const st=saleStudent(x), c=saleClient(x), age=st.birth?Math.floor((Date.now()-new Date(st.birth))/(365.25*DAY)):'';
     return `<div class="item item--wrap nl-item"><div class="item__main"><b>${esc(x.kid)}${age?', '+age+' лет':''} · ${esc(x.program)}</b>
       <small>${esc(x.parent)} · <a class="link" href="tel:${esc((c.phone||'').replace(/[^\d+]/g,''))}">${esc(c.phone||'')}</a> · ${PLAN_LABEL(x.plan)} · продажа ${dt(x.date)}, ${esc(x.mvu)}</small>
@@ -1689,10 +1698,11 @@ function drawDb(){
       <td>${a.login?`<code>${esc(a.login)}</code> <button class="db-copy" data-copy="${esc(a.login)}" title="Скопировать логин">⧉</button>`:'—'}</td>
       <td>${a.pass?`<code class="db-pass">${dbShow?esc(a.pass):'••••••••'}</code> <button class="db-copy" data-reveal="${c.id}" title="Показать">👁</button><button class="db-copy" data-copy="${esc(a.pass)}" title="Скопировать пароль">⧉</button>`:'—'}</td>
       <td><span class="pill ${st[1]}">${st[0]}</span></td>
-      <td><button class="btn btn--ghost btn--xs" data-db-acc="${c.id}">${a.login?'Сбросить':'Выдать'}</button></td></tr>`}).join('')||'<tr><td colspan="8"><p class="empty">Никого не нашли</p></td></tr>'}
+      <td class="st-act"><button class="btn btn--ghost btn--xs" data-db-acc="${c.id}">${a.login?'Сбросить':'Выдать'}</button><button class="btn btn--danger btn--xs" data-db-del="${s.id}">Удалить</button></td></tr>`}).join('')||'<tr><td colspan="8"><p class="empty">Никого не нашли</p></td></tr>'}
   </tbody></table></div>`;
   $('#dbBox').querySelectorAll('[data-copy]').forEach(b=>b.onclick=()=>{try{navigator.clipboard.writeText(b.dataset.copy).then(()=>toast('Скопировано ✓'),()=>toast('Не удалось скопировать'))}catch(e){}});
   $('#dbBox').querySelectorAll('[data-reveal]').forEach(b=>b.onclick=()=>{const code=b.previousElementSibling,c=client(b.dataset.reveal);code.textContent=code.textContent.startsWith('•')?c.access.pass:'••••••••'});
+  $('#dbBox').querySelectorAll('[data-db-del]').forEach(b=>b.onclick=()=>openStudentDelDlg(b.dataset.dbDel));
   $('#dbBox').querySelectorAll('[data-db-acc]').forEach(b=>b.onclick=()=>{const c=client(b.dataset.dbAcc);accessDialog(c,c.access&&c.access.login?'reset':'create')});
 }
 BIND.db=function(){
@@ -1810,9 +1820,37 @@ function openDozhimDlg(l,pre){
    ===================================================================== */
 const STAFF_ROLES={admin:'Администратор',line1:'Первая линия',mvu:'МВУ',teacher:'Преподаватель'};
 const STAFF_KEY='unikum-admin-staff';
+/* сложный пароль: 14 символов, A-z, цифры и спецсимволы, без похожих (0/O, 1/l/I) */
+function genStrongPass(len=14){
+  const sets=['ABCDEFGHJKLMNPQRSTUVWXYZ','abcdefghijkmnpqrstuvwxyz','23456789','!@#$%&*?-_+='], all=sets.join('');
+  const r=n=>crypto.getRandomValues(new Uint32Array(1))[0]%n;
+  const a=sets.map(x=>x[r(x.length)]);
+  while(a.length<len)a.push(all[r(all.length)]);
+  for(let i=a.length-1;i>0;i--){const j=r(i+1);[a[i],a[j]]=[a[j],a[i]]}
+  return a.join('');
+}
+/* проверка своего пароля: ≥8 символов, буквы и цифры, без пробелов; оценка надёжности 0–3 */
+function passInfo(p){
+  const kinds=[/[a-zа-яё]/.test(p),/[A-ZА-ЯЁ]/.test(p),/\d/.test(p),/[^A-Za-zА-Яа-яЁё\d\s]/.test(p)].filter(Boolean).length;
+  let err='';
+  if(/\s/.test(p))err='Пароль без пробелов';
+  else if(p.length<8)err='Пароль — не меньше 8 символов';
+  else if(!/[A-Za-zА-Яа-яЁё]/.test(p)||!/\d/.test(p))err='В пароле нужны и буквы, и цифры';
+  const score=err?0:(p.length>=12&&kinds>=4)?3:(p.length>=10&&kinds>=3)?2:1;
+  return {err,score,label:['слишком простой','средний','хороший','надёжный'][score]};
+}
+const passField=(name,val)=>`<div class="field"><span>Пароль — сгенерирован, можно вписать свой</span>
+  <div class="row" style="flex-wrap:nowrap"><input class="input pw-in" name="${name}" value="${esc(val)}" autocomplete="new-password" autocapitalize="none" spellcheck="false">
+  <button class="btn btn--ghost btn--xs" type="button" data-pw-gen title="Сгенерировать сложный пароль">↻</button></div>
+  <div class="pw-meter"><i></i><small></small></div></div>`;
+function bindPassField(f,name){
+  const inp=f.elements[name], bar=f.querySelector('.pw-meter i'), lab=f.querySelector('.pw-meter small');
+  const upd=()=>{const i=passInfo(inp.value);bar.style.width=(i.err?12:[12,40,70,100][i.score])+'%';bar.dataset.s=i.err?0:i.score;lab.textContent=i.err||('Надёжность: '+i.label)};
+  inp.oninput=upd;f.querySelector('[data-pw-gen]').onclick=()=>{inp.value=genStrongPass();upd()};upd();
+}
 function ensureStaff(){
   if(!D.staff){
-    const mk=(name,role,phone,login,daysAgo,last)=>({id:uid('u'),name,role,phone,login,pass:genPass(),status:'active',created:iso(Date.now()-daysAgo*DAY),last:last==null?null:iso(Date.now()-last*3600e3)});
+    const mk=(name,role,phone,login,daysAgo,last)=>({id:uid('u'),name,role,phone,login,pass:genStrongPass(),status:'active',created:iso(Date.now()-daysAgo*DAY),last:last==null?null:iso(Date.now()-last*3600e3)});
     D.staff=[mk('Светлана Орлова','admin','+7 900 444-00-01','orlova',120,2),
       mk('Ольга (первая линия)','line1','+7 900 444-00-02','olga',90,1),
       mk('Анна (МВУ)','mvu','+7 900 444-00-03','anna',80,3),mk('Кирилл (МВУ)','mvu','+7 900 444-00-04','kirill',40,26),
@@ -1835,38 +1873,56 @@ function applyMe(){
   const me=$('#whoMe');me.hidden=false;me.innerHTML=`<b>${esc(ME.name)}</b><small>${STAFF_ROLES[ME.role]}</small>`;
 }
 const staffLoginTaken=(l,except)=>(D.staff||[]).some(x=>x.id!==except&&x.login===l)||l==='admintest';
+let stQ='',stRole='',stStatus='';
 VIEWS.staff=function(){
-  const rows=[...D.staff].sort((a,b)=>Object.keys(STAFF_ROLES).indexOf(a.role)-Object.keys(STAFF_ROLES).indexOf(b.role)||a.name.localeCompare(b.name,'ru'));
   return `<div class="vhead"><div><h1>Сотрудники</h1><p>Учётные записи для входа в админку. Сотрудник входит на странице входа своим логином и паролем и видит только разделы своей роли.</p></div>
     <button class="btn" id="stAdd">＋ Добавить сотрудника</button></div>
     <div class="kpis" style="grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:16px">${Object.entries(STAFF_ROLES).map(([k,t])=>`<div class="kpi"><b>${D.staff.filter(x=>x.role===k&&x.status!=='blocked').length}</b><span>${t}</span></div>`).join('')}</div>
+    <div class="row db-tools"><input class="input" id="stQ" placeholder="Поиск: имя, логин, телефон" value="${esc(stQ)}">
+      <select id="stRole"><option value="">Все роли</option>${Object.entries(STAFF_ROLES).map(([k,t])=>`<option value="${k}" ${stRole===k?'selected':''}>${t}</option>`).join('')}</select>
+      <select id="stStatus"><option value="">Любой статус</option>${[['active','Активные'],['never','Ещё не входили'],['blocked','Заблокированные']].map(([k,t])=>`<option value="${k}" ${stStatus===k?'selected':''}>${t}</option>`).join('')}</select></div>
+    <div id="stBox"></div>
+    <p class="db-count" style="margin-top:10px">Страница входа для сотрудников — та же, что у родителей: <a class="link" href="cabinet.html" target="_blank" rel="noopener">${esc(CABINET_URL)}</a>. В прототипе учётки работают в этом браузере; в рабочей версии их будет хранить сервер.</p>`;
+};
+function staffRows(){
+  const q=stQ.trim().toLowerCase();
+  return [...D.staff].filter(u=>(!stRole||u.role===stRole)&&(!stStatus||(stStatus==='blocked'?u.status==='blocked':stStatus==='never'?u.status!=='blocked'&&!u.last:u.status!=='blocked'))
+      &&(!q||[u.name,u.login,u.phone,STAFF_ROLES[u.role]].join(' ').toLowerCase().includes(q)))
+    .sort((a,b)=>Object.keys(STAFF_ROLES).indexOf(a.role)-Object.keys(STAFF_ROLES).indexOf(b.role)||a.name.localeCompare(b.name,'ru'));
+}
+function drawStaff(){
+  const f=id=>D.staff.find(x=>x.id===id), rows=staffRows();
+  $('#stBox').innerHTML=`<p class="db-count">${rows.length} из ${D.staff.length} ${plural(D.staff.length,'сотрудника','сотрудников','сотрудников')}</p>
     <div class="tbl-wrap"><table class="db-tbl"><thead><tr><th>Сотрудник</th><th>Роль</th><th>Логин</th><th>Пароль</th><th>Статус</th><th>Последний вход</th><th></th></tr></thead><tbody>
-    ${rows.map(u=>`<tr class="${u.status==='blocked'?'st-off':''}"><td><b>${esc(u.name)}</b><small>${esc(u.phone||'')}</small></td>
+    ${rows.length?rows.map(u=>`<tr class="${u.status==='blocked'?'st-off':''}"><td><b>${esc(u.name)}</b><small>${esc(u.phone||'')}</small></td>
       <td>${STAFF_ROLES[u.role]}</td>
       <td><code>${esc(u.login)}</code> <button class="db-copy" data-copy="${esc(u.login)}" title="Скопировать логин">⧉</button></td>
       <td><code class="db-pass">••••••••</code> <button class="db-copy" data-reveal-st="${u.id}" title="Показать">👁</button><button class="db-copy" data-copy="${esc(u.pass)}" title="Скопировать пароль">⧉</button></td>
       <td><span class="pill ${u.status==='blocked'?'p-mute':u.last?'p-ok':'p-new'}">${u.status==='blocked'?'заблокирован':u.last?'активен':'ещё не входил'}</span></td>
       <td>${u.last?ago(u.last):'—'}</td>
       <td class="st-act"><button class="btn btn--ghost btn--xs" data-st-edit="${u.id}">Изменить</button><button class="btn btn--ghost btn--xs" data-st-pass="${u.id}">Сбросить пароль</button>
-        ${ME&&ME.id===u.id?'':`<button class="btn btn--ghost btn--xs" data-st-block="${u.id}">${u.status==='blocked'?'Разблокировать':'Заблокировать'}</button>`}</td></tr>`).join('')}
-    </tbody></table></div>
-    <p class="db-count" style="margin-top:10px">Страница входа для сотрудников — та же, что у родителей: <a class="link" href="cabinet.html" target="_blank" rel="noopener">${esc(CABINET_URL)}</a>. В прототипе учётки работают в этом браузере; в рабочей версии их будет хранить сервер.</p>`;
-};
-BIND.staff=function(){
-  const f=id=>D.staff.find(x=>x.id===id);
-  $('#stAdd').onclick=()=>openStaffDlg();
-  document.querySelectorAll('#view [data-copy]').forEach(b=>b.onclick=()=>{try{navigator.clipboard.writeText(b.dataset.copy).then(()=>toast('Скопировано ✓'),()=>toast('Не удалось скопировать'))}catch(e){}});
+        ${ME&&ME.id===u.id?'':`<button class="btn btn--ghost btn--xs" data-st-block="${u.id}">${u.status==='blocked'?'Разблокировать':'Заблокировать'}</button><button class="btn btn--danger btn--xs" data-st-del="${u.id}">Удалить</button>`}</td></tr>`).join(''):'<tr><td colspan="7"><p class="empty">Никого не нашли</p></td></tr>'}
+    </tbody></table></div>`;
+  $('#stBox').querySelectorAll('[data-copy]').forEach(b=>b.onclick=()=>{try{navigator.clipboard.writeText(b.dataset.copy).then(()=>toast('Скопировано ✓'),()=>toast('Не удалось скопировать'))}catch(e){}});
   document.querySelectorAll('[data-reveal-st]').forEach(b=>b.onclick=()=>{const c=b.previousElementSibling;c.textContent=c.textContent.startsWith('•')?f(b.dataset.revealSt).pass:'••••••••'});
   document.querySelectorAll('[data-st-edit]').forEach(b=>b.onclick=()=>openStaffDlg(f(b.dataset.stEdit)));
   document.querySelectorAll('[data-st-pass]').forEach(b=>b.onclick=()=>openStaffPassDlg(f(b.dataset.stPass)));
+  document.querySelectorAll('[data-st-del]').forEach(b=>b.onclick=()=>openStaffDelDlg(f(b.dataset.stDel)));
   document.querySelectorAll('[data-st-block]').forEach(b=>b.onclick=()=>{const u=f(b.dataset.stBlock);u.status=u.status==='blocked'?'active':'blocked';
     log(`${u.status==='blocked'?'Заблокирован':'Разблокирован'} сотрудник: ${u.name}`);ensureStaff();save();toast(u.status==='blocked'?'Вход заблокирован':'Вход снова разрешён');route()});
+}
+BIND.staff=function(){
+  $('#stAdd').onclick=()=>openStaffDlg();
+  $('#stQ').oninput=e=>{stQ=e.target.value;drawStaff()};
+  $('#stRole').onchange=e=>{stRole=e.target.value;drawStaff()};
+  $('#stStatus').onchange=e=>{stStatus=e.target.value;drawStaff()};
+  drawStaff();
 };
 function staffMsg(u,pass,isNew){
   return `Здравствуйте, ${u.name.split(' ')[0]}! ${isNew?'Ваш доступ в админку «Уникума»':'Новый пароль от админки «Уникума»'}:\n${CABINET_URL}\nЛогин: ${u.login}\nПароль: ${pass}\nРоль: ${STAFF_ROLES[u.role]}`;
 }
 function openStaffDlg(u){
-  const isNew=!u;u=u||{name:'',role:'line1',phone:'',login:'',pass:genPass(),status:'active'};
+  const isNew=!u;u=u||{name:'',role:'line1',phone:'',login:'',pass:genStrongPass(),status:'active'};
   showDlg(`<h2>${isNew?'Новый сотрудник':'Сотрудник'}</h2><p>${isNew?'Создайте учётную запись — логин и пароль можно сразу скопировать и отправить сотруднику.':esc(u.name)}</p>
     <form class="dlg" style="padding:0;gap:12px" novalidate>
       <div class="fgrid"><label class="field"><span>Имя и фамилия</span><input class="input" name="name" value="${esc(u.name)}" placeholder="Например: Пётр Сидоров" required></label>
@@ -1874,7 +1930,7 @@ function openStaffDlg(u){
       <div class="field"><span>Роль</span><div class="seg">${Object.entries(STAFF_ROLES).map(([k,t])=>`<label><input type="radio" name="role" value="${k}" ${u.role===k?'checked':''} ${ME&&ME.id===u.id&&k!==u.role?'disabled':''}><span>${t}</span></label>`).join('')}</div></div>
       <p class="st-hint" id="stHint"></p>
       <div class="fgrid"><label class="field"><span>Логин</span><input class="input" name="login" value="${esc(u.login)}" autocapitalize="none" spellcheck="false" placeholder="латиницей"></label>
-        ${isNew?`<div class="field"><span>Пароль</span><div class="row" style="flex-wrap:nowrap"><input class="input" name="pass" value="${esc(u.pass)}" readonly><button class="btn btn--ghost btn--xs" type="button" id="stGen" title="Другой пароль">↻</button></div></div>`:''}</div>
+        </div>${isNew?passField('pass',u.pass):''}
       ${isNew?'<label class="check"><input type="checkbox" name="copy" checked> Скопировать логин и пароль, чтобы отправить сотруднику</label>':''}
       <p class="err"></p>
       <div class="dlg__act"><button type="button" class="btn btn--ghost" data-dlg-close>Отмена</button><button class="btn btn--ok">${isNew?'Создать учётку':'Сохранить'}</button></div></form>`,
@@ -1883,6 +1939,7 @@ function openStaffDlg(u){
     if(name.length<2)return 'Укажите имя сотрудника';
     if(login.length<3)return 'Логин — от 3 символов латиницей';
     if(staffLoginTaken(login,u.id)||D.clients.some(c=>c.access&&c.access.login===login))return 'Такой логин уже занят';
+    if(isNew){const pi=passInfo(f.pass.value);if(pi.err)return pi.err}
     if(!isNew&&u.name!==name){   // переименование — обновляем имя в группах, вводных и продажах
       D.groups.forEach(g=>{if(g.teacher===u.name)g.teacher=name});
       (D.sched&&D.sched.lessons||[]).forEach(l=>{if(l.mvu===u.name)l.mvu=name;if(l.teacher===u.name)l.teacher=name});
@@ -1902,21 +1959,76 @@ function openStaffDlg(u){
     f.querySelectorAll('[name=role]').forEach(x=>x.onchange=sync);sync();
     f.login.oninput=()=>{f.login.dataset.touched=1;f.login.value=f.login.value.toLowerCase().replace(/[^a-z0-9._-]/g,'')};
     if(isNew)f.name.oninput=()=>{if(f.login.dataset.touched)return;const w=f.name.value.trim().split(/\s+/);let l=translit(w[1]||w[0]||'');let k=l,n=2;while(k&&staffLoginTaken(k))k=l+n++;f.login.value=k};
-    const g=f.querySelector('#stGen');if(g)g.onclick=()=>{f.pass.value=genPass()};
+    if(isNew)bindPassField(f,'pass');
+  });
+}
+function openStaffDelDlg(u){
+  if(ME&&ME.id===u.id)return toast('Нельзя удалить свою учётную запись');
+  const groups=D.groups.filter(g=>g.teacher===u.name);
+  const open=(D.sched&&D.sched.lessons||[]).filter(l=>l.kind==='trial'&&l.mvu===u.name&&(l.sale==='thinking'||(l.status==='planned'&&new Date(l.date)>new Date())));
+  const lastAdmin=u.role==='admin'&&D.staff.filter(x=>x.role==='admin'&&x.status!=='blocked').length<=1;
+  const others=D.staff.filter(x=>x.id!==u.id&&x.role===u.role&&x.status!=='blocked');
+  const need=groups.length||open.length;
+  showDlg(`<h2>Удалить сотрудника?</h2><p><b>${esc(u.name)}</b> · ${STAFF_ROLES[u.role]} · логин <code>${esc(u.login)}</code></p>
+    <form class="dlg" style="padding:0;gap:12px" novalidate>
+      <p class="st-warn">Учётная запись удалится навсегда — войти по этому логину будет нельзя. Это нельзя отменить. Если сотрудник может вернуться, лучше заблокируйте его. В истории (продажи, журнал) имя останется.</p>
+      ${lastAdmin?'<p class="st-warn">Это последний администратор — удалить его нельзя.</p>':''}
+      ${need?`<label class="field"><span>${groups.length?`Ведёт групп: ${groups.length}`:''}${groups.length&&open.length?' · ':''}${open.length?`Открытых вводных и лидов в дожиме: ${open.length}`:''} — передать</span>
+        <select name="to">${others.map(x=>`<option value="${x.id}">${esc(x.name)}</option>`).join('')}<option value="">Никому — оставить без ответственного</option></select></label>`:''}
+      <label class="check"><input type="checkbox" name="ok"> Да, удалить ${esc(u.name)}</label>
+      <p class="err"></p>
+      <div class="dlg__act"><button type="button" class="btn btn--ghost" data-dlg-close>Отмена</button><button class="btn btn--danger" ${lastAdmin?'disabled':''}>Удалить навсегда</button></div></form>`,
+  f=>{
+    if(lastAdmin)return 'Нельзя удалить последнего администратора';
+    if(!f.ok.checked)return 'Поставьте галочку, чтобы подтвердить удаление';
+    const to=need&&f.to.value?D.staff.find(x=>x.id===f.to.value):null;
+    if(to){groups.forEach(g=>g.teacher=to.name);open.forEach(l=>l.mvu=to.name)}
+    D.staff=D.staff.filter(x=>x.id!==u.id);
+    ensureStaff();
+    log(`Удалён сотрудник: ${u.name} (${STAFF_ROLES[u.role]}, логин ${u.login})${to?' — дела переданы: '+to.name:''}`);
+    save();toast(`Сотрудник удалён${to?' · дела переданы: '+to.name:''}`);
   });
 }
 function openStaffPassDlg(u){
-  let pass=genPass();
+  let pass=genStrongPass();
   showDlg(`<h2>Сбросить пароль</h2><p>${esc(u.name)} · ${STAFF_ROLES[u.role]} · логин <code>${esc(u.login)}</code></p>
     <form class="dlg" style="padding:0;gap:12px" novalidate>
-      <div class="field"><span>Новый пароль</span><div class="row" style="flex-wrap:nowrap"><input class="input" name="pass" value="${esc(pass)}"><button class="btn btn--ghost btn--xs" type="button" id="stGen2" title="Другой пароль">↻</button></div></div>
+      ${passField('pass',pass)}
       <label class="check"><input type="checkbox" name="copy" checked> Скопировать логин и пароль, чтобы отправить сотруднику</label>
       <p class="err"></p>
       <div class="dlg__act"><button type="button" class="btn btn--ghost" data-dlg-close>Отмена</button><button class="btn btn--ok">Сбросить пароль</button></div></form>`,
-  f=>{const p=f.pass.value.trim();if(p.length<6)return 'Пароль — не меньше 6 символов';
+  f=>{const p=f.pass.value;const pi=passInfo(p);if(pi.err)return pi.err;
     u.pass=p;if(f.copy.checked){try{navigator.clipboard.writeText(staffMsg(u,p,false)).catch(()=>{})}catch(e){}}
     log(`Сброшен пароль сотрудника: ${u.name}`);save();toast(f.copy.checked?'Пароль сброшен ✓ Данные для входа скопированы':'Пароль сброшен ✓')},
-  f=>{f.querySelector('#stGen2').onclick=()=>{f.pass.value=genPass()}});
+  f=>bindPassField(f,'pass'));
+}
+
+
+/* удалить ученика (только администратор). Если у семьи больше нет детей — можно удалить и семью с доступом в кабинет */
+function openStudentDelDlg(sid){
+  if(role!=='admin')return;
+  const st=student(sid);if(!st)return;
+  const c=client(st.fid)||{}, sibs=D.students.filter(x=>x.fid===st.fid&&x.id!==sid), g=groupOf(st.group)||NO_GROUP;
+  const hw=(D.homework||[]).filter(h=>h.sid===sid).length, sold=(D.sales||[]).filter(x=>x.sid===sid);
+  showDlg(`<h2>Удалить ученика?</h2><p><b>${esc(st.name)}</b> · ${esc(st.program)} · ${st.group?esc(g.name):'без группы'} · родитель ${esc(c.parent||'—')}</p>
+    <form class="dlg" style="padding:0;gap:12px" novalidate>
+      <p class="st-warn">Ученик удалится из групп, журнала и базы вместе с пропусками, заморозками${hw?` и домашними заданиями (${hw})`:''}. Это нельзя отменить.${sold.length?' Продажа останется в статистике МВУ.':''}</p>
+      ${sibs.length?`<p class="st-hint">У семьи останутся дети: ${sibs.map(x=>esc(x.name)).join(', ')} — доступ в кабинет сохранится.</p>`
+        :`<label class="check"><input type="checkbox" name="fam" checked> Удалить и семью ${esc(c.parent||'')}${c.access&&c.access.login?` с доступом в кабинет (логин ${esc(c.access.login)})`:''}</label>`}
+      <label class="check"><input type="checkbox" name="ok"> Да, удалить ${esc(st.name)}</label>
+      <p class="err"></p>
+      <div class="dlg__act"><button type="button" class="btn btn--ghost" data-dlg-close>Отмена</button><button class="btn btn--danger">Удалить навсегда</button></div></form>`,
+  f=>{
+    if(!f.ok.checked)return 'Поставьте галочку, чтобы подтвердить удаление';
+    const fam=!sibs.length&&f.fam&&f.fam.checked;
+    D.students=D.students.filter(x=>x.id!==sid);
+    ['absences','freezes','homework'].forEach(k=>{if(D[k])D[k]=D[k].filter(x=>x.sid!==sid)});
+    (D.sales||[]).forEach(x=>{if(x.sid===sid&&!x.placed)x.removed=true});
+    if(fam){D.clients=D.clients.filter(x=>x.id!==st.fid);if(D.extras)D.extras=D.extras.filter(x=>x.fid!==st.fid);closeDrawer()}
+    log(`Удалён ученик: ${st.name} (${st.program}${st.group?', '+g.name:''})${fam?` и семья ${c.parent}`:''}`);
+    save();toast(fam?'Ученик и семья удалены':'Ученик удалён');
+    if(!fam&&c.id&&!$('#drawer').hidden)openClient(c.id);
+  });
 }
 
 /* =====================================================================
