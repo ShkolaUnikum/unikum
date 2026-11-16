@@ -364,6 +364,16 @@ html[data-theme="dark"] .undo-btn{background:var(--card);color:var(--text)}
 .toast__undo{border:0;border-radius:8px;padding:6px 10px;background:rgba(255,255,255,.16);color:#fff;font:700 12.5px inherit;cursor:pointer;white-space:nowrap}
 .toast__undo:hover{background:rgba(255,255,255,.28)}
 @media (max-width:700px){.undo-btn span{display:none}.undo-btn{padding:0 10px}}
+
+/* кто онлайн */
+.on-dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#9a93b8;opacity:.55;flex:none;vertical-align:middle}
+.on-dot.on{background:#2fc79a;opacity:1;box-shadow:0 0 0 3px rgba(47,199,154,.22);animation:onPulse 2s ease-in-out infinite}
+@keyframes onPulse{50%{box-shadow:0 0 0 6px rgba(47,199,154,.08)}}
+.on-item{display:flex;align-items:center;gap:12px}
+.on-when{font-size:12px;color:var(--muted);white-space:nowrap}
+.on-when.is-on{color:#2fc79a;font-weight:700}
+.kpi b small{font-size:.55em;color:var(--muted);font-weight:600}
+@media (prefers-reduced-motion:reduce){.on-dot.on{animation:none}}
 </style>
 </head>
 <body>
@@ -382,6 +392,7 @@ html[data-theme="dark"] .undo-btn{background:var(--card);color:var(--text)}
   <symbol id="i-db" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><ellipse cx="12" cy="5.5" rx="8" ry="3"/><path d="M4 5.5v13c0 1.7 3.6 3 8 3s8-1.3 8-3v-13M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></g></symbol>
   <symbol id="i-phone" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2z"/></symbol>
   <symbol id="i-key" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="8" cy="15" r="4.5"/><path d="M11.5 12 21 2.5M17 6.5l3 3M14.5 9l2 2"/></g></symbol>
+  <symbol id="i-online" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3" fill="currentColor"/><path d="M7.8 7.8a6 6 0 0 0 0 8.4M16.2 7.8a6 6 0 0 1 0 8.4M4.9 4.9a10 10 0 0 0 0 14.2M19.1 4.9a10 10 0 0 1 0 14.2"/></g></symbol>
   <symbol id="i-log" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></g></symbol>
   <symbol id="i-search" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></g></symbol>
   <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
@@ -437,13 +448,13 @@ const EXTRA={english:'Английский язык',ai:'Нейросети'};
 const ROLES={
   /* Администратор — всё. Преподаватель — группы, расписание и уроки купивших.
      Первая линия — заявки и запись на вводный урок. МВУ — проводит вводные уроки и продаёт. */
-  admin:{t:'Администратор',name:'Администратор',routes:['dash','clients','db','groups','schedule','requests','newleads','intro','dozhim','sales','homework','payments','staff','integrations','log']},
+  admin:{t:'Администратор',name:'Администратор',routes:['dash','online','clients','db','groups','schedule','requests','newleads','intro','dozhim','sales','homework','payments','staff','integrations','log']},
   line1:{t:'Первая линия',name:'Ольга (первая линия)',routes:['dash','requests','newleads','intro']},
   mvu:{t:'МВУ',name:'Анна (МВУ)',routes:['dash','intro','dozhim','sales']},
   teacher:{t:'Преподаватель',name:'Мария Викторовна',routes:['dash','groups','schedule','homework']}
 };
 const ROUTES=[
-  {id:'dash',t:'Сводка',i:'i-dash'},{id:'clients',t:'Клиенты',i:'i-users'},{id:'db',t:'База учеников',i:'i-db'},{id:'groups',t:'Группы и журнал',i:'i-group'},{id:'schedule',t:'Расписание групп',i:'i-cal'},{id:'intro',t:'Вводные уроки',i:'i-target'},{id:'dozhim',t:'Дожим',i:'i-phone'},{id:'sales',t:'Продажи',i:'i-chart'},
+  {id:'dash',t:'Сводка',i:'i-dash'},{id:'online',t:'Кто онлайн',i:'i-online'},{id:'clients',t:'Клиенты',i:'i-users'},{id:'db',t:'База учеников',i:'i-db'},{id:'groups',t:'Группы и журнал',i:'i-group'},{id:'schedule',t:'Расписание групп',i:'i-cal'},{id:'intro',t:'Вводные уроки',i:'i-target'},{id:'dozhim',t:'Дожим',i:'i-phone'},{id:'sales',t:'Продажи',i:'i-chart'},
   {id:'requests',t:'Заявки',i:'i-inbox'},{id:'newleads',t:'Новые лиды',i:'i-users'},{id:'homework',t:'Проверка заданий',i:'i-hw'},{id:'payments',t:'Рассрочки',i:'i-pay'},
   {id:'staff',t:'Сотрудники',i:'i-key'},{id:'integrations',t:'Битрикс24',i:'i-plug'},{id:'log',t:'Журнал действий',i:'i-log'}
 ];
@@ -636,7 +647,7 @@ const noAccess=()=>D.clients.filter(c=>c.access.status==='none').length;
 
 /* ---------- навигация ---------- */
 function renderNav(cur){
-  const badge={dozhim:dozhimDue(),newleads:(D.sales||[]).filter(x=>!x.placed&&!x.removed).length,requests:pendingReq(),homework:pendingHw(),payments:overdue(),clients:noAccess()};
+  const badge={online:onlineCount(),dozhim:dozhimDue(),newleads:(D.sales||[]).filter(x=>!x.placed&&!x.removed).length,requests:pendingReq(),homework:pendingHw(),payments:overdue(),clients:noAccess()};
   $('#nav').innerHTML=ROUTES.filter(r=>ROLES[role].routes.includes(r.id)).map(r=>
     `<a href="#${r.id}" ${r.id===cur?'aria-current="page"':''}>${icon(r.i)}<span>${r.t}</span>${badge[r.id]?`<span class="cnt">${badge[r.id]}</span>`:''}</a>`).join('');
 }
@@ -1735,7 +1746,8 @@ function drawDb(){
   $('#dbBox').innerHTML=`<p class="db-count">${rows.length} ${plural(rows.length,'ученик','ученика','учеников')}</p>
   <div class="tbl-wrap"><table class="db-tbl"><thead><tr><th>Ученик</th><th>Группа</th><th>Родитель</th><th>Программа</th><th>Логин</th><th>Пароль</th><th>Доступ</th><th></th></tr></thead><tbody>
   ${rows.map(({s,c,g})=>{const a=c.access||{status:'none'},st=ACC_T[a.status]||ACC_T.none,age=s.birth?Math.floor((Date.now()-new Date(s.birth))/(365.25*DAY)):'';
-    return `<tr><td><b>${esc(s.name)}</b>${age?`<small>${age} лет</small>`:''}</td>
+    const ox=seen('client:'+c.id,a.last);
+    return `<tr><td><b>${dot(ox)} ${esc(s.name)}</b>${age?`<small>${age} лет</small>`:''}${ox.on?'<small class="on-when is-on">в кабинете сейчас</small>':''}</td>
       <td>${s.group?`<b>${esc(g.name)}</b><small>${g.solo?'индивидуально':esc(groupDays(g))} · ${esc(g.teacher)}</small>`:'<span class="pill p-new">ждёт записи</span>'}</td>
       <td>${esc(c.parent||'—')}<small>${esc(c.phone||'')}</small></td>
       <td>${esc(s.program)}<small>${PLAN_LABEL(s.plan)}</small></td>
@@ -1938,14 +1950,14 @@ function drawStaff(){
   const f=id=>D.staff.find(x=>x.id===id), rows=staffRows();
   $('#stBox').innerHTML=`<p class="db-count">${rows.length} из ${D.staff.length} ${plural(D.staff.length,'сотрудника','сотрудников','сотрудников')}</p>
     <div class="tbl-wrap"><table class="db-tbl"><thead><tr><th>Сотрудник</th><th>Роль</th><th>Логин</th><th>Пароль</th><th>Статус</th><th>Последний вход</th><th></th></tr></thead><tbody>
-    ${rows.length?rows.map(u=>`<tr class="${u.status==='blocked'?'st-off':''}"><td><b>${esc(u.name)}</b><small>${esc(u.phone||'')}</small></td>
+    ${rows.length?rows.map(u=>{const sx=seen('staff:'+u.id,u.last);return `<tr class="${u.status==='blocked'?'st-off':''}"><td><b>${dot(sx)} ${esc(u.name)}</b><small>${esc(u.phone||'')}</small></td>
       <td>${STAFF_ROLES[u.role]}</td>
       <td><code>${esc(u.login)}</code> <button class="db-copy" data-copy="${esc(u.login)}" title="Скопировать логин">⧉</button></td>
       <td><code class="db-pass">••••••••</code> <button class="db-copy" data-reveal-st="${u.id}" title="Показать">👁</button><button class="db-copy" data-copy="${esc(u.pass)}" title="Скопировать пароль">⧉</button></td>
       <td><span class="pill ${u.status==='blocked'?'p-mute':u.last?'p-ok':'p-new'}">${u.status==='blocked'?'заблокирован':u.last?'активен':'ещё не входил'}</span></td>
-      <td>${u.last?ago(u.last):'—'}</td>
+      <td class="${sx.on?'on-when is-on':''}">${sx.on?'онлайн':sx.t?ago(new Date(sx.t).toISOString()):'—'}</td>
       <td class="st-act"><button class="btn btn--ghost btn--xs" data-st-edit="${u.id}">Изменить</button><button class="btn btn--ghost btn--xs" data-st-pass="${u.id}">Сбросить пароль</button>
-        ${ME&&ME.id===u.id?'':`<button class="btn btn--ghost btn--xs" data-st-block="${u.id}">${u.status==='blocked'?'Разблокировать':'Заблокировать'}</button><button class="btn btn--danger btn--xs" data-st-del="${u.id}">Удалить</button>`}</td></tr>`).join(''):'<tr><td colspan="7"><p class="empty">Никого не нашли</p></td></tr>'}
+        ${ME&&ME.id===u.id?'':`<button class="btn btn--ghost btn--xs" data-st-block="${u.id}">${u.status==='blocked'?'Разблокировать':'Заблокировать'}</button><button class="btn btn--danger btn--xs" data-st-del="${u.id}">Удалить</button>`}</td></tr>`}).join(''):'<tr><td colspan="7"><p class="empty">Никого не нашли</p></td></tr>'}
     </tbody></table></div>`;
   $('#stBox').querySelectorAll('[data-copy]').forEach(b=>b.onclick=()=>{try{navigator.clipboard.writeText(b.dataset.copy).then(()=>toast('Скопировано ✓'),()=>toast('Не удалось скопировать'))}catch(e){}});
   document.querySelectorAll('[data-reveal-st]').forEach(b=>b.onclick=()=>{const c=b.previousElementSibling;c.textContent=c.textContent.startsWith('•')?f(b.dataset.revealSt).pass:'••••••••'});
@@ -2075,6 +2087,60 @@ function openStudentDelDlg(sid){
   });
 }
 
+
+/* =====================================================================
+   КТО ОНЛАЙН. Открытая админка и личный кабинет каждые 20 секунд отмечаются в «unikum-presence»,
+   при закрытии — отметка «вышел». Онлайн = отметка свежее минуты.
+   В прототипе это видно в пределах одного браузера; в рабочей версии отметки будет принимать сервер.
+   ===================================================================== */
+const PRES_KEY='unikum-presence', ONLINE_MS=60e3;
+function presMap(){try{return JSON.parse(localStorage.getItem(PRES_KEY))||{}}catch(e){return {}}}
+function presMark(key,off){if(!key)return;try{const m=presMap();m[key]={t:Date.now(),off:!!off};localStorage.setItem(PRES_KEY,JSON.stringify(m))}catch(e){}}
+function seen(key,lastIso){
+  const e=presMap()[key], t=Math.max(e?e.t:0,lastIso?new Date(lastIso).getTime():0);
+  return {on:!!(e&&!e.off&&Date.now()-e.t<ONLINE_MS),t:t||null};
+}
+const seenText=x=>x.on?'онлайн':x.t?'был(а) '+ago(new Date(x.t).toISOString()):'не заходил(а)';
+const dot=x=>`<i class="on-dot ${x.on?'on':''}" title="${seenText(x)}"></i>`;
+function onlineCount(){
+  if(!D||!D.staff)return 0;
+  return D.staff.filter(u=>seen('staff:'+u.id).on).length+D.clients.filter(c=>seen('client:'+c.id).on).length;
+}
+let onlyOn=false;
+VIEWS.online=function(){
+  const staff=D.staff.map(u=>({u,x:seen('staff:'+u.id,u.last)})).sort((a,b)=>(b.x.on-a.x.on)||((b.x.t||0)-(a.x.t||0)));
+  const fams=D.clients.filter(c=>c.access&&c.access.status!=='none').map(c=>({c,kids:D.students.filter(s=>s.fid===c.id),x:seen('client:'+c.id,c.access.last)}))
+    .sort((a,b)=>(b.x.on-a.x.on)||((b.x.t||0)-(a.x.t||0)));
+  const sOn=staff.filter(r=>r.x.on).length, fOn=fams.filter(r=>r.x.on).length;
+  const day=Date.now()-DAY, fDay=fams.filter(r=>r.x.t&&r.x.t>day).length;
+  const sl=staff.filter(r=>!onlyOn||r.x.on), fl=fams.filter(r=>!onlyOn||r.x.on);
+  return `<div class="vhead"><div><h1>Кто онлайн</h1><p>Кто из сотрудников сейчас в админке и кто из учеников — в личном кабинете. Обновляется само каждые 20 секунд.</p></div>
+    <label class="check"><input type="checkbox" id="onlyOn" ${onlyOn?'checked':''}> Только онлайн</label></div>
+    <div class="kpis" style="grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:16px">
+      <div class="kpi"><b>${sOn}<small> / ${staff.length}</small></b><span>сотрудников онлайн</span></div>
+      <div class="kpi"><b>${fOn}<small> / ${fams.length}</small></b><span>учеников в кабинете</span></div>
+      <div class="kpi"><b>${fDay}</b><span>заходили за сутки</span></div>
+      <div class="kpi"><b>${fams.filter(r=>!r.x.t).length}</b><span>ни разу не входили</span></div></div>
+    <div class="grid2">
+      <section class="card"><div class="card__h"><h2>Сотрудники</h2><a class="link" href="#staff">Все сотрудники</a></div><div class="list">
+        ${sl.map(({u,x})=>`<div class="item on-item ${u.status==='blocked'?'st-off':''}">${dot(x)}<div class="item__main"><b>${esc(u.name)}</b><small>${STAFF_ROLES[u.role]}${u.status==='blocked'?' · заблокирован':''}</small></div><span class="on-when ${x.on?'is-on':''}">${seenText(x)}</span></div>`).join('')||'<p class="empty">Сейчас никого нет онлайн</p>'}</div></section>
+      <section class="card"><div class="card__h"><h2>Ученики</h2><a class="link" href="#db">База учеников</a></div><div class="list">
+        ${fl.map(({c,kids,x})=>`<a class="item on-item" href="#clients/${c.id}" style="text-decoration:none">${dot(x)}<div class="item__main"><b>${kids.map(k=>esc(k.name)).join(', ')||'—'}</b><small>${esc(c.parent)} · ${kids.map(k=>esc((groupOf(k.group)||NO_GROUP).name)).join(', ')}</small></div><span class="on-when ${x.on?'is-on':''}">${seenText(x)}</span></a>`).join('')||'<p class="empty">Сейчас никого нет онлайн</p>'}</div></section>
+    </div>
+    <p class="db-count" style="margin-top:12px">В прототипе онлайн виден только в этом браузере: например, если открыть личный кабинет родителя в соседней вкладке. В рабочей версии отметки будут приходить на сервер со всех устройств.</p>`;
+};
+BIND.online=function(){const c=$('#onlyOn');if(c)c.onchange=e=>{onlyOn=e.target.checked;route()}};
+/* свои отметки: сотрудник, вошедший по своей учётке */
+function presTick(){if(ME&&!document.hidden)presMark('staff:'+ME.id)}
+/* живое обновление: отметки из других вкладок */
+function presRefresh(){
+  renderNav(curRoute());
+  const r=curRoute();
+  if(r==='online'&&!$('#dlg').open)route();
+  else if(r==='staff'&&typeof drawStaff==='function'&&!$('#dlg').open)drawStaff();
+  else if(r==='db'&&typeof drawDb==='function'&&!$('#dlg').open)drawDb();
+}
+
 /* =====================================================================
    СТАРТ
    ===================================================================== */
@@ -2084,6 +2150,10 @@ ensureStaff();ensureSchedule();ensureSales();ensurePasswords();ensureDozhim();
 $('#roleSel').value=role;
 applyMe();
 undoBase=JSON.stringify(D);updUndo();
+presTick();setInterval(()=>{presTick();presRefresh()},20e3);
+document.addEventListener('visibilitychange',presTick);
+window.addEventListener('pagehide',()=>{if(ME)presMark('staff:'+ME.id,true)});
+window.addEventListener('storage',e=>{if(e.key===PRES_KEY)presRefresh()});
 $('#undoBtn').onclick=()=>undo();
 document.addEventListener('keydown',e=>{
   if((e.metaKey||e.ctrlKey)&&!e.shiftKey&&(e.key==='z'||e.key==='я'||e.code==='KeyZ')){
@@ -2095,7 +2165,7 @@ $('#roleSel').onchange=e=>{if(ME)return;role=e.target.value;try{localStorage.set
 $('#menuBtn').onclick=()=>$('#side').classList.toggle('open');
 $('#q').addEventListener('keydown',e=>{if(e.key==='Enter'&&!location.hash.startsWith('#clients')){Q=$('#q').value;location.hash='clients'}});
 $('#q').addEventListener('input',()=>{Q=$('#q').value});
-$('#logout').onclick=()=>{try{[sessionStorage,localStorage].forEach(st=>{st.removeItem('unikum-admin-auth');st.removeItem(STAFF_KEY)})}catch(e){}location.replace('cabinet.html')};
+$('#logout').onclick=()=>{if(ME)presMark('staff:'+ME.id,true);try{[sessionStorage,localStorage].forEach(st=>{st.removeItem('unikum-admin-auth');st.removeItem(STAFF_KEY)})}catch(e){}location.replace('cabinet.html')};
 $('#resetDemo').onclick=()=>{const keep=D.staff;D=seed();D.staff=keep;ensureStaff();ensureSchedule();ensureSales();ensurePasswords();ensureDozhim();save();toast('Демо-данные сброшены');route()};
 $('#dlg').addEventListener('click',e=>{if(e.target===e.currentTarget)e.currentTarget.close()});
 window.addEventListener('hashchange',route);

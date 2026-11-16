@@ -1817,6 +1817,29 @@ function fillTop(){
 }
 $('#kidSel').onchange=e=>{cur=+e.target.value;ls.set('unikum-kid',cur);fillTop();route()};
 
+/* ---------- «онлайн» для админки: пока кабинет открыт, раз в 20 секунд отмечаемся в unikum-presence ----------
+   В прототипе семью находим по логину среди учёток, выданных в админке этого браузера. */
+const PRES_KEY='unikum-presence';
+function cabWho(login,kidName){
+  let A=null;try{A=JSON.parse(localStorage.getItem('unikum-admin-v1'))}catch(e){}
+  let c=null;
+  if(A&&Array.isArray(A.clients)){
+    if(login)c=A.clients.find(x=>x.access&&x.access.login===String(login).trim().toLowerCase());
+    else if(kidName){const st=(A.students||[]).find(x=>x.name===kidName);c=st&&A.clients.find(x=>x.id===st.fid)}
+  }
+  try{c?sessionStorage.setItem('unikum-cab-client',c.id):sessionStorage.removeItem('unikum-cab-client')}catch(e){}
+}
+function presMark(off){
+  let id=null;try{id=sessionStorage.getItem('unikum-cab-client')}catch(e){}
+  if(!id)return;
+  try{const m=JSON.parse(localStorage.getItem(PRES_KEY)||'{}');m['client:'+id]={t:Date.now(),off:!!off};localStorage.setItem(PRES_KEY,JSON.stringify(m))}catch(e){}
+}
+let presT=null;
+function presIn(){presMark();clearInterval(presT);presT=setInterval(()=>{if(!document.hidden&&MODE)presMark()},20e3)}
+function presOut(){clearInterval(presT);presT=null;presMark(true);try{sessionStorage.removeItem('unikum-cab-client')}catch(e){}}
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&MODE)presMark()});
+window.addEventListener('pagehide',()=>{if(MODE)presMark(true)});
+
 /* ---------- вход / выход ---------- */
 function showLogin(view){
   $('#app').hidden=true;$('#login').hidden=false;stopTimer();
@@ -1832,9 +1855,10 @@ async function enter(mode){
   cur=Math.min(+ls.get('unikum-kid')||0,Math.max(0,S.students.length-1));
   $('#login').hidden=true;$('#app').hidden=false;
   if(!location.hash||location.hash==='#logout'||/access_token|type=/.test(location.hash))history.replaceState(null,'',location.pathname+'#home');
-  fillTop();route();
+  fillTop();route();presIn();
 }
 async function logout(){
+  presOut();
   const wasDemo=MODE==='demo';
   try{await API.logout()}catch(e){}
   if(wasDemo){const s=store.get();delete s.demoOn;store.set(s)}
@@ -1902,7 +1926,7 @@ $('#loginForm').onsubmit=e=>{
     try{
       MODE=REAL?'real':'demo';
       await API.login(l,p);
-      if(!REAL){const s=store.get();s.demoOn=$('#lRemember').checked;store.set(s);demoSession=true}
+      if(!REAL){const s=store.get();s.demoOn=$('#lRemember').checked;store.set(s);demoSession=true;cabWho(l)}
       await enter(MODE);
     }catch(err){MODE=null;$('#lErr').textContent=human(err)}
     finally{btn.disabled=false;btn.firstChild.textContent='Войти '}
@@ -1911,7 +1935,7 @@ $('#loginForm').onsubmit=e=>{
 let demoSession=false; // демо-вход без «Запомнить меня» живёт до перезагрузки
 $('#demoBtn').onclick=async()=>{
   if(REAL&&sb)await sb.auth.signOut().catch(()=>{});
-  demoSession=true;await enter('demo');
+  demoSession=true;cabWho(null,'Миша');await enter('demo');
 };
 
 // новый пароль по ссылке из письма
