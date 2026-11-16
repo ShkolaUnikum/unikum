@@ -1219,6 +1219,11 @@ dialog#license{max-width:min(760px,calc(100% - 24px))}
 
 /* сертификат — вторая плашка под «Юникоинами» */
 .coins + .coins{margin-top:14px}
+
+/* форма записи: ловушка для ботов и запасной вариант через Telegram */
+.hp{position:absolute!important;left:-9999px!important;width:1px;height:1px;opacity:0}
+.form__fail{display:grid;gap:8px;margin-top:12px;padding:14px 16px;border-radius:14px;background:rgba(255,95,168,.14);border:1px solid rgba(255,95,168,.45);font-size:14px;line-height:1.45}
+.form__fail .btn{justify-self:start}
 </style>
 </head>
 <body>
@@ -1573,7 +1578,13 @@ dialog#license{max-width:min(760px,calc(100% - 24px))}
           <select id="fAge" name="age"><option value="">Выберите</option><option>7 лет</option><option>8 лет</option><option>9 лет</option><option>10 лет</option><option>11 лет</option><option>12 лет</option><option>13 лет</option><option>14 лет</option><option>15 лет</option><option>16 лет</option></select>
           <div class="msg">Выберите возраст</div></div>
         <label class="check" id="agreeWrap"><input type="checkbox" id="fAgree" name="agree"><span>Согласен на <a href="soglasie.html" target="_blank" rel="noopener">обработку персональных данных</a> и с <a href="politika.html" target="_blank" rel="noopener">политикой конфиденциальности</a></span></label>
+        <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
         <button class="btn" type="submit">Записаться <span class="arr">↗</span></button>
+        <div class="form__fail" id="leadFail" role="alert" hidden>
+          <b>Не получилось отправить заявку 😕</b>
+          <span>Запишитесь через наш Telegram-бот — это займёт минуту, менеджер сразу получит заявку.</span>
+          <a class="btn btn--sm" href="https://t.me/unikum_school_bot" target="_blank" rel="noopener">Записаться в Telegram</a>
+        </div>
       </form>
       <div class="thanks" id="thanks" hidden>
         <span data-pix="heart"></span>
@@ -1899,11 +1910,16 @@ function phoneData(){
 }
 refreshCountry();
 
+/* Куда уходят заявки: сервер бота «Уникума» (он же показывает их в админке и присылает в Telegram).
+   ▸ НАСТРОЙКА: когда бот переедет на сервер, впишите сюда его адрес, например 'https://bot.example.ru'.
+   Пока адреса нет, на опубликованном сайте форма предлагает записаться через Telegram-бота. */
+const LEAD_SERVER='';
+const LEAD_BOT_URL='https://t.me/unikum_school_bot';
+function leadServer(){ return /^(localhost|127\.0\.0\.1)$/.test(location.hostname)?'http://localhost:8787':LEAD_SERVER; }
 async function sendLead(data){
-  /* GitHub Pages не умеет принимать заявки. Чтобы они приходили, подключите сервис форм
-     (например Formspree) или Telegram-бота и отправляйте data туда. Пока заявка только пишется в консоль. */
-  console.log('Заявка (не отправлена — приём заявок ещё не подключён):',data);
-  return new Promise(r=>setTimeout(r,400));
+  const url=leadServer(); if(!url) throw new Error('no-server');
+  const r=await fetch(url.replace(/\/$/,'')+'/api/site-lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
+  if(!r.ok) throw new Error('HTTP '+r.status);
 }
 document.getElementById('leadForm').addEventListener('submit',async e=>{
   e.preventDefault();
@@ -1914,8 +1930,9 @@ document.getElementById('leadForm').addEventListener('submit',async e=>{
   document.getElementById('agreeWrap').classList.toggle('err',!agree);
   if(name.length<2||!ph.ok||!mailOk||!age||!agree) return;
   const btn=f.querySelector('[type=submit]'); btn.disabled=true;
-  try{ await sendLead({name,phone:ph.full,country:ph.country,email,age,game:chosenGame,page:location.href}); f.reset(); refreshCountry(); f.hidden=true; document.getElementById('thanks').hidden=false; }
-  catch(err){ alert('Не удалось отправить заявку. Позвоните нам: +7 (900) 000-00-00'); }
+  const fail=document.getElementById('leadFail'); fail.hidden=true;
+  try{ await sendLead({name,phone:ph.full,country:ph.country,email,age,agree:true,game:chosenGame,page:location.href,website:f.website.value}); f.reset(); refreshCountry(); f.hidden=true; document.getElementById('thanks').hidden=false; }
+  catch(err){ fail.hidden=false; fail.scrollIntoView({block:'nearest'}); }
   finally{ btn.disabled=false; }
 });
 document.querySelectorAll('#leadForm input, #leadForm select').forEach(el=>el.addEventListener('input',()=>el.closest('.field')?.classList.remove('err')));

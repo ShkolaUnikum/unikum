@@ -269,6 +269,39 @@ html[data-theme="dark"] .toast{background:#2A1A6E;box-shadow:0 20px 40px -16px r
 
 /* отскок при прокрутке за край — в цвет фона админки */
 html{background:var(--bg)}
+
+/* расписание */
+.sch-days{display:grid;gap:12px}
+.sch-day{display:grid;grid-template-columns:150px minmax(0,1fr);gap:14px;padding-top:12px;border-top:1px solid var(--line)}
+.sch-day:first-child{border-top:0;padding-top:0}
+.sch-day__h{display:grid;gap:2px;align-content:start}
+.sch-day__h b::first-letter{text-transform:uppercase}
+.sch-day__h span{color:var(--muted);font-size:12px}
+.sch-day--today .sch-day__h b{color:var(--sun)}
+.sch-day--today .sch-day__h span::after{content:" · сегодня"}
+.sch-empty{margin:0;color:var(--muted);font-size:12.5px;padding:6px 0}
+.sch-item{padding:10px 12px}
+.sch-item--trial{box-shadow:inset 3px 0 0 var(--sun),var(--glow)}
+.sch-item--off{opacity:.55}
+.sch-time{display:grid;min-width:62px;text-align:left}
+.sch-time b{font:800 16px/1.1 var(--display)}
+.sch-time small{color:var(--muted);font-size:11px}
+@media (max-width:700px){.sch-day{grid-template-columns:1fr;gap:6px}}
+
+/* оформление продажи и статистика */
+dialog:has(.sale-sec){width:min(680px,calc(100% - 24px))}
+.sale-sec{display:grid;gap:10px;padding:14px;border-radius:14px;background:var(--soft);box-shadow:inset 0 0 0 1px var(--line)}
+.sale-sec > b{font-family:var(--display);font-size:13px;text-transform:uppercase;letter-spacing:.04em}
+.sale-sum{margin:0;font-size:12.5px;color:var(--muted)}
+.sale-sum:empty{display:none}
+.sale-price{font-family:var(--display);white-space:nowrap}
+.sale-tbl{min-width:640px}
+.sale-tbl td,.sale-tbl th{white-space:nowrap}
+.sale-tbl tbody tr{cursor:default}
+.sale-bar{position:relative;display:flex;justify-content:space-between;gap:10px;padding:8px 10px;border-radius:10px;overflow:hidden;background:var(--soft);font-size:12.5px}
+.sale-bar span,.sale-bar b{position:relative;z-index:1}
+.sale-bar i{position:absolute;inset:0 auto 0 0;background:rgba(255,95,168,.18)}
+@media (max-width:900px){.kpis[style*="repeat(5"]{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
 </style>
 </head>
 <body>
@@ -281,6 +314,9 @@ html{background:var(--bg)}
   <symbol id="i-hw" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8.5 15l2 2 4-4"/></g></symbol>
   <symbol id="i-pay" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2.5" y="5" width="19" height="14" rx="3"/><path d="M2.5 10h19M6.5 15h4"/></g></symbol>
   <symbol id="i-plug" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 2v5M15 2v5M6 7h12v4a6 6 0 0 1-12 0zM12 17v5"/></g></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18M7.5 14h3M13.5 14h3M7.5 17.5h3"/></g></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></g></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></g></symbol>
   <symbol id="i-log" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></g></symbol>
   <symbol id="i-search" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></g></symbol>
   <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
@@ -299,8 +335,8 @@ html{background:var(--bg)}
       <div class="who"><span class="demo">демо</span><label for="roleSel">Вы вошли как</label>
         <select id="roleSel">
           <option value="admin">Администратор</option>
-          <option value="manager">Менеджер · Светлана</option>
-          <option value="curator">Куратор · Елена</option>
+          <option value="line1">Первая линия · Ольга</option>
+          <option value="mvu">МВУ · Анна</option>
           <option value="teacher">Преподаватель · Мария В.</option>
         </select><button class="theme-btn" type="button" data-theme-toggle aria-label="Включить ночной режим" aria-pressed="false" title="Ночной режим"><svg class="i-moon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M20.5 14.6A8.5 8.5 0 0 1 9.4 3.5a.6.6 0 0 0-.8-.7A9.5 9.5 0 1 0 21.2 15.4a.6.6 0 0 0-.7-.8z"/></svg><svg class="i-sun" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></g></svg></button></div>
     </header>
@@ -334,13 +370,15 @@ const PROGRAMS=['Junior','Middle','High'];
 const REASONS=['Болезнь','Семейные обстоятельства','Поездка или отпуск','Школа: контрольные, олимпиады','Другое'];
 const EXTRA={english:'Английский язык',ai:'Нейросети'};
 const ROLES={
-  admin:{t:'Администратор',name:'Администратор',routes:['dash','clients','groups','requests','homework','payments','integrations','log']},
-  manager:{t:'Менеджер',name:'Светлана (менеджер)',routes:['dash','clients','requests','payments','log']},
-  curator:{t:'Куратор',name:'Елена (куратор)',routes:['dash','clients','groups','requests']},
-  teacher:{t:'Преподаватель',name:'Мария Викторовна',routes:['dash','groups','homework']}
+  /* Администратор — всё. Преподаватель — группы, расписание и уроки купивших.
+     Первая линия — заявки и запись на вводный урок. МВУ — проводит вводные уроки и продаёт. */
+  admin:{t:'Администратор',name:'Администратор',routes:['dash','clients','groups','schedule','requests','intro','sales','homework','payments','integrations','log']},
+  line1:{t:'Первая линия',name:'Ольга (первая линия)',routes:['dash','requests','intro']},
+  mvu:{t:'МВУ',name:'Анна (МВУ)',routes:['dash','intro','sales']},
+  teacher:{t:'Преподаватель',name:'Мария Викторовна',routes:['dash','groups','schedule','homework']}
 };
 const ROUTES=[
-  {id:'dash',t:'Сводка',i:'i-dash'},{id:'clients',t:'Клиенты',i:'i-users'},{id:'groups',t:'Группы и журнал',i:'i-group'},
+  {id:'dash',t:'Сводка',i:'i-dash'},{id:'clients',t:'Клиенты',i:'i-users'},{id:'groups',t:'Группы и журнал',i:'i-group'},{id:'schedule',t:'Расписание групп',i:'i-cal'},{id:'intro',t:'Вводные уроки',i:'i-target'},{id:'sales',t:'Продажи',i:'i-chart'},
   {id:'requests',t:'Заявки',i:'i-inbox'},{id:'homework',t:'Проверка заданий',i:'i-hw'},{id:'payments',t:'Рассрочки',i:'i-pay'},
   {id:'integrations',t:'Битрикс24',i:'i-plug'},{id:'log',t:'Журнал действий',i:'i-log'}
 ];
@@ -468,7 +506,7 @@ function accessPill(a){return a.status==='active'?'<span class="pill p-ok">● �
 /* ---------- пробные уроки: заявки из Telegram- и MAX-бота ----------
    Бот отдаёт их по адресу <сервер>/api/leads по секретному ключу. Адрес и ключ хранятся только в этом браузере. */
 const TRIAL_KEY='unikum-admin-leads-api';
-const TRIAL_ST={new:['Новая','p-new'],contacted:['Связались','p-wait'],booked:['Записан на урок','p-ok'],refused:['Отказ','p-mute']};
+const TRIAL_ST={new:['Новая','p-new'],contacted:['Связались','p-wait'],booked:['Записан на урок','p-ok'],sold:['Купили','p-ok'],refused:['Отказ','p-mute']};
 let TRIALS=[],trialErr='',trialLoaded=false;
 function trialCfg(){let c={};try{c=JSON.parse(localStorage.getItem(TRIAL_KEY)||'{}')}catch(e){}
   if(!c.url&&/^(localhost|127\.0\.0\.1)$/.test(location.hostname))c.url='http://localhost:8787';return c}
@@ -481,6 +519,16 @@ async function loadTrials(redraw){
 const curRoute=()=>(location.hash||'#dash').slice(1).split('/')[0];
 const trialNew=()=>TRIALS.filter(x=>(x.status||'new')==='new').length;
 const pendingReq=()=>trialNew()+D.absences.filter(a=>a.status==='new').length+D.freezes.filter(f=>f.status==='requested').length+D.extras.filter(e=>e.status==='new').length;
+function groupDays(g){
+  const ls=(D.sched&&D.sched.lessons||[]).filter(l=>l.kind==='group'&&l.gid===g.id&&l.status!=='cancelled'&&new Date(l.date)>=new Date(Date.now()-7*DAY));
+  const set=[...new Map(ls.map(l=>{const d=new Date(l.date);return [d.getDay()+' '+hm(d),[d.getDay(),hm(d)]]})).values()].sort((a,b)=>((a[0]+6)%7)-((b[0]+6)%7));
+  return set.length?set.map(([w,t])=>`${WD[w]} ${t}`).join(', '):`${WDF[g.wd]}, ${g.time}`;
+}
+function groupSlots(g){
+  const now=Date.now(), ls=(D.sched&&D.sched.lessons||[]).filter(l=>l.kind==='group'&&l.gid===g.id&&l.status!=='cancelled').map(l=>new Date(l.date)).sort((a,b)=>a-b);
+  const past=ls.filter(d=>d.getTime()<=now), fut=ls.filter(d=>d.getTime()>now);
+  return {last:past.length?past[past.length-1]:nextWeekday(g.wd,g.time,-1), next:fut.length?fut[0]:nextWeekday(g.wd,g.time)};
+}
 const myGroups=()=>role==='teacher'?D.groups.filter(g=>g.teacher===ROLES.teacher.name):D.groups;
 const pendingHw=()=>D.homework.filter(h=>h.status==='wait'&&(role!=='teacher'||myGroups().some(g=>g.id===student(h.sid).group))).length;
 const overdue=()=>D.students.filter(s=>{const p=payState(s);return p&&p.k==='bad'}).length;
@@ -511,11 +559,40 @@ function route(){
 const VIEWS={
 dash(){
   const r=ROLES[role];
+  if(role==='line1'){ensureSchedule();
+    const now=new Date(), day=ymd(now), intro=D.sched.lessons.filter(l=>l.kind==='trial');
+    const today=intro.filter(l=>ymd(new Date(l.date))===day).sort((a,b)=>new Date(a.date)-new Date(b.date));
+    const contacted=TRIALS.filter(x=>x.status==='contacted'&&!intro.some(l=>l.leadId===x.id)).length;
+    const ws=weekStart(now), booked=intro.filter(l=>l.created&&new Date(l.created)>=ws).length;
+    return `<div class="vhead"><div><h1>Здравствуйте!</h1><p>${esc(r.t)} · ${now.toLocaleDateString('ru-RU',{weekday:'long',day:'numeric',month:'long'})}</p></div><button class="btn" id="dashBook">＋ Записать на вводный</button></div>
+    <div class="kpis" style="grid-template-columns:repeat(4,minmax(0,1fr))">
+      <a class="kpi ${trialNew()?'kpi--warn':''}" href="#requests"><b>${trialNew()}</b><span>новых заявок — позвонить</span></a>
+      <a class="kpi" href="#requests"><b>${contacted}</b><span>связались, ещё не записаны</span></a>
+      <a class="kpi" href="#intro"><b>${today.length}</b><span>вводных сегодня</span></a>
+      <a class="kpi" href="#intro"><b>${booked}</b><span>записано за неделю</span></a></div>
+    <div class="grid2">
+      <section class="card"><div class="card__h"><h2>Новые заявки</h2><a class="link" href="#requests">Все заявки</a></div><div class="list">
+        ${TRIALS.filter(x=>(x.status||'new')==='new').slice(0,6).map(x=>`<a class="item" href="#requests" style="text-decoration:none"><div class="item__main"><b>${esc(x.parent_name||x.messenger_name||'Без имени')}${x.child_name?' · '+esc(x.child_name):''}${x.age?', '+esc(x.age)+' лет':''}</b><small>${esc(x.phone||'')} · ${esc(x.source||'')} · ${x.time?ago(x.time):''}</small></div><span class="pill p-new">новая</span></a>`).join('')||'<p class="empty">Новых заявок нет 🎉</p>'}</div></section>
+      <section class="card"><div class="card__h"><h2>Вводные сегодня</h2><a class="link" href="#intro">Расписание МВУ</a></div>
+        <div class="list">${today.map(l=>lessonRow(l)).join('')||'<p class="empty">Сегодня вводных нет</p>'}</div></section>
+    </div>`;}
+  if(role==='mvu'){ensureSchedule();
+    const up=visibleIntro().filter(l=>l.status==='planned'&&new Date(l.date)>new Date(Date.now()-2*3600e3)).sort((a,b)=>new Date(a.date)-new Date(b.date)).slice(0,6);
+    const need=visibleIntro().filter(l=>(l.status==='planned'||(l.status==='came'&&!l.sale))&&new Date(l.date)<=new Date());
+    return `<div class="vhead"><div><h1>Здравствуйте!</h1><p>${esc(r.t)} · ${new Date().toLocaleDateString('ru-RU',{weekday:'long',day:'numeric',month:'long'})}</p></div></div>
+    <div class="grid2">
+      <section class="card"><div class="card__h"><h2>Нужно сделать</h2></div><div class="list">
+        ${trialNew()?`<a class="item" href="#requests" style="text-decoration:none"><span class="pill p-new">${trialNew()}</span><div class="item__main"><b>Новые заявки</b><small>Позвоните и запишите на вводный урок</small></div></a>`:''}
+        ${need.length?`<a class="item" href="#intro" style="text-decoration:none"><span class="pill p-wait">${need.length}</span><div class="item__main"><b>Отметьте итог уроков</b><small>Пришёл ли ребёнок и купили ли программу</small></div></a>`:''}
+        ${!trialNew()&&!need.length?'<p class="empty">Всё сделано 🎉</p>':''}</div></section>
+      <section class="card"><div class="card__h"><h2>Ближайшие вводные</h2><a class="link" href="#intro">Все</a></div>
+        <div class="list">${up.map(l=>lessonRow(l,true)).join('')||'<p class="empty">Пока ничего не запланировано</p>'}</div></section>
+    </div>`;}
   const k=(href,n,t,warn)=>`<a class="kpi ${warn&&n?'kpi--warn':''}" href="#${href}"><b>${n}</b><span>${t}</span></a>`;
-  const upcoming=myGroups().map(g=>({g,d:nextWeekday(g.wd,g.time)})).sort((a,b)=>a.d-b.d);
+  const upcoming=myGroups().map(g=>({g,d:groupSlots(g).next})).sort((a,b)=>a.d-b.d);
   const tasks=[];
   if(r.routes.includes('clients')&&noAccess())tasks.push(`<a class="item" href="#clients" style="text-decoration:none"><span class="pill p-new">${noAccess()}</span><div class="item__main"><b>Клиенты без доступа в кабинет</b><small>Выдайте логин и пароль</small></div>→</a>`);
-  if(r.routes.includes('requests')&&trialNew())tasks.push(`<a class="item" href="#requests" style="text-decoration:none"><span class="pill p-new">${trialNew()}</span><div class="item__main"><b>Заявки на пробный урок</b><small>Из Telegram- и MAX-бота — позвоните родителям</small></div></a>`);
+  if(r.routes.includes('requests')&&trialNew())tasks.push(`<a class="item" href="#requests" style="text-decoration:none"><span class="pill p-new">${trialNew()}</span><div class="item__main"><b>Заявки на пробный урок</b><small>С сайта и из ботов — позвоните родителям</small></div></a>`);
   if(r.routes.includes('requests')){const f=D.freezes.filter(x=>x.status==='requested').length,a=D.absences.filter(x=>x.status==='new').length,e=D.extras.filter(x=>x.status==='new').length;
     if(f)tasks.push(`<a class="item" href="#requests" style="text-decoration:none"><span class="pill p-ice">${f}</span><div class="item__main"><b>Заявки на заморозку</b><small>Подтвердите или отклоните</small></div>→</a>`);
     if(a)tasks.push(`<a class="item" href="#requests" style="text-decoration:none"><span class="pill p-wait">${a}</span><div class="item__main"><b>Предупреждения о пропусках</b><small>Назначьте отработку, если просят</small></div>→</a>`);
@@ -539,7 +616,7 @@ dash(){
 clients(){
   return `
   <div class="vhead"><div><h1>Клиенты</h1><p>Семьи, их дети, тариф и доступ в личный кабинет. Новые клиенты приходят из Битрикс24 или добавляются вручную.</p></div>
-    ${role==='curator'?'':'<button class="btn" id="newClient">+ Новый клиент</button>'}</div>
+    <button class="btn" id="newClient">+ Новый клиент</button></div>
   <div class="filters">
     <select id="fProg" aria-label="Программа"><option value="">Все программы</option>${PROGRAMS.map(p=>`<option>${p}</option>`).join('')}</select>
     <select id="fPay" aria-label="Оплата"><option value="">Любая оплата</option>${Object.entries(PAYS).map(([k,v])=>`<option value="${k}">${v.t}</option>`).join('')}</select>
@@ -552,17 +629,17 @@ clients(){
 groups(arg){
   if(arg)return groupView(arg);
   return `
-  <div class="vhead"><div><h1>Группы и журнал</h1><p>${role==='teacher'?'Ваши группы. Откройте группу, чтобы отметить посещаемость.':'Расписание групп, состав и отметки посещаемости.'}</p></div></div>
-  <div class="groups">${myGroups().map(g=>{const n=D.students.filter(s=>s.group===g.id).length,d=nextWeekday(g.wd,g.time);
+  <div class="vhead"><div><h1>Группы и журнал</h1><p>${role==='teacher'?'Ваши группы. Создайте группу, составьте ей расписание и отмечайте посещаемость.':'Расписание групп, состав и отметки посещаемости.'}</p></div><button class="btn" id="newGroup">＋ Новая группа</button></div>
+  <div class="groups">${myGroups().map(g=>{const n=D.students.filter(s=>s.group===g.id).length,d=groupSlots(g).next;
     return `<a class="group" href="#groups/${g.id}" style="text-decoration:none"><div class="group__top"><h3>${esc(g.name)}</h3><span class="pill p-lilac">${g.program}</span></div>
-      <div class="group__meta"><span>${g.solo?'Индивидуально, по договорённости':`${WDF[g.wd]}, ${g.time}`}</span><span>${esc(g.teacher)}</span><span>${n} ${plural(n,'ученик','ученика','учеников')} · ближайшее: ${dtt(d)}</span></div></a>`}).join('')}</div>`;
+      <div class="group__meta"><span>${g.solo?'Индивидуально, по договорённости':groupDays(g)}</span><span>${esc(g.teacher)}</span><span>${n} ${plural(n,'ученик','ученика','учеников')} · ближайшее: ${dtt(d)}</span></div></a>`}).join('')}</div>`;
 },
 
 requests(){
   const a=D.absences.filter(x=>x.status==='new').length,f=D.freezes.filter(x=>x.status==='requested').length,e=D.extras.filter(x=>x.status==='new').length;
   return `
   <div class="vhead"><div><h1>Заявки</h1><p>Записи на пробный урок из ботов и всё, что семьи отправили из личного кабинета.</p></div>
-  <div class="tabs" id="rTabs"><button aria-pressed="true" data-t="trial">Пробные уроки${trialNew()?`<span class="cnt">${trialNew()}</span>`:''}</button><button aria-pressed="false" data-t="abs">Пропуски${a?`<span class="cnt">${a}</span>`:''}</button><button aria-pressed="false" data-t="frz">Заморозки${f?`<span class="cnt">${f}</span>`:''}</button><button aria-pressed="false" data-t="ext">Доп. курсы${e?`<span class="cnt">${e}</span>`:''}</button></div></div>
+  <div class="tabs" id="rTabs"><button aria-pressed="true" data-t="trial">Пробные уроки${trialNew()?`<span class="cnt">${trialNew()}</span>`:''}</button>${role!=='admin'?'':`<button aria-pressed="false" data-t="abs">Пропуски${a?`<span class="cnt">${a}</span>`:''}</button><button aria-pressed="false" data-t="frz">Заморозки${f?`<span class="cnt">${f}</span>`:''}</button><button aria-pressed="false" data-t="ext">Доп. курсы${e?`<span class="cnt">${e}</span>`:''}</button>`}</div></div>
   <div class="list" id="rList"></div>`;
 },
 
@@ -632,11 +709,11 @@ log(){
 function groupView(id){
   const g=groupOf(id);if(!g)return '<p class="empty">Группа не найдена</p>';
   const kids=D.students.filter(s=>s.group===g.id);
-  const last=nextWeekday(g.wd,g.time,-1), next=nextWeekday(g.wd,g.time);
+  const {last,next}=groupSlots(g);
   const key=g.id+'|'+last.toISOString().slice(0,10);
   const marks=D.attendance[key]||{};
   return `
-  <div class="vhead"><div><a class="link" href="#groups">← Все группы</a><h1 style="margin-top:8px">${esc(g.name)}</h1><p>${g.solo?'Индивидуальные занятия':`${WDF[g.wd]}, ${g.time}`} · ${esc(g.teacher)} · ${kids.length} ${plural(kids.length,'ученик','ученика','учеников')}</p></div></div>
+  <div class="vhead"><div><a class="link" href="#groups">← Все группы</a><h1 style="margin-top:8px">${esc(g.name)}</h1><p>${g.solo?'Индивидуальные занятия':groupDays(g)} · ${esc(g.teacher)} · ${kids.length} ${plural(kids.length,'ученик','ученика','учеников')}</p></div></div>
   <div class="grid2">
     <section class="card"><div class="card__h"><h2>Журнал · ${dtt(last)}</h2>${D.attendance[key]?'<span class="pill p-ok">отмечено</span>':'<span class="pill p-wait">не отмечено</span>'}</div>
       <div class="att">${kids.map(s=>{const ab=D.absences.find(a=>a.sid===s.id&&a.date.slice(0,10)===last.toISOString().slice(0,10));const m=marks[s.id]||(ab?'n':'y');
@@ -651,13 +728,14 @@ function groupView(id){
         return `<div class="item" style="box-shadow:inset 0 0 0 1px var(--line)"><div class="item__main"><b>${esc(s.name)}</b><small>занятие ${s.done+1} из ${PLANS[s.plan].n}</small></div>
           ${fr?'<span class="pill p-ice">❄ заморозка</span>':ab?`<span class="pill p-wait">не придёт · ${esc(ab.reason)}</span>`:locked?'<span class="pill p-bad">🔒 нужна оплата</span>':'<span class="pill p-ok">придёт</span>'}</div>`}).join('')}</div>
     </section>
-  </div>`;
+  </div>${groupScheduleCard(g)}`;
 }
 
 /* =====================================================================
    ОБРАБОТЧИКИ ЭКРАНОВ
    ===================================================================== */
 const BIND={
+dash(){if(role==='mvu'||role==='line1')bindLessonButtons($('#view'));const b=$('#dashBook');if(b)b.onclick=()=>openTrialDlg()},
 clients(){
   const draw=()=>{
     const q=Q.trim().toLowerCase(),fp=$('#fProg').value,fy=$('#fPay').value,fa=$('#fAcc').value;
@@ -686,11 +764,14 @@ clients(){
   draw();
 },
 groups(arg){
-  if(!arg)return;
+  if(!arg){const ng=$('#newGroup');if(ng)ng.onclick=()=>openGroupDlg();return}
+  $$('[data-plan]').forEach(b=>b.onclick=()=>openPlanDlg(b.dataset.plan));
+  $$('[data-add-lesson]').forEach(b=>b.onclick=()=>openLessonDlg(null,b.dataset.addLesson));
+  bindLessonButtons($('#view'));
   $$('.tog button').forEach(b=>b.onclick=()=>{b.parentNode.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b))});
   const s=$('#attSave');if(!s)return;
   s.onclick=()=>{
-    const g=groupOf(arg), last=nextWeekday(g.wd,g.time,-1), key=g.id+'|'+last.toISOString().slice(0,10);
+    const g=groupOf(arg), last=groupSlots(g).last, key=g.id+'|'+last.toISOString().slice(0,10);
     const first=!D.attendance[key];const m={};
     $$('.att__row').forEach(r=>{m[r.dataset.sid]=r.querySelector('[aria-pressed="true"]').dataset.m});
     D.attendance[key]=m;
@@ -707,7 +788,7 @@ requests(){
     if(tab==='trial'){
       const c=trialCfg();
       const setup=`<section class="card"><div class="card__h"><h2>Подключение к ботам</h2></div>
-        <p style="color:var(--muted);margin-bottom:12px">Заявки из Telegram- и MAX-бота хранит сам бот. Укажите адрес его сервера и ключ из файла <code>config.json</code> (раздел <code>crm</code>). Они сохранятся только в этом браузере.</p>
+        <p style="color:var(--muted);margin-bottom:12px">Заявки с сайта, из Telegram- и MAX-бота хранит сам бот. Укажите адрес его сервера и ключ из файла <code>config.json</code> (раздел <code>crm</code>). Они сохранятся только в этом браузере.</p>
         <div class="fgrid"><label class="field"><span>Адрес сервера заявок</span><input class="input" id="tUrl" placeholder="http://localhost:8787" value="${esc(c.url||'')}"></label>
         <label class="field"><span>Ключ доступа</span><input class="input" id="tKey" type="password" autocomplete="off" value="${esc(c.key||'')}"></label></div>
         ${trialErr?`<p class="err" style="margin-top:8px">${esc(trialErr)}</p>`:''}
@@ -715,14 +796,17 @@ requests(){
       const items=TRIALS.slice().sort((a,b)=>((a.status||'new')==='new'?0:1)-((b.status||'new')==='new'?0:1)||String(b.time).localeCompare(String(a.time))).map(x=>{
         const st=TRIAL_ST[x.status||'new']||TRIAL_ST.new, tel=String(x.phone||'').replace(/[^\d+]/g,'');
         const kid=[x.child_name,x.age?x.age+' лет':''].filter(Boolean).join(', ');
-        return `<div class="item"><span style="font-size:22px">${String(x.source||'').startsWith('MAX')?'🟣':'✈️'}</span><div class="item__main">
+        return `<div class="item"><span style="font-size:22px" title="${esc(x.source||'')}">${x.source==='Сайт'?'🌐':String(x.source||'').startsWith('MAX')?'🟣':'✈️'}</span><div class="item__main">
           <b>${esc(x.parent_name||x.messenger_name||'Без имени')}${kid?' · '+esc(kid):''}</b>
           <small><a href="tel:${esc(tel)}">${esc((x.phones&&x.phones.join(', '))||x.phone||'')}</a>${x.phone_verified?' ✔︎':''} · ${esc(x.source||'')}${x.messenger_username?' · @'+esc(x.messenger_username):''} · ${x.time?ago(x.time):''}</small>
-          ${x.text?`<small style="color:var(--text);white-space:pre-wrap">«${esc(x.text)}»</small>`:''}${x.note?`<small>Заметка: ${esc(x.note)}</small>`:''}</div>
+          ${x.email?`<small>✉️ ${esc(x.email)}</small>`:''}${x.text&&x.source!=='Сайт'?`<small style="color:var(--text);white-space:pre-wrap">«${esc(x.text)}»</small>`:''}${x.note?`<small>Заметка: ${esc(x.note)}</small>`:''}</div>
           <span class="pill ${st[1]}">${st[0]}</span>
+          ${(()=>{const les=D.sched&&D.sched.lessons.find(l=>l.kind==='trial'&&l.leadId===x.id);
+            return les?`<a class="pill p-lilac" href="#intro" title="${esc(trialOwner(les))}">🎯 ${dtt(les.date)}</a>`
+              :!['sold','refused'].includes(x.status||'new')&&canBookIntro()?`<button class="btn btn--xs" data-book="${esc(x.id)}">Записать на вводный</button>`:''})()}
           ${(x.status||'new')==='new'?`<button class="btn btn--xs" data-trial="${esc(x.id)}" data-to="contacted">Связались</button>`:''}
           ${['new','contacted'].includes(x.status||'new')?`<button class="btn btn--ok btn--xs" data-trial="${esc(x.id)}" data-to="booked">Записан на урок</button><button class="btn btn--ghost btn--xs" data-trial="${esc(x.id)}" data-to="refused">Отказ</button>`:''}</div>`}).join('');
-      html=(!c.url||!c.key||trialErr?setup:'')+(items||(trialLoaded&&!trialErr&&c.key?'<p class="empty">Заявок из ботов пока нет</p>':''))+(c.url&&c.key&&!trialErr?`<p style="text-align:right"><button class="link" id="tSetup">Настройки подключения</button></p>`:'');
+      html=(!c.url||!c.key||trialErr?setup:'')+(items||(trialLoaded&&!trialErr&&c.key?'<p class="empty">Заявок с сайта и из ботов пока нет</p>':''))+(c.url&&c.key&&!trialErr?`<p style="text-align:right"><button class="link" id="tSetup">Настройки подключения</button></p>`:'');
       $('#rList').innerHTML=html;
       const sv=$('#tSave');if(sv)sv.onclick=async()=>{try{localStorage.setItem(TRIAL_KEY,JSON.stringify({url:$('#tUrl').value.trim(),key:$('#tKey').value.trim()}))}catch(e){}
         sv.disabled=true;await loadTrials(false);sv.disabled=false;toast(trialErr||`Загружено заявок: ${TRIALS.length}`);draw();renderNav('requests')};
@@ -747,6 +831,7 @@ requests(){
   window.__drawTrials=()=>{if(tab==='trial')draw()};
   $('#rList').onclick=async e=>{
     const b=e.target.closest('button');if(!b)return;
+    if(b.dataset.book){openTrialDlg(null,b.dataset.book);return}
     if(b.dataset.trial){b.disabled=true;
       try{const r=await trialApi('/'+encodeURIComponent(b.dataset.trial),{status:b.dataset.to});const i=TRIALS.findIndex(x=>x.id===r.lead.id);if(i>=0)TRIALS[i]=r.lead;
         log(`Пробный урок: ${r.lead.parent_name||'заявка'} — ${TRIAL_ST[r.lead.status][0].toLowerCase()}`);toast(TRIAL_ST[r.lead.status][0]);save()}
@@ -814,7 +899,7 @@ log(){}
    ===================================================================== */
 function openClient(id){
   const c=client(id);if(!c)return;
-  const kids=kidsOf(id), canEdit=role==='admin'||role==='manager';
+  const kids=kidsOf(id), canEdit=role==='admin';
   const a=c.access;
   $('#drawerIn').innerHTML=`
   <div class="drawer__head"><div><small>Клиент · ${esc(c.deal||'без сделки')}</small><h2>${esc(c.parent)}</h2><small>${esc(c.phone)}${c.email?' · '+esc(c.email):''}</small></div><button class="x" id="dClose" aria-label="Закрыть">✕</button></div>
@@ -983,17 +1068,478 @@ async function simulateDeal(){
 }
 
 /* =====================================================================
+   РАСПИСАНИЕ: уроки групп и пробные уроки
+   Преподаватель составляет расписание своих групп и записывает пробные уроки
+   (в том числе из заявок с сайта и ботов). Хранится вместе с остальными данными админки.
+   ===================================================================== */
+const pad2=n=>String(n).padStart(2,'0');
+const ymd=d=>`${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`;
+const hm=d=>`${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
+const atLocal=(day,time)=>{const [y,m,dd]=day.split('-').map(Number),[h,mi]=time.split(':').map(Number);return new Date(y,m-1,dd,h,mi)};
+const weekStart=d=>{const x=new Date(d);x.setHours(0,0,0,0);x.setDate(x.getDate()-((x.getDay()+6)%7));return x};
+const uid=p=>p+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const TRIAL_RES={planned:['Запланирован','p-lilac'],came:['Пришёл','p-ok'],noshow:['Не пришёл','p-bad'],cancelled:['Отменён','p-mute']};
+const SALE_RES={sold:['Купили','p-ok'],thinking:['Думают','p-wait'],refused:['Отказ','p-bad']};
+/* МВУ — менеджеры вводных уроков: проводят первый урок и предлагают купить программу */
+const MVUS=['Анна (МВУ)','Кирилл (МВУ)'];
+const meMvu=()=>role==='mvu'?ROLES.mvu.name:null;
+const canBookIntro=()=>role==='admin'||role==='line1';   // записывать на вводный — первая линия
+const canSell=()=>role==='admin'||role==='mvu';          // итог урока и продажа — МВУ
+const trialOwner=l=>l.mvu||l.teacher||'';
+const teachers=()=>[...new Set([ROLES.teacher.name,...D.groups.map(g=>g.teacher)])];
+const meTeacher=()=>role==='teacher'?ROLES.teacher.name:null;
+
+/* старые данные: если расписания ещё нет — строим его на 8 недель вперёд по дню и времени каждой группы */
+function ensureSchedule(){
+  if(!D.sched)D.sched={lessons:[]};
+  if(!D.sched.seeded){
+    const start=weekStart(new Date());
+    D.groups.filter(g=>!g.solo).forEach(g=>{
+      for(let w=-1;w<8;w++){const d=new Date(start);d.setDate(d.getDate()+w*7+((g.wd+6)%7));const at=atLocal(ymd(d),g.time);
+        D.sched.lessons.push({id:uid('l'),kind:'group',gid:g.id,date:at.toISOString(),dur:g.program==='Junior'?60:90,topic:'',link:'',status:'planned'})}
+    });
+    D.sched.seeded=true;save();
+  }
+}
+function visibleLessons(){            // уроки групп: преподаватель — только свои группы
+  const mine=new Set(myGroups().map(g=>g.id));
+  return D.sched.lessons.filter(l=>l.kind==='group'&&mine.has(l.gid));
+}
+function visibleIntro(){              // вводные уроки: МВУ — только свои
+  const me=meMvu();
+  return D.sched.lessons.filter(l=>l.kind==='trial'&&(!me||trialOwner(l)===me));
+}
+function lessonTitle(l){
+  if(l.kind==='trial')return `Вводный урок · ${esc(l.child||'ребёнок')}${l.age?', '+esc(l.age)+' лет':''}`;
+  const g=groupOf(l.gid);return `${esc(g?g.name:'Группа')}${l.topic?' · '+esc(l.topic):''}`;
+}
+function lessonRow(l,withDate){
+  const d=new Date(l.date), end=new Date(d.getTime()+(l.dur||60)*60000);
+  let pill, extra='';
+  if(l.kind==='trial'){const r=TRIAL_RES[l.status]||TRIAL_RES.planned;pill=`<span class="pill ${r[1]}">${r[0]}</span>`;
+    if(l.sale&&SALE_RES[l.sale])pill+=`<span class="pill ${SALE_RES[l.sale][1]}">${SALE_RES[l.sale][0]}</span>`;
+    extra=`<small>${esc(l.parent||'')}${l.phone?' · '+esc(l.phone):''}${trialOwner(l)&&!meMvu()?' · '+esc(trialOwner(l)):''}${l.rec?' · программа: '+esc(l.rec):''}</small>${l.result?`<small style="color:var(--text)">${esc(l.result)}</small>`:''}`}
+  else{const g=groupOf(l.gid);pill=l.status==='cancelled'?'<span class="pill p-mute">отменён</span>':`<span class="pill p-lilac">${g?g.program:''}</span>`;
+    extra=`<small>${g?esc(g.teacher):''}${l.link?' · есть ссылка':''}</small>`}
+  return `<div class="item sch-item${l.kind==='trial'?' sch-item--trial':''}${l.status==='cancelled'?' sch-item--off':''}">
+    <div class="sch-time"><b>${hm(d)}</b><small>${withDate?dt(l.date)+", "+WD[d.getDay()]:hm(end)}</small></div>
+    <div class="item__main"><b>${l.kind==='trial'?'🎯 ':''}${lessonTitle(l)}</b>${extra}</div>${pill}
+    ${l.link?`<a class="btn btn--ghost btn--xs" href="${esc(l.link)}" target="_blank" rel="noopener">Ссылка</a>`:''}
+    ${l.kind==='trial'&&canSell()&&(l.status==='planned'||(l.status==='came'&&!l.sale))&&new Date(l.date)<=new Date(Date.now()+3600e3)?`<button class="btn btn--ok btn--xs" data-trial-res="${l.id}">Итог урока</button>`:''}
+    ${l.kind==='trial'&&l.sale==='sold'?(l.saleId?'<span class="pill p-ok">✓ продажа оформлена</span>':canSell()?`<button class="btn btn--xs" data-sale="${l.id}">Оформить продажу</button>`:'<span class="pill p-ok">купили</span>'):''}
+    <button class="btn btn--ghost btn--xs" data-edit-lesson="${l.id}">Изменить</button></div>`;
+}
+let schWeek=weekStart(new Date());
+
+function weekView(list,{title,lead,buttons,unit}){
+  const ws=new Date(schWeek), we=new Date(ws);we.setDate(we.getDate()+7);
+  list=list.filter(l=>{const d=new Date(l.date);return d>=ws&&d<we}).sort((a,b)=>new Date(a.date)-new Date(b.date));
+  const days=[...Array(7)].map((_,i)=>{const d=new Date(ws);d.setDate(d.getDate()+i);return d});
+  const today=ymd(new Date());
+  return `
+  <div class="vhead"><div><h1>${title}</h1><p>${lead}</p></div><div class="row">${buttons}</div></div>
+  <section class="card">
+    <div class="card__h"><div class="row"><button class="btn btn--ghost btn--xs" id="wkPrev" aria-label="Предыдущая неделя">←</button>
+      <h2 style="margin:0 6px">${dt(ws)} — ${dt(new Date(we.getTime()-1))}</h2>
+      <button class="btn btn--ghost btn--xs" id="wkNext" aria-label="Следующая неделя">→</button>
+      ${ymd(ws)!==ymd(weekStart(new Date()))?'<button class="link" id="wkNow">Эта неделя</button>':''}</div>
+      <span class="pill p-mute">${list.length} ${plural(list.length,...unit)}</span></div>
+    <div class="sch-days">${days.map(d=>{const items=list.filter(l=>ymd(new Date(l.date))===ymd(d));
+      return `<div class="sch-day${ymd(d)===today?' sch-day--today':''}"><div class="sch-day__h"><b>${WDF[d.getDay()]}</b><span>${dt(d)}</span></div>
+        <div class="list">${items.map(l=>lessonRow(l)).join('')||'<p class="sch-empty">Уроков нет</p>'}</div></div>`}).join('')}</div>
+  </section>`;
+}
+function bindWeek(){
+  $('#wkPrev').onclick=()=>{schWeek.setDate(schWeek.getDate()-7);route()};
+  $('#wkNext').onclick=()=>{schWeek.setDate(schWeek.getDate()+7);route()};
+  const now=$('#wkNow');if(now)now.onclick=()=>{schWeek=weekStart(new Date());route()};
+  bindLessonButtons($('#view'));
+}
+/* расписание групп — для преподавателей (ученики, которые уже купили программу) */
+VIEWS.schedule=function(){
+  ensureSchedule();
+  return weekView(visibleLessons(),{title:'Расписание групп',
+    lead:(role==='teacher'?'Уроки ваших групп.':'Уроки всех групп.')+' Составьте расписание группы на несколько недель вперёд, переносите и отменяйте отдельные уроки.',
+    buttons:'<button class="btn btn--ghost btn--xs" id="schLesson">＋ Урок</button><button class="btn btn--xs" id="schPlan">＋ Расписание группы</button>',
+    unit:['урок','урока','уроков']});
+};
+BIND.schedule=function(){
+  bindWeek();
+  $('#schPlan').onclick=()=>openPlanDlg();
+  $('#schLesson').onclick=()=>openLessonDlg();
+};
+/* вводные уроки — для МВУ: первый урок с продажей программы */
+VIEWS.intro=function(){
+  ensureSchedule();
+  const all=visibleIntro(), mon=new Date();mon.setDate(1);mon.setHours(0,0,0,0);
+  const monthDone=all.filter(l=>new Date(l.date)>=mon&&l.status==='came'), sold=monthDone.filter(l=>l.sale==='sold').length;
+  const need=all.filter(l=>(l.status==='planned'||(l.status==='came'&&!l.sale))&&new Date(l.date)<=new Date()).length;
+  return `<div class="kpis" style="grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:20px">
+      <a class="kpi" href="${ROLES[role].routes.includes('requests')?'#requests':'#intro'}"><b>${trialNew()}</b><span>новых заявок</span></a>
+      <div class="kpi"><b>${all.filter(l=>l.status==='planned'&&new Date(l.date)>new Date()).length}</b><span>впереди вводных уроков</span></div>
+      <div class="kpi ${need?'kpi--warn':''}"><b>${need}</b><span>ждут итога</span></div>
+      <div class="kpi"><b>${sold}/${monthDone.length}</b><span>продаж в этом месяце</span></div></div>`
+    + weekView(all,{title:'Вводные уроки',
+    lead:role==='mvu'?'Ваши вводные уроки. Проведите урок, отметьте итог и оформите продажу.':role==='line1'?'Вводные уроки всех МВУ — смотрите свободное время и записывайте детей из заявок.':'Вводные уроки всех МВУ: запись, итоги и продажи.',
+    buttons:canBookIntro()?'<a class="btn btn--ghost btn--xs" href="#requests">Заявки</a><button class="btn btn--xs" id="schTrial">＋ Вводный урок</button>':'',
+    unit:['вводный урок','вводных урока','вводных уроков']});
+};
+BIND.intro=function(){
+  bindWeek();
+  const bt=$('#schTrial');if(bt)bt.onclick=()=>openTrialDlg();
+};
+function bindLessonButtons(root){
+  root.querySelectorAll('[data-edit-lesson]').forEach(b=>b.onclick=()=>{const l=D.sched.lessons.find(x=>x.id===b.dataset.editLesson);l.kind==='trial'?openTrialDlg(l):openLessonDlg(l)});
+  root.querySelectorAll('[data-trial-res]').forEach(b=>b.onclick=()=>openTrialResultDlg(D.sched.lessons.find(x=>x.id===b.dataset.trialRes)));
+  root.querySelectorAll('[data-sale]').forEach(b=>b.onclick=()=>openSaleDlg(D.sched.lessons.find(x=>x.id===b.dataset.sale)));
+}
+const groupOptions=sel=>myGroups().filter(g=>!g.solo||true).map(g=>`<option value="${g.id}" ${g.id===sel?'selected':''}>${esc(g.name)}</option>`).join('');
+const durOptions=v=>[45,60,90,120].map(m=>`<option value="${m}" ${+v===m?'selected':''}>${m} мин</option>`).join('');
+function showDlg(html,onSubmit,onReady){
+  $('#dlgBody').innerHTML=html;
+  const f=$('#dlgBody form');
+  f.querySelectorAll('[data-dlg-close]').forEach(b=>b.onclick=()=>$('#dlg').close());
+  f.onsubmit=e=>{e.preventDefault();const err=onSubmit(f);if(err){f.querySelector('.err').textContent=err;return}$('#dlg').close();route()};
+  onReady&&onReady(f);
+  $('#dlg').showModal();
+}
+
+/* составить расписание группы на несколько недель */
+function openPlanDlg(gid){
+  const g0=groupOf(gid)||myGroups().find(g=>!g.solo)||myGroups()[0];
+  if(!g0)return toast('У вас пока нет групп');
+  const start=ymd(new Date());
+  showDlg(`<h2>Расписание группы</h2><p>Выберите дни недели и время — уроки появятся на нужное число недель вперёд.</p>
+    <form class="dlg" style="padding:0;gap:12px" novalidate>
+      <label class="field"><span>Группа</span><select name="gid">${groupOptions(g0.id)}</select></label>
+      <div class="field"><span>Дни недели</span><div class="seg" id="wdSeg">${[1,2,3,4,5,6,0].map(w=>`<label><input type="checkbox" name="wd" value="${w}" ${w===g0.wd?'checked':''}><span>${WD[w]}</span></label>`).join('')}</div></div>
+      <div class="fgrid"><label class="field"><span>Время начала</span><input class="input" type="time" name="time" value="${g0.time||'17:00'}" required></label>
+      <label class="field"><span>Длительность</span><select name="dur">${durOptions(g0.program==='Junior'?60:90)}</select></label>
+      <label class="field"><span>С какого числа</span><input class="input" type="date" name="from" value="${start}" required></label>
+      <label class="field"><span>На сколько недель</span><select name="weeks">${[4,8,12,16,36].map(n=>`<option ${n===8?'selected':''}>${n}</option>`).join('')}</select></label>
+      <label class="field wide"><span>Ссылка на урок (Zoom, Телемост…) — необязательно</span><input class="input" name="link" type="url" placeholder="https://"></label></div>
+      <label class="check"><input type="checkbox" name="replace" checked> Заменить уже запланированные уроки этой группы с выбранной даты</label>
+      <p class="err"></p>
+      <div class="dlg__act"><button type="button" class="btn btn--ghost" data-dlg-close>Отмена</button><button class="btn">Составить</button></div></form>`,
+  f=>{
+    const g=groupOf(f.gid.value), wds=[...f.querySelectorAll('[name=wd]:checked')].map(x=>+x.value);
+    if(!wds.length)return 'Выберите хотя бы один день недели';
+    if(!f.time.value||!f.from.value)return 'Укажите время и дату начала';
+    const from=atLocal(f.from.value,'00:00'), weeks=+f.weeks.value, dur=+f.dur.value;
+    if(f.replace.checked)D.sched.lessons=D.sched.lessons.filter(l=>!(l.kind==='group'&&l.gid===g.id&&l.status==='planned'&&new Date(l.date)>=from));
+    let n=0;
+    for(let i=0;i<weeks*7;i++){const d=new Date(from);d.setDate(d.getDate()+i);if(!wds.includes(d.getDay()))continue;
+      D.sched.lessons.push({id:uid('l'),kind:'group',gid:g.id,date:atLocal(ymd(d),f.time.value).toISOString(),dur,topic:'',link:f.link.value.trim(),status:'planned'});n++}
+    g.wd=wds[0];g.time=f.time.value;
+    if(wds.length>1)g.name=g.name.split(' · ')[0]+' · '+wds.map(w=>WD[w]).join(', ');
+    log(`Составлено расписание: ${g.name} — ${n} ${plural(n,'урок','урока','уроков')} с ${dt(from)}`);
+    save();toast(`Готово: ${n} ${plural(n,'урок','урока','уроков')} в расписании`);
+  });
+}
+
+/* один урок группы: добавить / перенести / отменить / удалить */
+function openLessonDlg(l,gid){
+  const isNew=!l;l=l||{kind:'group',gid:gid||(myGroups()[0]||{}).id,date:new Date(Date.now()+DAY).toISOString(),dur:90,topic:'',link:'',status:'planned'};
+  const d=new Date(l.date);
+  showDlg(`<h2>${isNew?'Новый урок':'Урок группы'}</h2>
+    <form class="dlg" style="padding:0;gap:12px" novalidate>
+      <label class="field"><span>Группа</span><select name="gid">${groupOptions(l.gid)}</select></label>
+      <div class="fgrid"><label class="field"><span>Дата</span><input class="input" type="date" name="day" value="${ymd(d)}" required></label>
+      <label class="field"><span>Время</span><input class="input" type="time" name="time" value="${hm(d)}" required></label>
+      <label class="field"><span>Длительность</span><select name="dur">${durOptions(l.dur)}</select></label>
+      <label class="field"><span>Статус</span><select name="status"><option value="planned" ${l.status!=='cancelled'?'selected':''}>Запланирован</option><option value="cancelled" ${l.status==='cancelled'?'selected':''}>Отменён</option></select></label>
+      <label class="field wide"><span>Тема урока — необязательно</span><input class="input" name="topic" value="${esc(l.topic)}" placeholder="Например: Unity — коллайдеры и физика"></label>
+      <label class="field wide"><span>Ссылка на урок — необязательно</span><input class="input" name="link" type="url" value="${esc(l.link)}" placeholder="https://"></label></div>
+      <p class="err"></p>
+      <div class="dlg__act">${isNew?'':'<button type="button" class="btn btn--danger" id="lDel">Удалить</button>'}<button type="button" class="btn btn--ghost" data-dlg-close>Отмена</button><button class="btn">Сохранить</button></div></form>`,
+  f=>{
+    if(!f.day.value||!f.time.value)return 'Укажите дату и время';
+    Object.assign(l,{gid:f.gid.value,date:atLocal(f.day.value,f.time.value).toISOString(),dur:+f.dur.value,status:f.status.value,topic:f.topic.value.trim(),link:f.link.value.trim()});
+    if(isNew){l.id=uid('l');D.sched.lessons.push(l)}
+    log(`${isNew?'Добавлен':'Изменён'} урок: ${groupOf(l.gid).name}, ${dtt(l.date)}${l.status==='cancelled'?' (отменён)':''}`);
+    save();toast('Расписание обновлено ✓');
+  },
+  f=>{const del=f.querySelector('#lDel');if(del)del.onclick=()=>{D.sched.lessons=D.sched.lessons.filter(x=>x!==l);log(`Удалён урок: ${groupOf(l.gid).name}, ${dtt(l.date)}`);save();$('#dlg').close();toast('Урок удалён');route()}});
+}
+
+/* пробный урок: можно заполнить из заявки с сайта или бота */
+function openTrialDlg(l,preLead){
+  const isNew=!l;
+  l=l||{kind:'trial',date:new Date(Date.now()+DAY).toISOString(),dur:60,mvu:meMvu()||MVUS[0],child:'',age:'',parent:'',phone:'',link:'',note:'',status:'planned',leadId:''};
+  const d=new Date(l.date);
+  const leads=(typeof TRIALS!=='undefined'?TRIALS:[]).filter(x=>(['new','contacted','booked',undefined].includes(x.status)&&!D.sched.lessons.some(y=>y.kind==='trial'&&y.leadId===x.id))||x.id===l.leadId);
+  showDlg(`<h2>${isNew?'Вводный урок':'Вводный урок · изменить'}</h2><p>${leads.length?'Выберите заявку — данные родителя и ребёнка подставятся сами.':'Заполните данные ученика.'}</p>
+    <form class="dlg" style="padding:0;gap:12px" novalidate>
+      ${leads.length?`<label class="field"><span>Заявка</span><select name="lead"><option value="">— без заявки —</option>${leads.map(x=>`<option value="${esc(x.id)}" ${x.id===l.leadId?'selected':''}>${esc(x.parent_name||x.messenger_name||'Без имени')}${x.child_name?' · '+esc(x.child_name):''}${x.age?', '+esc(x.age)+' лет':''} · ${esc(x.phone||'')} (${esc(x.source||'')})</option>`).join('')}</select></label>`:''}
+      <div class="fgrid">
+      <label class="field"><span>Имя ребёнка</span><input class="input" name="child" value="${esc(l.child)}" required></label>
+      <label class="field"><span>Возраст</span><input class="input" name="age" inputmode="numeric" value="${esc(l.age)}" placeholder="10"></label>
+      <label class="field"><span>Родитель</span><input class="input" name="parent" value="${esc(l.parent)}"></label>
+      <label class="field"><span>Телефон</span><input class="input" name="phone" type="tel" value="${esc(l.phone)}"></label>
+      <label class="field"><span>Дата</span><input class="input" type="date" name="day" value="${ymd(d)}" required></label>
+      <label class="field"><span>Время</span><input class="input" type="time" name="time" value="${hm(d)}" required></label>
+      <label class="field"><span>Длительность</span><select name="dur">${durOptions(l.dur)}</select></label>
+      <label class="field"><span>МВУ — кто проводит урок</span>${meMvu()?`<input class="input" name="mvu" value="${esc(meMvu())}" readonly>`:`<select name="mvu">${[...new Set([...MVUS,trialOwner(l)].filter(Boolean))].map(t=>`<option ${t===trialOwner(l)?'selected':''}>${esc(t)}</option>`).join('')}</select>`}</label>
+      <label class="field wide"><span>Ссылка на урок — необязательно</span><input class="input" name="link" type="url" value="${esc(l.link)}" placeholder="https://"></label>
+      <label class="field wide"><span>Что важно знать перед уроком</span><textarea class="input" name="note" rows="2" placeholder="Любит Minecraft, раньше не программировал…">${esc(l.note)}</textarea></label></div>
+      <p class="err"></p>
+      <div class="dlg__act">${isNew?'':'<button type="button" class="btn btn--danger" id="tDel">Удалить</button>'}<button type="button" class="btn btn--ghost" data-dlg-close>Отмена</button><button class="btn">${isNew?'Добавить в расписание':'Сохранить'}</button></div></form>`,
+  f=>{
+    if(f.child.value.trim().length<2)return 'Укажите имя ребёнка';
+    if(!f.day.value||!f.time.value)return 'Укажите дату и время';
+    const leadId=f.lead?f.lead.value:l.leadId;
+    Object.assign(l,{child:f.child.value.trim(),age:f.age.value.replace(/\D/g,'').slice(0,2),parent:f.parent.value.trim(),phone:f.phone.value.trim(),
+      date:atLocal(f.day.value,f.time.value).toISOString(),dur:+f.dur.value,mvu:f.mvu.value,link:f.link.value.trim(),note:f.note.value.trim(),leadId});delete l.teacher;
+    if(isNew){l.id=uid('t');l.created=iso(Date.now());D.sched.lessons.push(l)}
+    log(`${isNew?'Записан':'Изменён'} вводный урок: ${l.child} — ${dtt(l.date)}, ${l.mvu}`);
+    save();toast(isNew?'Вводный урок добавлен ✓':'Сохранено ✓');
+    // отмечаем заявку «Записан на урок» у бота
+    if(isNew&&leadId&&typeof trialApi==='function')trialApi('/'+encodeURIComponent(leadId),{status:'booked',note:`Вводный урок ${dtt(l.date)}, ${l.mvu}`})
+      .then(r=>{const i=TRIALS.findIndex(x=>x.id===r.lead.id);if(i>=0)TRIALS[i]=r.lead;renderNav(curRoute())}).catch(()=>{});
+  },
+  f=>{
+    if(f.lead)f.lead.onchange=()=>{const x=TRIALS.find(y=>y.id===f.lead.value);if(!x)return;
+      f.child.value=x.child_name||f.child.value;f.age.value=x.age||f.age.value;f.parent.value=x.parent_name||x.messenger_name||'';f.phone.value=x.phone||''};
+    if(preLead&&f.lead){f.lead.value=preLead;f.lead.onchange()}
+    const del=f.querySelector('#tDel');if(del)del.onclick=()=>{D.sched.lessons=D.sched.lessons.filter(x=>x!==l);log(`Удалён вводный урок: ${l.child}, ${dtt(l.date)}`);save();$('#dlg').close();toast('Вводный урок удалён');route()};
+  });
+}
+
+/* итог пробного урока */
+function openTrialResultDlg(l){
+  showDlg(`<h2>Итог вводного урока</h2><p>${esc(l.child)}${l.age?', '+esc(l.age)+' лет':''} · ${dtt(l.date)} · ${esc(trialOwner(l))}</p>
+    <form class="dlg" style="padding:0;gap:12px" novalidate>
+      <div class="field"><span>Урок</span><div class="seg">${['came','noshow','cancelled'].map(k=>`<label><input type="radio" name="st" value="${k}" ${l.status===k||(!['came','noshow','cancelled'].includes(l.status)&&k==='came')?'checked':''}><span>${TRIAL_RES[k][0]}</span></label>`).join('')}</div></div>
+      <div class="field" id="saleBox"><span>Итог продажи</span><div class="seg">${Object.entries(SALE_RES).map(([k,v])=>`<label><input type="radio" name="sale" value="${k}" ${l.sale===k?'checked':''}><span>${v[0]}</span></label>`).join('')}</div></div>
+      <div class="field" id="recBox"><span>Программа</span><div class="seg">${PROGRAMS.map(p=>`<label><input type="radio" name="rec" value="${p}" ${l.rec===p?'checked':''}><span>${p}</span></label>`).join('')}</div></div>
+      <label class="field"><span>Комментарий</span><textarea class="input" name="result" rows="3" placeholder="Что понравилось ребёнку, вопросы и возражения родителя, когда перезвонить…">${esc(l.result||'')}</textarea></label>
+      <p class="err"></p>
+      <div class="dlg__act"><button type="button" class="btn btn--ghost" data-dlg-close>Отмена</button><button class="btn btn--ok">Сохранить итог</button></div></form>`,
+  f=>{
+    const st=(f.querySelector('[name=st]:checked')||{}).value, sale=st==='came'?((f.querySelector('[name=sale]:checked')||{}).value||''):'',
+      rec=st==='came'?((f.querySelector('[name=rec]:checked')||{}).value||''):'';
+    if(st==='came'&&!sale)return 'Отметьте итог продажи: купили, думают или отказ';
+    if(sale==='sold'&&!rec)return 'Укажите, какую программу купили';
+    Object.assign(l,{status:st,sale,rec,result:f.result.value.trim()});
+    const what=st==='came'?SALE_RES[sale][0].toLowerCase():TRIAL_RES[st][0].toLowerCase();
+    log(`Итог вводного урока: ${l.child} — ${what}${rec?', программа '+rec:''}`);
+    save();toast(sale==='sold'?'Отлично! Оформите продажу: тариф, оплата, доступ и группа':'Итог сохранён ✓');
+    if(sale==='sold'&&!l.saleId)setTimeout(()=>openSaleDlg(l),60);
+    if(l.leadId&&typeof trialApi==='function'){
+      const status=sale==='sold'?'sold':sale==='refused'||st==='cancelled'?'refused':st==='noshow'||sale==='thinking'?'contacted':undefined;
+      trialApi('/'+encodeURIComponent(l.leadId),{...(status?{status}:{}),note:`Вводный ${dtt(l.date)} (${trialOwner(l)}): ${what}${rec?', программа '+rec:''}${l.result?'. '+l.result:''}`})
+        .then(r=>{const i=TRIALS.findIndex(x=>x.id===r.lead.id);if(i>=0)TRIALS[i]=r.lead;renderNav(curRoute())}).catch(()=>{});
+    }
+  },
+  f=>{const sync=()=>{const came=(f.querySelector('[name=st]:checked')||{}).value==='came';$('#saleBox').hidden=!came;$('#recBox').hidden=!came};
+    f.querySelectorAll('[name=st]').forEach(x=>x.onchange=sync);sync()});
+}
+
+/* расписание на странице группы */
+function groupScheduleCard(g){
+  ensureSchedule();
+  const now=Date.now()-3*3600e3;
+  const next=D.sched.lessons.filter(l=>l.kind==='group'&&l.gid===g.id&&new Date(l.date).getTime()>=now).sort((a,b)=>new Date(a.date)-new Date(b.date)).slice(0,6);
+  return `<section class="card" style="margin-top:20px"><div class="card__h"><h2>Расписание группы</h2>
+    <div class="row"><button class="btn btn--ghost btn--xs" data-plan="${g.id}">Составить расписание</button><button class="btn btn--ghost btn--xs" data-add-lesson="${g.id}">＋ Урок</button><a class="link" href="#schedule">Всё расписание</a></div></div>
+    <div class="list">${next.map(l=>lessonRow(l,true)).join('')||'<p class="empty">Уроков пока нет — нажмите «Составить расписание»</p>'}</div></section>`;
+}
+
+/* =====================================================================
+   ПРОДАЖИ: МВУ оформляет продажу после вводного урока —
+   тариф, цена, оплата, доступ в кабинет, группа. И статистика по каждому МВУ.
+   ===================================================================== */
+const BANKS=['ОТП Банк','Т-Банк','МТС Банк','Ренессанс Банк'];
+const rub=n=>(Math.round(+n||0)).toLocaleString('ru-RU')+' ₽';
+const PLAN_LABEL=k=>{const p=PLANS[k];return `${p.n} ${plural(p.n,'урок','урока','уроков')} · ${p.t}`};
+function ensureSales(){if(!D.sales)D.sales=[]}
+
+function openSaleDlg(lesson){
+  ensureSales();
+  const l=lesson||{};
+  const prog=l.rec||'Middle', plan='y2';
+  const groups=()=>D.groups;
+  const age=+l.age||0, birthGuess=age?`${new Date().getFullYear()-age}-01-01`:'';
+  const login0=uniqueLogin(translit((l.parent||'').split(' ')[0]||'family'));
+  let pass=genPass();
+  showDlg(`<h2>Оформление продажи</h2><p>${l.child?esc(l.child)+(l.age?', '+esc(l.age)+' лет':'')+' · ':''}МВУ: ${esc(trialOwner(l)||meMvu()||'—')}</p>
+    <form class="dlg" style="padding:0;gap:14px" novalidate>
+      ${meMvu()?'':`<label class="field"><span>МВУ — чья продажа</span><select name="mvu">${[...new Set([...MVUS,trialOwner(l)].filter(Boolean))].map(t=>`<option ${t===trialOwner(l)?'selected':''}>${esc(t)}</option>`).join('')}</select></label>`}
+      <div class="sale-sec"><b>1. Семья</b><div class="fgrid">
+        <label class="field"><span>Родитель (фамилия и имя)</span><input class="input" name="parent" value="${esc(l.parent||'')}" required></label>
+        <label class="field"><span>Телефон</span><input class="input" name="phone" type="tel" value="${esc(l.phone||'')}" required></label>
+        <label class="field"><span>Ребёнок</span><input class="input" name="kid" value="${esc(l.child||'')}" required></label>
+        <label class="field"><span>Дата рождения</span><input class="input" name="birth" type="date" value="${birthGuess}"></label></div></div>
+      <div class="sale-sec"><b>2. Что купили</b>
+        <div class="field"><span>Программа</span><div class="seg">${PROGRAMS.map(p=>`<label><input type="radio" name="program" value="${p}" ${p===prog?'checked':''}><span>${p}</span></label>`).join('')}</div></div>
+        <div class="field"><span>Количество уроков</span><div class="seg">${Object.keys(PLANS).map(k=>`<label><input type="radio" name="plan" value="${k}" ${k===plan?'checked':''}><span>${PLAN_LABEL(k)}</span></label>`).join('')}</div></div>
+        <div class="fgrid"><label class="field"><span>Стоимость обучения, ₽</span><input class="input" name="price" inputmode="numeric" placeholder="215 000" required></label>
+        <label class="field"><span>Скидка / льгота</span><input class="input" name="promo" placeholder="Например: льготные условия с урока"></label></div></div>
+      <div class="sale-sec"><b>3. Оплата</b>
+        <div class="seg">${Object.entries(PAYS).map(([k,x],i)=>`<label><input type="radio" name="payment" value="${k}" ${i===1?'checked':''}><span>${x.t}</span></label>`).join('')}</div>
+        <div class="fgrid" id="payBank"><label class="field"><span>Банк</span><select name="bank">${BANKS.map(b=>`<option>${b}</option>`).join('')}</select></label>
+          <label class="field"><span>Срок рассрочки, мес.</span><select name="months">${[6,10,12,18,24,36].map(m=>`<option ${m===24?'selected':''}>${m}</option>`).join('')}</select></label>
+          <label class="field"><span>Номер заявки в банке</span><input class="input" name="bankRef" placeholder="необязательно"></label></div>
+        <div class="fgrid" id="payInt"><label class="field"><span>Первый платёж, ₽</span><input class="input" name="first" inputmode="numeric" placeholder="9 000"></label>
+          <label class="field"><span>Платёж в месяц, ₽</span><input class="input" name="monthly" inputmode="numeric" placeholder="9 000"></label>
+          <label class="field"><span>Сколько уроков открыть сейчас</span><input class="input" name="opened" type="number" min="1" value="10"></label>
+          <label class="field"><span>Следующий платёж</span><input class="input" name="next" type="date" value="${ymd(new Date(Date.now()+30*DAY))}"></label></div>
+        <p class="sale-sum" id="saleSum"></p></div>
+      <div class="sale-sec"><b>4. Группа</b>
+        <label class="field"><span>В какую группу</span><select name="group">${groups().map(g=>`<option value="${g.id}" data-p="${g.program}">${esc(g.name)} · ${esc(g.teacher)}${g.solo?'':' · '+groupDays(g)}</option>`).join('')}</select></label></div>
+      <div class="sale-sec"><b>5. Доступ в личный кабинет</b>
+        <label class="check"><input type="checkbox" name="give" checked> Выдать доступ сейчас</label>
+        <div class="fgrid" id="accBox"><label class="field"><span>Логин</span><input class="input" name="login" value="${esc(login0)}" autocapitalize="none" spellcheck="false"></label>
+          <div class="field"><span>Временный пароль</span><div class="row" style="flex-wrap:nowrap"><input class="input" name="pass" value="${esc(pass)}" readonly><button class="btn btn--ghost btn--xs" type="button" id="passGen" title="Другой пароль">↻</button></div></div>
+          <div class="field wide"><span>Как отправить</span><div class="seg">${[['sms','SMS'],['telegram','Telegram'],['copy','Скопирую и отправлю сам']].map(([k,t],i)=>`<label><input type="radio" name="ch" value="${k}" ${i===2?'checked':''}><span>${t}</span></label>`).join('')}</div></div></div></div>
+      <p class="err"></p>
+      <div class="dlg__act"><button type="button" class="btn btn--ghost" data-dlg-close>Отмена</button><button class="btn btn--ok">Оформить продажу</button></div></form>`,
+  f=>{
+    const v=n=>(f.elements[n]&&f.elements[n].value||'').trim(), num=n=>+v(n).replace(/\D/g,'')||0;
+    const val=n=>(f.querySelector(`[name=${n}]:checked`)||{}).value;
+    if(v('parent').length<2)return 'Укажите родителя';
+    if(v('phone').replace(/\D/g,'').length<10)return 'Телефон — не меньше 10 цифр';
+    if(v('kid').length<2)return 'Укажите имя ребёнка';
+    const price=num('price');if(price<1000)return 'Укажите стоимость обучения';
+    const payment=val('payment'), plan=val('plan'), program=val('program');
+    if(payment==='internal'&&!num('monthly'))return 'Укажите платёж в месяц для внутренней рассрочки';
+    const login=v('login').toLowerCase();
+    if(f.give.checked){if(login.length<3)return 'Логин — от 3 символов латиницей';if(D.clients.some(c=>c.access.login===login))return 'Такой логин уже занят'}
+    const birth=v('birth')||(age?birthGuess:`${new Date().getFullYear()-10}-01-01`);
+    const c=addClient({parent:v('parent'),phone:v('phone'),deal:'',kid:v('kid'),birth,program,plan,payment,group:v('group')});
+    const s=D.students.find(x=>x.fid===c.id);
+    if(payment==='internal'){s.paid=Math.min(PLANS[plan].n,Math.max(1,+v('opened')||10));s.payStep=s.paid;s.nextPay=atLocal(v('next')||ymd(new Date(Date.now()+30*DAY)),'12:00').toISOString()}
+    const sale={id:uid('sale'),date:iso(Date.now()),mvu:meMvu()||(f.mvu&&f.mvu.value)||trialOwner(l)||ROLES[role].name,lessonId:l.id||'',leadId:l.leadId||'',fid:c.id,sid:s.id,
+      parent:c.parent,kid:s.name,program,plan,lessons:PLANS[plan].n,price,promo:v('promo'),payment,
+      bank:payment==='bank'?v('bank'):'',months:payment==='bank'?+v('months'):0,bankRef:v('bankRef'),
+      first:payment==='internal'?num('first'):0,monthly:payment==='internal'?num('monthly'):0,group:s.group};
+    D.sales.unshift(sale);
+    if(l.id){l.sale='sold';l.status='came';l.saleId=sale.id;l.rec=program}
+    let msg='';
+    if(f.give.checked){
+      const ch=val('ch');c.access={status:'issued',login,issued:iso(Date.now()),last:null};
+      msg=`Здравствуйте, ${c.parent.split(' ')[1]||c.parent}! Доступ в личный кабинет «Уникума»:\n${CABINET_URL}\nЛогин: ${login}\nПароль: ${v('pass')}\nПри первом входе пароль можно сменить.`;
+      if(ch==='copy'){try{navigator.clipboard.writeText(msg).catch(()=>{})}catch(e){}}
+      log(`Выдан доступ: ${c.parent} (логин ${login}) — ${ch==='sms'?'SMS':ch==='telegram'?'Telegram':'сообщение скопировано'}`);
+    }
+    log(`Продажа: ${c.parent} — ${program}, ${PLAN_LABEL(plan)}, ${rub(price)}, ${PAYS[payment].t}${sale.bank?' ('+sale.bank+')':''}; группа «${groupOf(s.group).name}»`);
+    save();
+    toast(`Продажа оформлена 🎉 ${s.name} — в группе «${groupOf(s.group).name}»${f.give.checked?(val('ch')==='copy'?', логин и пароль скопированы':', доступ отправлен (демо)'):''}`);
+    if(l.leadId&&typeof trialApi==='function')trialApi('/'+encodeURIComponent(l.leadId),{status:'sold',note:`Продажа ${dt(sale.date)} (${sale.mvu}): ${program}, ${PLAN_LABEL(plan)}, ${rub(price)}, ${PAYS[payment].t}`})
+      .then(r=>{const i=TRIALS.findIndex(x=>x.id===r.lead.id);if(i>=0)TRIALS[i]=r.lead}).catch(()=>{});
+  },
+  f=>{
+    const sync=()=>{
+      const pay=(f.querySelector('[name=payment]:checked')||{}).value, prog=(f.querySelector('[name=program]:checked')||{}).value;
+      $('#payBank').hidden=pay!=='bank';$('#payInt').hidden=pay!=='internal';$('#accBox').hidden=!f.give.checked;
+      const sel=f.group;[...sel.options].forEach(o=>o.hidden=o.dataset.p!==prog);
+      if(sel.selectedOptions[0]&&sel.selectedOptions[0].hidden){const o=[...sel.options].find(o=>!o.hidden);if(o)sel.value=o.value}
+      const price=+f.price.value.replace(/\D/g,'')||0, plan=(f.querySelector('[name=plan]:checked')||{}).value;
+      const per=price&&plan?Math.round(price/PLANS[plan].n):0;
+      $('#saleSum').textContent=price?`${rub(price)} · ${rub(per)} за урок`+(pay==='bank'?` · ≈ ${rub(price/(+f.months.value||1))} в месяц`:''):'';
+    };
+    f.addEventListener('change',sync);f.price.addEventListener('input',()=>{const d=f.price.value.replace(/\D/g,'');f.price.value=d?(+d).toLocaleString('ru-RU'):'';sync()});
+    ['first','monthly'].forEach(n=>f[n].addEventListener('input',()=>{const d=f[n].value.replace(/\D/g,'');f[n].value=d?(+d).toLocaleString('ru-RU'):''}));
+    $('#passGen').onclick=()=>{f.pass.value=genPass()};
+    f.login.oninput=()=>{f.login.value=f.login.value.toLowerCase().replace(/[^a-z0-9._-]/g,'')};
+    sync();
+  });
+}
+
+/* ---------- статистика продаж ---------- */
+let salesPeriod='month';
+function periodRange(p){
+  const now=new Date(), a=new Date(now.getFullYear(),now.getMonth(),1);
+  if(p==='month')return [a,new Date(now.getFullYear(),now.getMonth()+1,1)];
+  if(p==='prev')return [new Date(now.getFullYear(),now.getMonth()-1,1),a];
+  if(p==='week'){const w=weekStart(now);return [w,new Date(w.getTime()+7*DAY)]}
+  return [new Date(2000,0,1),new Date(2100,0,1)];
+}
+function mvuStats(name,[a,b]){
+  const inR=d=>{d=new Date(d);return d>=a&&d<b};
+  const intro=D.sched.lessons.filter(l=>l.kind==='trial'&&trialOwner(l)===name&&inR(l.date)&&new Date(l.date)<=new Date());
+  const came=intro.filter(l=>l.status==='came').length, noshow=intro.filter(l=>l.status==='noshow').length;
+  const sales=D.sales.filter(s=>s.mvu===name&&inR(s.date));
+  const sum=sales.reduce((x,s)=>x+s.price,0);
+  const fromIntro=sales.filter(s=>s.lessonId).length;   // конверсия — только продажи после вводных уроков
+  return {name,intro:intro.length,came,noshow,sold:sales.length,fromIntro,conv:came?Math.round(fromIntro/came*100):0,sum,avg:sales.length?Math.round(sum/sales.length):0,sales};
+}
+VIEWS.sales=function(){
+  ensureSchedule();ensureSales();
+  const R=periodRange(salesPeriod), me=meMvu();
+  const names=me?[me]:[...new Set([...MVUS,...D.sales.map(s=>s.mvu),...D.sched.lessons.filter(l=>l.kind==='trial').map(trialOwner).filter(Boolean)])];
+  const rows=names.map(n=>mvuStats(n,R)).sort((x,y)=>y.sum-x.sum);
+  const T=rows.reduce((t,r)=>({intro:t.intro+r.intro,came:t.came+r.came,sold:t.sold+r.sold,fromIntro:t.fromIntro+r.fromIntro,sum:t.sum+r.sum}),{intro:0,came:0,sold:0,fromIntro:0,sum:0});
+  const list=D.sales.filter(s=>(!me||s.mvu===me)&&new Date(s.date)>=R[0]&&new Date(s.date)<R[1]);
+  const byPlan=Object.keys(PLANS).map(k=>[k,list.filter(s=>s.plan===k).length]).filter(x=>x[1]);
+  const byPay=Object.keys(PAYS).map(k=>[k,list.filter(s=>s.payment===k).length]).filter(x=>x[1]);
+  const per=[['week','Неделя'],['month','Этот месяц'],['prev','Прошлый месяц'],['all','Всё время']];
+  return `
+  <div class="vhead"><div><h1>Продажи</h1><p>${me?'Ваша статистика: вводные уроки, продажи, конверсия и выручка.':'Статистика продаж по каждому МВУ.'}</p></div>
+    <div class="row"><div class="tabs" id="perTabs">${per.map(([k,t])=>`<button aria-pressed="${k===salesPeriod}" data-p="${k}">${t}</button>`).join('')}</div>
+    <button class="btn btn--xs" id="saleNew">＋ Продажа</button></div></div>
+  <div class="kpis" style="grid-template-columns:repeat(5,minmax(0,1fr))">
+    <div class="kpi"><b>${T.intro}</b><span>вводных проведено</span></div>
+    <div class="kpi"><b>${T.came}</b><span>пришли на урок</span></div>
+    <div class="kpi"><b>${T.sold}</b><span>${plural(T.sold,'продажа','продажи','продаж')}</span></div>
+    <div class="kpi"><b>${T.came?Math.round(T.fromIntro/T.came*100):0}%</b><span>конверсия: продажи после вводного</span></div>
+    <div class="kpi"><b>${rub(T.sum)}</b><span>выручка${T.sold?' · средний чек '+rub(T.sum/T.sold):''}</span></div></div>
+  ${me?'':`<section class="card" style="margin-top:20px"><div class="card__h"><h2>По МВУ</h2></div><div class="tbl-wrap" style="box-shadow:none">
+    <table class="sale-tbl"><thead><tr><th>МВУ</th><th>Вводных</th><th>Пришли</th><th>Не пришли</th><th>Продаж</th><th>Конверсия</th><th>Выручка</th><th>Средний чек</th></tr></thead>
+    <tbody>${rows.map(r=>`<tr><td><b>${esc(r.name)}</b></td><td>${r.intro}</td><td>${r.came}</td><td>${r.noshow}</td><td>${r.sold}</td><td>${r.conv}%</td><td>${rub(r.sum)}</td><td>${r.avg?rub(r.avg):'—'}</td></tr>`).join('')}</tbody></table></div></section>`}
+  <div class="grid2" style="margin-top:20px">
+    <section class="card"><div class="card__h"><h2>Продажи за период</h2></div><div class="list">${list.map(s=>`<div class="item"><div class="item__main">
+      <b>${esc(s.parent)} · ${esc(s.kid)}</b><small>${dt(s.date)} · ${s.program}, ${PLAN_LABEL(s.plan)} · ${PAYS[s.payment].t}${s.bank?' ('+esc(s.bank)+', '+s.months+' мес.)':''}${s.payment==='internal'&&s.monthly?' · '+rub(s.monthly)+'/мес':''}${me?'':' · '+esc(s.mvu)}</small>
+      <small>Группа: ${esc((groupOf(s.group)||{}).name||'—')}${s.promo?' · '+esc(s.promo):''}</small></div><b class="sale-price">${rub(s.price)}</b></div>`).join('')||'<p class="empty">Продаж за этот период пока нет</p>'}</div></section>
+    <section class="card"><div class="card__h"><h2>Что покупают</h2></div>
+      <div class="list">${byPlan.map(([k,n])=>`<div class="sale-bar"><span>${PLAN_LABEL(k)}</span><b>${n}</b><i style="width:${Math.round(n/list.length*100)}%"></i></div>`).join('')||'<p class="empty">—</p>'}</div>
+      <div class="card__h" style="margin-top:18px"><h2>Как платят</h2></div>
+      <div class="list">${byPay.map(([k,n])=>`<div class="sale-bar"><span>${PAYS[k].t}</span><b>${n}</b><i style="width:${Math.round(n/list.length*100)}%"></i></div>`).join('')||'<p class="empty">—</p>'}</div></section>
+  </div>`;
+};
+BIND.sales=function(){
+  $$('#perTabs button').forEach(b=>b.onclick=()=>{salesPeriod=b.dataset.p;route()});
+  $('#saleNew').onclick=()=>openSaleDlg(null);
+};
+
+/* новая группа: преподаватель создаёт сам, затем сразу составляет ей расписание */
+function openGroupDlg(){
+  showDlg(`<h2>Новая группа</h2><p>После создания откроется окно расписания — выберите дни и время уроков.</p>
+    <form class="dlg" style="padding:0;gap:12px" novalidate>
+      <div class="field"><span>Программа</span><div class="seg">${PROGRAMS.map((p,i)=>`<label><input type="radio" name="program" value="${p}" ${i===1?'checked':''}><span>${p}</span></label>`).join('')}</div></div>
+      <div class="fgrid">
+        <label class="field"><span>Название группы</span><input class="input" name="name" placeholder="Например: Middle · вечерняя" required></label>
+        <label class="field"><span>Преподаватель</span>${meTeacher()?`<input class="input" name="teacher" value="${esc(meTeacher())}" readonly>`:`<select name="teacher">${teachers().map(t=>`<option>${esc(t)}</option>`).join('')}</select>`}</label>
+        <label class="field"><span>Максимум учеников</span><input class="input" name="max" type="number" min="1" max="20" value="6"></label>
+        <label class="check" style="align-self:end"><input type="checkbox" name="solo"> Индивидуальные занятия</label></div>
+      <p class="err"></p>
+      <div class="dlg__act"><button type="button" class="btn btn--ghost" data-dlg-close>Отмена</button><button class="btn">Создать и составить расписание</button></div></form>`,
+  f=>{
+    const program=(f.querySelector('[name=program]:checked')||{}).value, name=f.name.value.trim()||`${program} · новая`;
+    if(D.groups.some(g=>g.name.toLowerCase()===name.toLowerCase()))return 'Группа с таким названием уже есть';
+    const g={id:'g'+Date.now().toString(36),name,program,teacher:f.teacher.value,wd:6,time:'17:00',max:+f.max.value||6,solo:f.solo.checked,created:iso(Date.now())};
+    D.groups.push(g);
+    log(`Создана группа «${g.name}» (${program}), преподаватель ${g.teacher}`);
+    save();toast('Группа создана ✓ Теперь — расписание');
+    setTimeout(()=>{location.hash='#groups/'+g.id;setTimeout(()=>openPlanDlg(g.id),80)},60);
+  },
+  f=>{const sync=()=>{if(!f.name.dataset.touched)f.name.value=`${(f.querySelector('[name=program]:checked')||{}).value} · новая`};
+    f.name.oninput=()=>{f.name.dataset.touched=1};f.querySelectorAll('[name=program]').forEach(x=>x.onchange=sync);sync()});
+}
+
+/* =====================================================================
    СТАРТ
    ===================================================================== */
 try{D=JSON.parse(localStorage.getItem(KEY))}catch(e){}
 if(!D||!D.clients)D=seed();
+ensureSchedule();ensureSales();
 $('#roleSel').value=role;
 $('#roleSel').onchange=e=>{role=e.target.value;try{localStorage.setItem(KEY+'-role',role)}catch(err){}closeDrawer();toast('Вы смотрите админку как: '+ROLES[role].t);route()};
 $('#menuBtn').onclick=()=>$('#side').classList.toggle('open');
 $('#q').addEventListener('keydown',e=>{if(e.key==='Enter'&&!location.hash.startsWith('#clients')){Q=$('#q').value;location.hash='clients'}});
 $('#q').addEventListener('input',()=>{Q=$('#q').value});
 $('#logout').onclick=()=>{try{sessionStorage.removeItem('unikum-admin-auth');localStorage.removeItem('unikum-admin-auth')}catch(e){}location.replace('cabinet.html')};
-$('#resetDemo').onclick=()=>{D=seed();save();toast('Демо-данные сброшены');route()};
+$('#resetDemo').onclick=()=>{D=seed();ensureSchedule();ensureSales();save();toast('Демо-данные сброшены');route()};
 $('#dlg').addEventListener('click',e=>{if(e.target===e.currentTarget)e.currentTarget.close()});
 window.addEventListener('hashchange',route);
 route();

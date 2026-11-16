@@ -1039,16 +1039,29 @@ const DEMO_HW=[
   {id:'hj',lesson:DEMO_FROM-1,title:'Викторина',task:'Добавь в викторину ещё 5 вопросов и подсчёт правильных ответов.',status:'ok',stars:5,coins:20,comment:'Отличные вопросы и чистый код!'}
 ];
 const DEMO_MISSED={17:{reason:'Болезнь',makeupDone:true},29:{reason:'Поездка или отпуск'}};
+/* связь с прототипом админки: уроки группы ребёнка из её расписания (localStorage 'unikum-admin-v1') */
+function adminLessons(){
+  let A=null;try{A=JSON.parse(localStorage.getItem('unikum-admin-v1'))}catch(e){}
+  if(!A||!A.sched||!Array.isArray(A.sched.lessons)||!Array.isArray(A.students))return null;
+  const name=((store.get().demo||{}).child||{}).name||'Миша';
+  const s=A.students.find(x=>x.name===name)||A.students.find(x=>x.name==='Миша');
+  if(!s||!s.group)return null;
+  const now=Date.now();
+  return A.sched.lessons.filter(l=>l.kind==='group'&&l.gid===s.group&&l.status!=='cancelled'&&new Date(l.date).getTime()+(l.dur||90)*60e3>now)
+    .sort((a,b)=>new Date(a.date)-new Date(b.date)).slice(0,10);
+}
 function demoLessons(){
   // 40 занятий в год — одно занятие в неделю, по субботам в 17:00: 40 прошедших и 6 следующих
   const now=new Date(),base=new Date(now);base.setHours(17,0,0,0);
   const days=[];
   for(let i=-7*45;i<60;i++){const d=new Date(base);d.setDate(d.getDate()+i);if(d.getDay()===6)days.push(d)}
-  const past=days.filter(d=>d<=now).slice(-DEMO_DONE), fut=days.filter(d=>d>now).slice(0,6);
+  const past=days.filter(d=>d<=now).slice(-DEMO_DONE);
+  // будущие уроки берём из расписания админки (тот же браузер), иначе — демо по субботам
+  const adm=adminLessons(), fut=adm?adm.map(l=>new Date(l.date)):days.filter(d=>d>now).slice(0,6);
   const ms=modulesOf({program:'Middle',total:PLANS.y2.n});
-  return past.concat(fut).map((d,i)=>{const n=i+1, m=ms.find(x=>n>=x.from&&n<=x.to), miss=DEMO_MISSED[n];
-    return {id:'l'+n,n,title:demoTopic(n),course:m.tech,date:d,
-      status:n>DEMO_DONE?'planned':miss?'missed':'done',meet:'',record:n<=DEMO_DONE?'#':'',dur:90,
+  return past.concat(fut).map((d,i)=>{const n=i+1, m=ms.find(x=>n>=x.from&&n<=x.to)||ms[ms.length-1], miss=DEMO_MISSED[n], a=adm&&i>=past.length?adm[i-past.length]:null;
+    return {id:a?a.id:'l'+n,n,title:a&&a.topic||demoTopic(n),course:m.tech,date:d,
+      status:n>DEMO_DONE?'planned':miss?'missed':'done',meet:a&&a.link||'',record:n<=DEMO_DONE?'#':'',dur:a&&a.dur||90,
       absence:miss?{reason:miss.reason,comment:'',makeup:!!miss.makeupDone,makeupDone:!!miss.makeupDone}:null}});
 }
 function demoState(){
