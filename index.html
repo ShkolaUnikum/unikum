@@ -1224,6 +1224,13 @@ dialog#license{max-width:min(760px,calc(100% - 24px))}
 .hp{position:absolute!important;left:-9999px!important;width:1px;height:1px;opacity:0}
 .form__fail{display:grid;gap:8px;margin-top:12px;padding:14px 16px;border-radius:14px;background:rgba(255,95,168,.14);border:1px solid rgba(255,95,168,.45);font-size:14px;line-height:1.45}
 .form__fail .btn{justify-self:start}
+
+/* шапка: кнопки одной высоты, «Записаться» по центру, без широкого свечения вниз */
+@media (min-width:768px){
+  .header__login{height:44px;box-sizing:border-box}
+  .header .btn{height:44px;box-sizing:border-box;padding:0 20px;justify-content:center;border-radius:14px;letter-spacing:.04em;text-indent:.04em;
+    box-shadow:0 0 0 1px rgba(255,255,255,.18),0 6px 16px -8px rgba(255,79,158,.75),inset 0 1px 0 rgba(255,255,255,.45),inset 0 -2px 0 rgba(120,10,80,.22)}
+}
 </style>
 </head>
 <body>
