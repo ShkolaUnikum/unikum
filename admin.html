@@ -337,6 +337,15 @@ dialog:has(.sale-sec){width:min(680px,calc(100% - 24px))}
 .dz-act{display:flex;flex-wrap:wrap;gap:6px;justify-content:flex-end;max-width:260px}
 .dz-hist{display:grid;gap:6px;margin:0 0 12px;padding:10px 12px;border-radius:12px;background:var(--soft);font-size:12.5px}
 @media (max-width:700px){.dz-item{grid-template-columns:1fr}.dz-act{justify-content:flex-start;max-width:none}}
+
+/* сотрудники */
+.who__me{display:grid;line-height:1.15;text-align:right}
+.who__me b{font-size:13px}
+.who__me small{font-size:11px;color:var(--muted)}
+.st-off td{opacity:.55}
+.st-act{white-space:nowrap}
+.st-act .btn{margin:0 4px 4px 0}
+.st-hint{margin:-4px 0 0;font-size:12.5px;color:var(--muted)}
 </style>
 </head>
 <body>
@@ -354,6 +363,7 @@ dialog:has(.sale-sec){width:min(680px,calc(100% - 24px))}
   <symbol id="i-chart" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></g></symbol>
   <symbol id="i-db" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><ellipse cx="12" cy="5.5" rx="8" ry="3"/><path d="M4 5.5v13c0 1.7 3.6 3 8 3s8-1.3 8-3v-13M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></g></symbol>
   <symbol id="i-phone" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2z"/></symbol>
+  <symbol id="i-key" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="8" cy="15" r="4.5"/><path d="M11.5 12 21 2.5M17 6.5l3 3M14.5 9l2 2"/></g></symbol>
   <symbol id="i-log" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></g></symbol>
   <symbol id="i-search" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></g></symbol>
   <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
@@ -369,7 +379,7 @@ dialog:has(.sale-sec){width:min(680px,calc(100% - 24px))}
     <header class="top">
       <button class="top__menu" id="menuBtn" aria-label="Меню"><svg width="20" height="20"><use href="#i-menu"/></svg></button>
       <label class="search"><svg><use href="#i-search"/></svg><input id="q" type="search" placeholder="Поиск: родитель, ребёнок, телефон, логин, сделка" autocomplete="off"></label>
-      <div class="who"><span class="demo">демо</span><label for="roleSel">Вы вошли как</label>
+      <div class="who"><span class="demo" id="whoDemo">демо</span><label for="roleSel" id="whoLbl">Вы вошли как</label><span class="who__me" id="whoMe" hidden></span>
         <select id="roleSel">
           <option value="admin">Администратор</option>
           <option value="line1">Первая линия · Ольга</option>
@@ -409,7 +419,7 @@ const EXTRA={english:'Английский язык',ai:'Нейросети'};
 const ROLES={
   /* Администратор — всё. Преподаватель — группы, расписание и уроки купивших.
      Первая линия — заявки и запись на вводный урок. МВУ — проводит вводные уроки и продаёт. */
-  admin:{t:'Администратор',name:'Администратор',routes:['dash','clients','db','groups','schedule','requests','newleads','intro','dozhim','sales','homework','payments','integrations','log']},
+  admin:{t:'Администратор',name:'Администратор',routes:['dash','clients','db','groups','schedule','requests','newleads','intro','dozhim','sales','homework','payments','staff','integrations','log']},
   line1:{t:'Первая линия',name:'Ольга (первая линия)',routes:['dash','requests','newleads','intro']},
   mvu:{t:'МВУ',name:'Анна (МВУ)',routes:['dash','intro','dozhim','sales']},
   teacher:{t:'Преподаватель',name:'Мария Викторовна',routes:['dash','groups','schedule','homework']}
@@ -417,7 +427,7 @@ const ROLES={
 const ROUTES=[
   {id:'dash',t:'Сводка',i:'i-dash'},{id:'clients',t:'Клиенты',i:'i-users'},{id:'db',t:'База учеников',i:'i-db'},{id:'groups',t:'Группы и журнал',i:'i-group'},{id:'schedule',t:'Расписание групп',i:'i-cal'},{id:'intro',t:'Вводные уроки',i:'i-target'},{id:'dozhim',t:'Дожим',i:'i-phone'},{id:'sales',t:'Продажи',i:'i-chart'},
   {id:'requests',t:'Заявки',i:'i-inbox'},{id:'newleads',t:'Новые лиды',i:'i-users'},{id:'homework',t:'Проверка заданий',i:'i-hw'},{id:'payments',t:'Рассрочки',i:'i-pay'},
-  {id:'integrations',t:'Битрикс24',i:'i-plug'},{id:'log',t:'Журнал действий',i:'i-log'}
+  {id:'staff',t:'Сотрудники',i:'i-key'},{id:'integrations',t:'Битрикс24',i:'i-plug'},{id:'log',t:'Журнал действий',i:'i-log'}
 ];
 
 /* ---------- демо-данные ---------- */
@@ -1125,7 +1135,7 @@ const meMvu=()=>role==='mvu'?ROLES.mvu.name:null;
 const canBookIntro=()=>role==='admin'||role==='line1';   // записывать на вводный — первая линия
 const canSell=()=>role==='admin'||role==='mvu';          // итог урока и продажа — МВУ
 const trialOwner=l=>l.mvu||l.teacher||'';
-const teachers=()=>[...new Set([ROLES.teacher.name,...D.groups.map(g=>g.teacher)])];
+const teachers=()=>[...new Set([ROLES.teacher.name,...(D.staff||[]).filter(x=>x.role==='teacher'&&x.status!=='blocked').map(x=>x.name),...D.groups.map(g=>g.teacher)])];
 const meTeacher=()=>role==='teacher'?ROLES.teacher.name:null;
 
 /* старые данные: если расписания ещё нет — строим его на 8 недель вперёд по дню и времени каждой группы */
@@ -1793,19 +1803,136 @@ function openDozhimDlg(l,pre){
     f.querySelectorAll('[name=st]').forEach(x=>x.onchange=sync);sync()});
 }
 
+
+/* =====================================================================
+   СОТРУДНИКИ — учётные записи для входа в админку
+   В прототипе логины и пароли хранятся в этом браузере; в рабочей версии их хранит сервер (пароли — только в виде хеша).
+   ===================================================================== */
+const STAFF_ROLES={admin:'Администратор',line1:'Первая линия',mvu:'МВУ',teacher:'Преподаватель'};
+const STAFF_KEY='unikum-admin-staff';
+function ensureStaff(){
+  if(!D.staff){
+    const mk=(name,role,phone,login,daysAgo,last)=>({id:uid('u'),name,role,phone,login,pass:genPass(),status:'active',created:iso(Date.now()-daysAgo*DAY),last:last==null?null:iso(Date.now()-last*3600e3)});
+    D.staff=[mk('Светлана Орлова','admin','+7 900 444-00-01','orlova',120,2),
+      mk('Ольга (первая линия)','line1','+7 900 444-00-02','olga',90,1),
+      mk('Анна (МВУ)','mvu','+7 900 444-00-03','anna',80,3),mk('Кирилл (МВУ)','mvu','+7 900 444-00-04','kirill',40,26),
+      mk('Мария Викторовна','teacher','+7 900 444-00-05','mariya',100,5),mk('Ольга Сергеевна','teacher','+7 900 444-00-06','olga.s',100,30),
+      mk('Дмитрий Андреевич','teacher','+7 900 444-00-07','dmitriy',60,null)];
+    save();
+  }
+  // список МВУ для выбора — активные сотрудники с ролью МВУ
+  const m=D.staff.filter(x=>x.role==='mvu'&&x.status!=='blocked').map(x=>x.name);
+  if(m.length){MVUS.length=0;MVUS.push(...m)}
+}
+let ME=null;   // сотрудник, который вошёл по своей учётке (null — демо-вход adminTest)
+function applyMe(){
+  let id=null;try{id=sessionStorage.getItem(STAFF_KEY)||localStorage.getItem(STAFF_KEY)}catch(e){}
+  if(!id)return;
+  ME=(D.staff||[]).find(x=>x.id===id&&x.status!=='blocked')||null;
+  if(!ME){try{[sessionStorage,localStorage].forEach(st=>{st.removeItem(STAFF_KEY);st.removeItem('unikum-admin-auth')})}catch(e){}location.replace('cabinet.html');return}
+  role=ME.role;ROLES[role].name=ME.name;
+  $('#roleSel').hidden=true;$('#whoDemo').hidden=true;$('#whoLbl').textContent='';
+  const me=$('#whoMe');me.hidden=false;me.innerHTML=`<b>${esc(ME.name)}</b><small>${STAFF_ROLES[ME.role]}</small>`;
+}
+const staffLoginTaken=(l,except)=>(D.staff||[]).some(x=>x.id!==except&&x.login===l)||l==='admintest';
+VIEWS.staff=function(){
+  const rows=[...D.staff].sort((a,b)=>Object.keys(STAFF_ROLES).indexOf(a.role)-Object.keys(STAFF_ROLES).indexOf(b.role)||a.name.localeCompare(b.name,'ru'));
+  return `<div class="vhead"><div><h1>Сотрудники</h1><p>Учётные записи для входа в админку. Сотрудник входит на странице входа своим логином и паролем и видит только разделы своей роли.</p></div>
+    <button class="btn" id="stAdd">＋ Добавить сотрудника</button></div>
+    <div class="kpis" style="grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:16px">${Object.entries(STAFF_ROLES).map(([k,t])=>`<div class="kpi"><b>${D.staff.filter(x=>x.role===k&&x.status!=='blocked').length}</b><span>${t}</span></div>`).join('')}</div>
+    <div class="tbl-wrap"><table class="db-tbl"><thead><tr><th>Сотрудник</th><th>Роль</th><th>Логин</th><th>Пароль</th><th>Статус</th><th>Последний вход</th><th></th></tr></thead><tbody>
+    ${rows.map(u=>`<tr class="${u.status==='blocked'?'st-off':''}"><td><b>${esc(u.name)}</b><small>${esc(u.phone||'')}</small></td>
+      <td>${STAFF_ROLES[u.role]}</td>
+      <td><code>${esc(u.login)}</code> <button class="db-copy" data-copy="${esc(u.login)}" title="Скопировать логин">⧉</button></td>
+      <td><code class="db-pass">••••••••</code> <button class="db-copy" data-reveal-st="${u.id}" title="Показать">👁</button><button class="db-copy" data-copy="${esc(u.pass)}" title="Скопировать пароль">⧉</button></td>
+      <td><span class="pill ${u.status==='blocked'?'p-mute':u.last?'p-ok':'p-new'}">${u.status==='blocked'?'заблокирован':u.last?'активен':'ещё не входил'}</span></td>
+      <td>${u.last?ago(u.last):'—'}</td>
+      <td class="st-act"><button class="btn btn--ghost btn--xs" data-st-edit="${u.id}">Изменить</button><button class="btn btn--ghost btn--xs" data-st-pass="${u.id}">Сбросить пароль</button>
+        ${ME&&ME.id===u.id?'':`<button class="btn btn--ghost btn--xs" data-st-block="${u.id}">${u.status==='blocked'?'Разблокировать':'Заблокировать'}</button>`}</td></tr>`).join('')}
+    </tbody></table></div>
+    <p class="db-count" style="margin-top:10px">Страница входа для сотрудников — та же, что у родителей: <a class="link" href="cabinet.html" target="_blank" rel="noopener">${esc(CABINET_URL)}</a>. В прототипе учётки работают в этом браузере; в рабочей версии их будет хранить сервер.</p>`;
+};
+BIND.staff=function(){
+  const f=id=>D.staff.find(x=>x.id===id);
+  $('#stAdd').onclick=()=>openStaffDlg();
+  document.querySelectorAll('#view [data-copy]').forEach(b=>b.onclick=()=>{try{navigator.clipboard.writeText(b.dataset.copy).then(()=>toast('Скопировано ✓'),()=>toast('Не удалось скопировать'))}catch(e){}});
+  document.querySelectorAll('[data-reveal-st]').forEach(b=>b.onclick=()=>{const c=b.previousElementSibling;c.textContent=c.textContent.startsWith('•')?f(b.dataset.revealSt).pass:'••••••••'});
+  document.querySelectorAll('[data-st-edit]').forEach(b=>b.onclick=()=>openStaffDlg(f(b.dataset.stEdit)));
+  document.querySelectorAll('[data-st-pass]').forEach(b=>b.onclick=()=>openStaffPassDlg(f(b.dataset.stPass)));
+  document.querySelectorAll('[data-st-block]').forEach(b=>b.onclick=()=>{const u=f(b.dataset.stBlock);u.status=u.status==='blocked'?'active':'blocked';
+    log(`${u.status==='blocked'?'Заблокирован':'Разблокирован'} сотрудник: ${u.name}`);ensureStaff();save();toast(u.status==='blocked'?'Вход заблокирован':'Вход снова разрешён');route()});
+};
+function staffMsg(u,pass,isNew){
+  return `Здравствуйте, ${u.name.split(' ')[0]}! ${isNew?'Ваш доступ в админку «Уникума»':'Новый пароль от админки «Уникума»'}:\n${CABINET_URL}\nЛогин: ${u.login}\nПароль: ${pass}\nРоль: ${STAFF_ROLES[u.role]}`;
+}
+function openStaffDlg(u){
+  const isNew=!u;u=u||{name:'',role:'line1',phone:'',login:'',pass:genPass(),status:'active'};
+  showDlg(`<h2>${isNew?'Новый сотрудник':'Сотрудник'}</h2><p>${isNew?'Создайте учётную запись — логин и пароль можно сразу скопировать и отправить сотруднику.':esc(u.name)}</p>
+    <form class="dlg" style="padding:0;gap:12px" novalidate>
+      <div class="fgrid"><label class="field"><span>Имя и фамилия</span><input class="input" name="name" value="${esc(u.name)}" placeholder="Например: Пётр Сидоров" required></label>
+        <label class="field"><span>Телефон</span><input class="input" name="phone" type="tel" value="${esc(u.phone||'')}" placeholder="+7 900 000-00-00"></label></div>
+      <div class="field"><span>Роль</span><div class="seg">${Object.entries(STAFF_ROLES).map(([k,t])=>`<label><input type="radio" name="role" value="${k}" ${u.role===k?'checked':''} ${ME&&ME.id===u.id&&k!==u.role?'disabled':''}><span>${t}</span></label>`).join('')}</div></div>
+      <p class="st-hint" id="stHint"></p>
+      <div class="fgrid"><label class="field"><span>Логин</span><input class="input" name="login" value="${esc(u.login)}" autocapitalize="none" spellcheck="false" placeholder="латиницей"></label>
+        ${isNew?`<div class="field"><span>Пароль</span><div class="row" style="flex-wrap:nowrap"><input class="input" name="pass" value="${esc(u.pass)}" readonly><button class="btn btn--ghost btn--xs" type="button" id="stGen" title="Другой пароль">↻</button></div></div>`:''}</div>
+      ${isNew?'<label class="check"><input type="checkbox" name="copy" checked> Скопировать логин и пароль, чтобы отправить сотруднику</label>':''}
+      <p class="err"></p>
+      <div class="dlg__act"><button type="button" class="btn btn--ghost" data-dlg-close>Отмена</button><button class="btn btn--ok">${isNew?'Создать учётку':'Сохранить'}</button></div></form>`,
+  f=>{
+    const name=f.name.value.trim(), login=f.login.value.trim().toLowerCase(), r=(f.querySelector('[name=role]:checked')||{}).value;
+    if(name.length<2)return 'Укажите имя сотрудника';
+    if(login.length<3)return 'Логин — от 3 символов латиницей';
+    if(staffLoginTaken(login,u.id)||D.clients.some(c=>c.access&&c.access.login===login))return 'Такой логин уже занят';
+    if(!isNew&&u.name!==name){   // переименование — обновляем имя в группах, вводных и продажах
+      D.groups.forEach(g=>{if(g.teacher===u.name)g.teacher=name});
+      (D.sched&&D.sched.lessons||[]).forEach(l=>{if(l.mvu===u.name)l.mvu=name;if(l.teacher===u.name)l.teacher=name});
+      (D.sales||[]).forEach(x=>{if(x.mvu===u.name)x.mvu=name});
+    }
+    Object.assign(u,{name,phone:f.phone.value.trim(),login,role:r});
+    if(isNew){u.id=uid('u');u.pass=f.pass.value;u.created=iso(Date.now());u.last=null;D.staff.push(u);
+      if(f.copy.checked){try{navigator.clipboard.writeText(staffMsg(u,u.pass,true)).catch(()=>{})}catch(e){}}}
+    if(ME&&ME.id===u.id){ROLES[role].name=u.name;$('#whoMe b').textContent=u.name}
+    ensureStaff();
+    log(`${isNew?'Создана учётка сотрудника':'Изменён сотрудник'}: ${u.name} (${STAFF_ROLES[u.role]}, логин ${u.login})`);
+    save();toast(isNew?(f.copy.checked?'Учётка создана ✓ Логин и пароль скопированы':'Учётка создана ✓'):'Сохранено ✓');
+  },
+  f=>{
+    const hint={admin:'Видит все разделы, управляет сотрудниками.',line1:'Заявки, запись на вводные уроки, новые лиды — запись в группы.',mvu:'Свои вводные уроки, дожим, продажи и выдача доступа в кабинет.',teacher:'Свои группы, расписание, журнал и проверка заданий.'};
+    const sync=()=>{$('#stHint').textContent=hint[(f.querySelector('[name=role]:checked')||{}).value]||''};
+    f.querySelectorAll('[name=role]').forEach(x=>x.onchange=sync);sync();
+    f.login.oninput=()=>{f.login.dataset.touched=1;f.login.value=f.login.value.toLowerCase().replace(/[^a-z0-9._-]/g,'')};
+    if(isNew)f.name.oninput=()=>{if(f.login.dataset.touched)return;const w=f.name.value.trim().split(/\s+/);let l=translit(w[1]||w[0]||'');let k=l,n=2;while(k&&staffLoginTaken(k))k=l+n++;f.login.value=k};
+    const g=f.querySelector('#stGen');if(g)g.onclick=()=>{f.pass.value=genPass()};
+  });
+}
+function openStaffPassDlg(u){
+  let pass=genPass();
+  showDlg(`<h2>Сбросить пароль</h2><p>${esc(u.name)} · ${STAFF_ROLES[u.role]} · логин <code>${esc(u.login)}</code></p>
+    <form class="dlg" style="padding:0;gap:12px" novalidate>
+      <div class="field"><span>Новый пароль</span><div class="row" style="flex-wrap:nowrap"><input class="input" name="pass" value="${esc(pass)}"><button class="btn btn--ghost btn--xs" type="button" id="stGen2" title="Другой пароль">↻</button></div></div>
+      <label class="check"><input type="checkbox" name="copy" checked> Скопировать логин и пароль, чтобы отправить сотруднику</label>
+      <p class="err"></p>
+      <div class="dlg__act"><button type="button" class="btn btn--ghost" data-dlg-close>Отмена</button><button class="btn btn--ok">Сбросить пароль</button></div></form>`,
+  f=>{const p=f.pass.value.trim();if(p.length<6)return 'Пароль — не меньше 6 символов';
+    u.pass=p;if(f.copy.checked){try{navigator.clipboard.writeText(staffMsg(u,p,false)).catch(()=>{})}catch(e){}}
+    log(`Сброшен пароль сотрудника: ${u.name}`);save();toast(f.copy.checked?'Пароль сброшен ✓ Данные для входа скопированы':'Пароль сброшен ✓')},
+  f=>{f.querySelector('#stGen2').onclick=()=>{f.pass.value=genPass()}});
+}
+
 /* =====================================================================
    СТАРТ
    ===================================================================== */
 try{D=JSON.parse(localStorage.getItem(KEY))}catch(e){}
 if(!D||!D.clients)D=seed();
-ensureSchedule();ensureSales();ensurePasswords();ensureDozhim();
+ensureStaff();ensureSchedule();ensureSales();ensurePasswords();ensureDozhim();
 $('#roleSel').value=role;
-$('#roleSel').onchange=e=>{role=e.target.value;try{localStorage.setItem(KEY+'-role',role)}catch(err){}closeDrawer();toast('Вы смотрите админку как: '+ROLES[role].t);route()};
+applyMe();
+$('#roleSel').onchange=e=>{if(ME)return;role=e.target.value;try{localStorage.setItem(KEY+'-role',role)}catch(err){}closeDrawer();toast('Вы смотрите админку как: '+ROLES[role].t);route()};
 $('#menuBtn').onclick=()=>$('#side').classList.toggle('open');
 $('#q').addEventListener('keydown',e=>{if(e.key==='Enter'&&!location.hash.startsWith('#clients')){Q=$('#q').value;location.hash='clients'}});
 $('#q').addEventListener('input',()=>{Q=$('#q').value});
-$('#logout').onclick=()=>{try{sessionStorage.removeItem('unikum-admin-auth');localStorage.removeItem('unikum-admin-auth')}catch(e){}location.replace('cabinet.html')};
-$('#resetDemo').onclick=()=>{D=seed();ensureSchedule();ensureSales();ensurePasswords();ensureDozhim();save();toast('Демо-данные сброшены');route()};
+$('#logout').onclick=()=>{try{[sessionStorage,localStorage].forEach(st=>{st.removeItem('unikum-admin-auth');st.removeItem(STAFF_KEY)})}catch(e){}location.replace('cabinet.html')};
+$('#resetDemo').onclick=()=>{const keep=D.staff;D=seed();D.staff=keep;ensureStaff();ensureSchedule();ensureSales();ensurePasswords();ensureDozhim();save();toast('Демо-данные сброшены');route()};
 $('#dlg').addEventListener('click',e=>{if(e.target===e.currentTarget)e.currentTarget.close()});
 window.addEventListener('hashchange',route);
 route();

@@ -1873,8 +1873,21 @@ $('#loginForm').onsubmit=e=>{
   // В рабочей версии роль сотрудника проверяет сервер, а этот блок удаляется.
   if(!REAL&&l===STAFF_DEMO.login&&p===STAFF_DEMO.pass){
     const st=$('#lRemember').checked?localStorage:sessionStorage;
-    try{st.setItem('unikum-admin-auth','1')}catch(err){}
+    try{[localStorage,sessionStorage].forEach(x=>x.removeItem('unikum-admin-staff'));st.setItem('unikum-admin-auth','1')}catch(err){}
     location.href='admin.html';return;
+  }
+  // ДЕМО: учётки сотрудников, созданные администратором в админке (хранятся в этом браузере)
+  if(!REAL){
+    let A=null;try{A=JSON.parse(localStorage.getItem('unikum-admin-v1'))}catch(err){}
+    const u=A&&Array.isArray(A.staff)&&A.staff.find(x=>x.login===l.toLowerCase()&&x.pass===p);
+    if(u){
+      if(u.status==='blocked'){$('#lErr').textContent='Учётная запись заблокирована — обратитесь к администратору';return}
+      u.last=new Date().toISOString();
+      const st=$('#lRemember').checked?localStorage:sessionStorage;
+      try{localStorage.setItem('unikum-admin-v1',JSON.stringify(A));[localStorage,sessionStorage].forEach(x=>{x.removeItem('unikum-admin-staff');x.removeItem('unikum-admin-auth')});
+        st.setItem('unikum-admin-auth','1');st.setItem('unikum-admin-staff',u.id)}catch(err){}
+      location.href='admin.html';return;
+    }
   }
   if(REAL){
     if(l.length<3){$('#lLogin').setAttribute('aria-invalid','true');$('#lErr').textContent='Введите логин';$('#lLogin').focus();return}
