@@ -1916,6 +1916,16 @@ refreshCountry();
 const LEAD_SERVER='';
 const LEAD_BOT_URL='https://t.me/unikum_school_bot';
 function leadServer(){ return /^(localhost|127\.0\.0\.1)$/.test(location.hostname)?'http://localhost:8787':LEAD_SERVER; }
+/* Ссылка на бота с заявкой внутри: t.me/бот?start=s<возраст><длина тел.><телефон><имя base64url> (≤64 символов).
+   Родитель жмёт «Старт» — бот сразу сохраняет заявку и присылает её менеджеру. */
+function leadBotLink(name,phone,age){
+  const digits=String(phone).replace(/\D/g,'').slice(0,15), a=String(parseInt(age)||0).padStart(2,'0').slice(-2);
+  const head='s'+a+String(digits.length).padStart(2,'0')+digits;
+  const b64=s=>{const b=new TextEncoder().encode(s);let bin='';b.forEach(x=>bin+=String.fromCharCode(x));return btoa(bin).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'')};
+  let n=[...name.trim()];
+  while(n.length&&(head+b64(n.join(''))).length>64)n.pop();
+  return LEAD_BOT_URL+'?start='+head+b64(n.join(''));
+}
 async function sendLead(data){
   const url=leadServer(); if(!url) throw new Error('no-server');
   const r=await fetch(url.replace(/\/$/,'')+'/api/site-lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
@@ -1931,6 +1941,20 @@ document.getElementById('leadForm').addEventListener('submit',async e=>{
   if(name.length<2||!ph.ok||!mailOk||!age||!agree) return;
   const btn=f.querySelector('[type=submit]'); btn.disabled=true;
   const fail=document.getElementById('leadFail'); fail.hidden=true;
+  const tg=leadBotLink(name,ph.full,age);
+  fail.querySelector('a').href=tg;
+  if(!leadServer()){
+    // сервера заявок нет (сайт на GitHub) — отправляем заявку через Telegram-бота
+    if(f.website.value){btn.disabled=false;return}
+    window.open(tg,'_blank','noopener');
+    const th=document.getElementById('thanks');
+    th.querySelector('h3').textContent='Остался один шаг';
+    th.querySelector('p').innerHTML='Открылся наш Telegram-бот — нажмите в нём <b>«Старт»</b>, и заявка сразу придёт менеджеру.';
+    let go=th.querySelector('.thanks__tg');
+    if(!go){go=document.createElement('a');go.className='btn btn--sm thanks__tg';go.target='_blank';go.rel='noopener';go.textContent='Открыть Telegram';th.insertBefore(go,th.querySelector('[data-close]'))}
+    go.href=tg;
+    f.reset(); refreshCountry(); f.hidden=true; th.hidden=false; btn.disabled=false; return;
+  }
   try{ await sendLead({name,phone:ph.full,country:ph.country,email,age,agree:true,game:chosenGame,page:location.href,website:f.website.value}); f.reset(); refreshCountry(); f.hidden=true; document.getElementById('thanks').hidden=false; }
   catch(err){ fail.hidden=false; fail.scrollIntoView({block:'nearest'}); }
   finally{ btn.disabled=false; }
