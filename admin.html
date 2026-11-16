@@ -465,7 +465,22 @@ function genPass(){const r=n=>crypto.getRandomValues(new Uint32Array(1))[0]%n;re
 function accessPill(a){return a.status==='active'?'<span class="pill p-ok">● Заходит</span>':a.status==='issued'?'<span class="pill p-wait">Выдан, не входил</span>':a.status==='blocked'?'<span class="pill p-bad">Заблокирован</span>':'<span class="pill p-new">Нет доступа</span>'}
 
 /* ---------- счётчики ---------- */
-const pendingReq=()=>D.absences.filter(a=>a.status==='new').length+D.freezes.filter(f=>f.status==='requested').length+D.extras.filter(e=>e.status==='new').length;
+/* ---------- пробные уроки: заявки из Telegram- и MAX-бота ----------
+   Бот отдаёт их по адресу <сервер>/api/leads по секретному ключу. Адрес и ключ хранятся только в этом браузере. */
+const TRIAL_KEY='unikum-admin-leads-api';
+const TRIAL_ST={new:['Новая','p-new'],contacted:['Связались','p-wait'],booked:['Записан на урок','p-ok'],refused:['Отказ','p-mute']};
+let TRIALS=[],trialErr='',trialLoaded=false;
+function trialCfg(){let c={};try{c=JSON.parse(localStorage.getItem(TRIAL_KEY)||'{}')}catch(e){}
+  if(!c.url&&/^(localhost|127\.0\.0\.1)$/.test(location.hostname))c.url='http://localhost:8787';return c}
+async function trialApi(path,body){const c=trialCfg();if(!c.url||!c.key)throw new Error('Не указан адрес сервера заявок или ключ');
+  const r=await fetch(c.url.replace(/\/$/,'')+'/api/leads'+path,{method:body?'POST':'GET',headers:{'X-Api-Key':c.key,...(body?{'Content-Type':'application/json'}:{})},body:body?JSON.stringify(body):undefined});
+  const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(r.status===401?'Неверный ключ доступа':(j.error||'Ошибка '+r.status));return j}
+async function loadTrials(redraw){
+  try{TRIALS=(await trialApi('')).leads||[];trialErr=''}catch(e){trialErr=e.message==='Failed to fetch'?'Сервер заявок не отвечает — бот запущен?':e.message}
+  trialLoaded=true;if(redraw){renderNav(curRoute());const typing=document.activeElement&&document.activeElement.closest&&document.activeElement.closest('#rList');if(curRoute()==='requests'&&window.__drawTrials&&!typing)window.__drawTrials()}}
+const curRoute=()=>(location.hash||'#dash').slice(1).split('/')[0];
+const trialNew=()=>TRIALS.filter(x=>(x.status||'new')==='new').length;
+const pendingReq=()=>trialNew()+D.absences.filter(a=>a.status==='new').length+D.freezes.filter(f=>f.status==='requested').length+D.extras.filter(e=>e.status==='new').length;
 const myGroups=()=>role==='teacher'?D.groups.filter(g=>g.teacher===ROLES.teacher.name):D.groups;
 const pendingHw=()=>D.homework.filter(h=>h.status==='wait'&&(role!=='teacher'||myGroups().some(g=>g.id===student(h.sid).group))).length;
 const overdue=()=>D.students.filter(s=>{const p=payState(s);return p&&p.k==='bad'}).length;
@@ -500,6 +515,7 @@ dash(){
   const upcoming=myGroups().map(g=>({g,d:nextWeekday(g.wd,g.time)})).sort((a,b)=>a.d-b.d);
   const tasks=[];
   if(r.routes.includes('clients')&&noAccess())tasks.push(`<a class="item" href="#clients" style="text-decoration:none"><span class="pill p-new">${noAccess()}</span><div class="item__main"><b>Клиенты без доступа в кабинет</b><small>Выдайте логин и пароль</small></div>→</a>`);
+  if(r.routes.includes('requests')&&trialNew())tasks.push(`<a class="item" href="#requests" style="text-decoration:none"><span class="pill p-new">${trialNew()}</span><div class="item__main"><b>Заявки на пробный урок</b><small>Из Telegram- и MAX-бота — позвоните родителям</small></div></a>`);
   if(r.routes.includes('requests')){const f=D.freezes.filter(x=>x.status==='requested').length,a=D.absences.filter(x=>x.status==='new').length,e=D.extras.filter(x=>x.status==='new').length;
     if(f)tasks.push(`<a class="item" href="#requests" style="text-decoration:none"><span class="pill p-ice">${f}</span><div class="item__main"><b>Заявки на заморозку</b><small>Подтвердите или отклоните</small></div>→</a>`);
     if(a)tasks.push(`<a class="item" href="#requests" style="text-decoration:none"><span class="pill p-wait">${a}</span><div class="item__main"><b>Предупреждения о пропусках</b><small>Назначьте отработку, если просят</small></div>→</a>`);
@@ -545,8 +561,8 @@ groups(arg){
 requests(){
   const a=D.absences.filter(x=>x.status==='new').length,f=D.freezes.filter(x=>x.status==='requested').length,e=D.extras.filter(x=>x.status==='new').length;
   return `
-  <div class="vhead"><div><h1>Заявки</h1><p>Всё, что семьи отправили из личного кабинета.</p></div>
-  <div class="tabs" id="rTabs"><button aria-pressed="true" data-t="abs">Пропуски${a?`<span class="cnt">${a}</span>`:''}</button><button aria-pressed="false" data-t="frz">Заморозки${f?`<span class="cnt">${f}</span>`:''}</button><button aria-pressed="false" data-t="ext">Доп. курсы${e?`<span class="cnt">${e}</span>`:''}</button></div></div>
+  <div class="vhead"><div><h1>Заявки</h1><p>Записи на пробный урок из ботов и всё, что семьи отправили из личного кабинета.</p></div>
+  <div class="tabs" id="rTabs"><button aria-pressed="true" data-t="trial">Пробные уроки${trialNew()?`<span class="cnt">${trialNew()}</span>`:''}</button><button aria-pressed="false" data-t="abs">Пропуски${a?`<span class="cnt">${a}</span>`:''}</button><button aria-pressed="false" data-t="frz">Заморозки${f?`<span class="cnt">${f}</span>`:''}</button><button aria-pressed="false" data-t="ext">Доп. курсы${e?`<span class="cnt">${e}</span>`:''}</button></div></div>
   <div class="list" id="rList"></div>`;
 },
 
@@ -685,9 +701,34 @@ groups(arg){
   };
 },
 requests(){
-  let tab='abs';
+  let tab='trial';
   const draw=()=>{
     let html='';
+    if(tab==='trial'){
+      const c=trialCfg();
+      const setup=`<section class="card"><div class="card__h"><h2>Подключение к ботам</h2></div>
+        <p style="color:var(--muted);margin-bottom:12px">Заявки из Telegram- и MAX-бота хранит сам бот. Укажите адрес его сервера и ключ из файла <code>config.json</code> (раздел <code>crm</code>). Они сохранятся только в этом браузере.</p>
+        <div class="fgrid"><label class="field"><span>Адрес сервера заявок</span><input class="input" id="tUrl" placeholder="http://localhost:8787" value="${esc(c.url||'')}"></label>
+        <label class="field"><span>Ключ доступа</span><input class="input" id="tKey" type="password" autocomplete="off" value="${esc(c.key||'')}"></label></div>
+        ${trialErr?`<p class="err" style="margin-top:8px">${esc(trialErr)}</p>`:''}
+        <div class="row" style="margin-top:10px"><button class="btn btn--xs" id="tSave">Сохранить и загрузить</button></div></section>`;
+      const items=TRIALS.slice().sort((a,b)=>((a.status||'new')==='new'?0:1)-((b.status||'new')==='new'?0:1)||String(b.time).localeCompare(String(a.time))).map(x=>{
+        const st=TRIAL_ST[x.status||'new']||TRIAL_ST.new, tel=String(x.phone||'').replace(/[^\d+]/g,'');
+        const kid=[x.child_name,x.age?x.age+' лет':''].filter(Boolean).join(', ');
+        return `<div class="item"><span style="font-size:22px">${String(x.source||'').startsWith('MAX')?'🟣':'✈️'}</span><div class="item__main">
+          <b>${esc(x.parent_name||x.messenger_name||'Без имени')}${kid?' · '+esc(kid):''}</b>
+          <small><a href="tel:${esc(tel)}">${esc((x.phones&&x.phones.join(', '))||x.phone||'')}</a>${x.phone_verified?' ✔︎':''} · ${esc(x.source||'')}${x.messenger_username?' · @'+esc(x.messenger_username):''} · ${x.time?ago(x.time):''}</small>
+          ${x.text?`<small style="color:var(--text);white-space:pre-wrap">«${esc(x.text)}»</small>`:''}${x.note?`<small>Заметка: ${esc(x.note)}</small>`:''}</div>
+          <span class="pill ${st[1]}">${st[0]}</span>
+          ${(x.status||'new')==='new'?`<button class="btn btn--xs" data-trial="${esc(x.id)}" data-to="contacted">Связались</button>`:''}
+          ${['new','contacted'].includes(x.status||'new')?`<button class="btn btn--ok btn--xs" data-trial="${esc(x.id)}" data-to="booked">Записан на урок</button><button class="btn btn--ghost btn--xs" data-trial="${esc(x.id)}" data-to="refused">Отказ</button>`:''}</div>`}).join('');
+      html=(!c.url||!c.key||trialErr?setup:'')+(items||(trialLoaded&&!trialErr&&c.key?'<p class="empty">Заявок из ботов пока нет</p>':''))+(c.url&&c.key&&!trialErr?`<p style="text-align:right"><button class="link" id="tSetup">Настройки подключения</button></p>`:'');
+      $('#rList').innerHTML=html;
+      const sv=$('#tSave');if(sv)sv.onclick=async()=>{try{localStorage.setItem(TRIAL_KEY,JSON.stringify({url:$('#tUrl').value.trim(),key:$('#tKey').value.trim()}))}catch(e){}
+        sv.disabled=true;await loadTrials(false);sv.disabled=false;toast(trialErr||`Загружено заявок: ${TRIALS.length}`);draw();renderNav('requests')};
+      const su=$('#tSetup');if(su)su.onclick=()=>{trialErr=' ';draw();trialErr=''};
+      return;
+    }
     if(tab==='abs')html=D.absences.slice().sort((a,b)=>(a.status==='new'?0:1)-(b.status==='new'?0:1)).map(a=>{const s=student(a.sid),c=client(s.fid);
       return `<div class="item"><div class="item__main"><b>${esc(s.name)} не сможет прийти · ${dtt(a.date)}</b><small>${esc(c.parent)} · ${esc(groupOf(s.group).name)} · ${ago(a.created)}</small>
         <small style="color:var(--text)">${esc(a.reason)}${a.comment?': '+esc(a.comment):''}${a.makeup?' · <b>просят отработку</b>':''}</small></div>
@@ -703,8 +744,14 @@ requests(){
     $('#rList').innerHTML=html||'<p class="empty">Заявок нет</p>';
   };
   $$('#rTabs button').forEach(b=>b.onclick=()=>{tab=b.dataset.t;$$('#rTabs button').forEach(x=>x.setAttribute('aria-pressed',x===b));draw()});
-  $('#rList').onclick=e=>{
+  window.__drawTrials=()=>{if(tab==='trial')draw()};
+  $('#rList').onclick=async e=>{
     const b=e.target.closest('button');if(!b)return;
+    if(b.dataset.trial){b.disabled=true;
+      try{const r=await trialApi('/'+encodeURIComponent(b.dataset.trial),{status:b.dataset.to});const i=TRIALS.findIndex(x=>x.id===r.lead.id);if(i>=0)TRIALS[i]=r.lead;
+        log(`Пробный урок: ${r.lead.parent_name||'заявка'} — ${TRIAL_ST[r.lead.status][0].toLowerCase()}`);toast(TRIAL_ST[r.lead.status][0]);save()}
+      catch(err){toast(err.message);b.disabled=false}
+      renderNav('requests');draw();return}
     if(b.dataset.abs){const a=D.absences.find(x=>x.id===b.dataset.abs),s=student(a.sid);a.status=b.dataset.to;
       log(b.dataset.to==='makeup'?`Назначена отработка: ${s.name} (пропуск ${dt(a.date)})`:`Пропуск принят: ${s.name}, ${dt(a.date)}`);
       toast(b.dataset.to==='makeup'?'Отработка назначена — семья увидит это в кабинете':'Отмечено');}
@@ -950,6 +997,8 @@ $('#resetDemo').onclick=()=>{D=seed();save();toast('Демо-данные сбр
 $('#dlg').addEventListener('click',e=>{if(e.target===e.currentTarget)e.currentTarget.close()});
 window.addEventListener('hashchange',route);
 route();
+/* заявки из ботов: сразу и каждые 30 секунд */
+loadTrials(true);setInterval(()=>{if(!document.hidden)loadTrials(true)},30000);
 </script>
 <script>
 /* ночной режим админки: выбор запоминается в этом браузере */

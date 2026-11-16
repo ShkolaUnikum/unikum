@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Путь к 100 баллам по информатике — гайд «Уникума»</title>
+<meta name="description" content="Гайд для родителей детей 7–14 лет: как без зубрёжки и репетиторов подойти к ЕГЭ по информатике и олимпиадам, которые открывают дорогу в сильные IT-вузы.">
+<meta property="og:title" content="Путь к 100 баллам по информатике — гайд для родителей">
+<meta property="og:description" content="Что делать в 7, 10 и 13 лет, чтобы к выпускному информатика была сильной стороной, а не стрессом.">
+<meta property="og:image" content="img/hero-kids.webp">
+<meta name="theme-color" content="#2A0A73">
+<script>try{if(localStorage.getItem('unikum-theme')!=='light')document.documentElement.dataset.theme='dark'}catch(e){document.documentElement.dataset.theme='dark'}</script>
+<link rel="icon" type="image/png" href="img/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Tektur:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F3ECFC; --card:#FFFFFF; --card2:#F8F3FF; --text:#1F0B42; --muted:#56407F; --line:rgba(91,26,181,.14);
+  --accent:#5B1AB5; --pink:#D9389C; --yellow:#FFDE3B; --mint:#0E7A5A; --head:#2A0A73;
+  --display:"Tektur",system-ui,sans-serif; --body:"Golos Text",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --shadow:0 30px 60px -40px rgba(30,8,80,.45);
+}
+html[data-theme="dark"]{
+  --bg:#0C0A2A; --card:rgba(255,255,255,.05); --card2:rgba(255,255,255,.07); --text:#ECE6FF; --muted:#BDB2E2; --line:rgba(255,255,255,.12);
+  --accent:#C9B2FF; --pink:#FF77B6; --mint:#72E6C3; --head:#FFFFFF; --shadow:0 30px 60px -36px rgba(0,0,0,.8); color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font:400 17px/1.7 var(--body);-webkit-font-smoothing:antialiased}
+html[data-theme="dark"] body{background:radial-gradient(1200px 600px at 85% -10%,rgba(123,63,255,.3),transparent 60%),radial-gradient(900px 500px at -10% 20%,rgba(255,95,168,.14),transparent 60%),var(--bg) fixed}
+a{color:var(--accent)}
+img{max-width:100%;display:block}
+.wrap{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
+.top{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:20px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo img{height:38px;width:auto}.logo .w{height:22px}
+.top a.cta{font:700 13px/1 var(--display);text-transform:uppercase;letter-spacing:.05em;text-decoration:none;color:#fff;padding:12px 16px;border-radius:12px;background:linear-gradient(135deg,#FF72B3,#FF3D94 50%,#C82A92);white-space:nowrap}
+
+/* обложка */
+.hero{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:36px;align-items:center;padding-block:28px 40px}
+.kicker{display:inline-flex;gap:8px;align-items:center;font:700 12px/1 var(--display);letter-spacing:.12em;text-transform:uppercase;color:var(--pink);margin:0 0 16px}
+h1{font:800 clamp(32px,5vw,56px)/1.04 var(--display);color:var(--head);margin:0 0 18px;text-transform:uppercase;text-wrap:balance}
+h1 em{font-style:normal;color:var(--pink)}
+.lead{font-size:clamp(17px,1.6vw,20px);color:var(--muted);max-width:52ch;margin:0 0 22px}
+.meta{display:flex;flex-wrap:wrap;gap:8px}
+.meta span{font-size:14px;padding:7px 12px;border-radius:999px;background:var(--card2);border:1px solid var(--line)}
+.hero__pic{border-radius:24px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--line);aspect-ratio:1078/976;max-width:100%}
+.hero__pic img{width:100%;height:100%;object-fit:cover}
+
+/* раскладка с оглавлением */
+.layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:40px;align-items:start;padding-bottom:70px}
+.toc{position:sticky;top:20px;font-size:14px;padding:18px;border-radius:18px;background:var(--card);border:1px solid var(--line)}
+.toc b{display:block;font:700 12px/1 var(--display);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.toc ol{margin:0;padding-left:1.2em;display:grid;gap:6px}
+.toc a{color:var(--text);text-decoration:none}.toc a:hover{color:var(--pink)}
+article{min-width:0}
+section.ch{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:clamp(22px,4vw,44px);box-shadow:var(--shadow);margin-bottom:22px;scroll-margin-top:16px}
+.num{font:800 13px/1 var(--display);letter-spacing:.12em;color:var(--pink);text-transform:uppercase}
+h2{font:800 clamp(24px,3vw,34px)/1.12 var(--display);color:var(--head);margin:8px 0 16px;text-wrap:balance}
+h3{font:700 19px/1.3 var(--display);color:var(--head);margin:24px 0 8px}
+p{margin:0 0 14px;max-width:70ch}
+ul,ol{margin:0 0 14px;padding-left:1.25em;max-width:70ch}
+li{margin:5px 0}
+.note{border-left:4px solid var(--pink);background:var(--card2);border-radius:0 14px 14px 0;padding:14px 18px;margin:18px 0}
+.note b{color:var(--head)}
+.facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:18px 0}
+.fact{padding:16px;border-radius:16px;background:var(--card2);border:1px solid var(--line)}
+.fact b{display:block;font:800 26px/1.1 var(--display);color:var(--accent)}
+.fact span{font-size:14px;color:var(--muted);line-height:1.4;display:block;margin-top:4px}
+.ages{display:grid;gap:14px;margin-top:10px}
+.age{display:grid;grid-template-columns:120px minmax(0,1fr);gap:18px;padding:18px;border-radius:18px;background:var(--card2);border:1px solid var(--line)}
+.age__tag{font:800 22px/1.1 var(--display);color:var(--head)}
+.age__tag small{display:block;font:600 13px/1.3 var(--body);color:var(--pink);margin-top:6px;text-transform:none}
+.age p:last-child,.age ul:last-child{margin-bottom:0}
+.tools{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 10px}
+.tools span{font-size:13px;padding:4px 10px;border-radius:999px;border:1px solid var(--line);background:var(--card)}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:16px 0}
+.box{padding:18px;border-radius:18px;background:var(--card2);border:1px solid var(--line)}
+.box h3{margin-top:0}
+.box--good{border-color:rgba(47,199,154,.45)}
+.check{list-style:none;padding:0}
+.check li{padding-left:30px;position:relative}
+.check li::before{content:"✓";position:absolute;left:0;top:0;width:22px;height:22px;border-radius:7px;display:grid;place-items:center;font-size:13px;font-weight:700;background:rgba(47,199,154,.18);color:var(--mint)}
+.faq details{border-top:1px solid var(--line);padding:14px 0}
+.faq details:first-child{border-top:0}
+.faq summary{cursor:pointer;font-weight:700;color:var(--head);list-style:none;display:flex;justify-content:space-between;gap:12px}
+.faq summary::after{content:"+";font:800 20px/1 var(--display);color:var(--pink)}
+.faq details[open] summary::after{content:"−"}
+.faq details p{margin:10px 0 0}
+.final{text-align:center;background:linear-gradient(135deg,#5B1AB5,#2A0A73);color:#fff;border:0}
+.final h2{color:#fff}.final p{margin-inline:auto;color:#E3D9FF}
+.btn{display:inline-flex;align-items:center;gap:10px;font:700 15px/1 var(--display);text-transform:uppercase;letter-spacing:.04em;text-decoration:none;color:#fff;padding:16px 22px;border-radius:14px;background:linear-gradient(135deg,#FF72B3,#FF3D94 50%,#C82A92);box-shadow:0 14px 26px -12px rgba(255,79,158,.8)}
+.small{font-size:14px;color:var(--muted)}
+footer{padding-block:0 40px;font-size:13px;color:var(--muted)}
+@media (max-width:980px){.layout{grid-template-columns:1fr}.toc{position:static}.facts{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){.hero{grid-template-columns:1fr}.hero__pic{order:-1}.two{grid-template-columns:1fr}.age{grid-template-columns:1fr;gap:6px}.top a.cta{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="logo" href="index.html" aria-label="Уникум — на главную"><img src="img/logo-brain.png" width="320" height="263" alt=""><img class="w" src="img/logo-word.png" width="520" height="89" alt="Уникум"></a>
+    <a class="cta" href="index.html#trial">Записаться на пробный урок</a>
+  </header>
+
+  <section class="hero">
+    <div>
+      <p class="kicker">🎁 Подарок от школы «Уникум»</p>
+      <h1>Путь к <em>100 баллам</em> по информатике</h1>
+      <p class="lead">Гайд для родителей детей 7–14 лет: что делать уже сейчас, чтобы к выпускному информатика стала сильной стороной ребёнка, а не источником стресса — и как работает поступление в вуз без экзаменов по олимпиадам.</p>
+      <div class="meta"><span>⏱ 12 минут чтения</span><span>👨‍👩‍👧 для родителей</span><span>🧭 по возрастам</span></div>
+    </div>
+    <div class="hero__pic"><img src="img/hero-kids.webp" width="1078" height="976" alt="Дети программируют на ноутбуках"></div>
+  </section>
+
+  <div class="layout">
+    <nav class="toc" aria-label="Содержание">
+      <b>Содержание</b>
+      <ol>
+        <li><a href="#why">Зачем думать об этом сейчас</a></li>
+        <li><a href="#ege">Каким стал ЕГЭ по информатике</a></li>
+        <li><a href="#games">Игры: запрещать или использовать</a></li>
+        <li><a href="#ages">План по возрастам</a></li>
+        <li><a href="#olymp">Поступление без экзаменов</a></li>
+        <li><a href="#home">Что делать дома</a></li>
+        <li><a href="#faq">Частые сомнения</a></li>
+        <li><a href="#next">Перед пробным уроком</a></li>
+      </ol>
+    </nav>
+
+    <article>
+      <section class="ch" id="why">
+        <span class="num">Глава 1</span>
+        <h2>Зачем думать об экзамене, если ребёнку 8 лет</h2>
+        <p>Высокий балл по информатике почти никогда не получается «за последний год с репетитором». Он складывается из привычки думать по шагам, уверенно владеть компьютером и не бояться ошибок в коде. Эти привычки формируются годами — и легче всего в возрасте, когда учёба ещё воспринимается как игра.</p>
+        <p>Хорошая новость: для этого не нужно садиться за учебники ЕГЭ в начальной школе. Нужно, чтобы ребёнок регулярно <b>создавал</b> что-то на компьютере — игры, анимации, сайты, ботов — и постепенно переходил от цветных блоков к настоящему коду.</p>
+        <div class="note"><b>Главная мысль гайда.</b> Сотку на ЕГЭ и олимпиадные дипломы получают не «гении», а дети, которые к старшим классам уже несколько лет программируют в удовольствие. Начать можно в любом возрасте от 7 лет — чем раньше, тем спокойнее будет 11 класс.</div>
+      </section>
+
+      <section class="ch" id="ege">
+        <span class="num">Глава 2</span>
+        <h2>Каким стал ЕГЭ по информатике</h2>
+        <p>Многие родители помнят экзамен по бумажным бланкам. Сейчас он другой: с 2021 года ЕГЭ по информатике сдают <b>на компьютере</b>, и большую часть задач удобнее и быстрее решать, написав небольшую программу.</p>
+        <div class="facts">
+          <div class="fact"><b>27</b><span>заданий в варианте</span></div>
+          <div class="fact"><b>3 ч 55 мин</b><span>на весь экзамен</span></div>
+          <div class="fact"><b>💻</b><span>сдаётся на компьютере, можно писать код</span></div>
+          <div class="fact"><b>Python</b><span>самый популярный язык на экзамене</span></div>
+        </div>
+        <p>Что это значит для родителей:</p>
+        <ul>
+          <li><b>Знать теорию мало.</b> Нужно уметь быстро превратить условие задачи в работающий код и проверить его.</li>
+          <li><b>Решает практика.</b> Ребёнок, который несколько лет писал свои программы, видит в задаче знакомые циклы, условия и переменные — и не паникует.</li>
+          <li><b>Самый частый провал</b> — нехватка времени. Её не исправить за пару месяцев: скорость приходит только с опытом.</li>
+        </ul>
+        <p class="small">Точный формат каждый год публикует ФИПИ в демоверсии экзамена — её стоит посмотреть вместе с подростком в 9–10 классе.</p>
+      </section>
+
+      <section class="ch" id="games">
+        <span class="num">Глава 3</span>
+        <h2>«Он только играет». Запрещать или использовать?</h2>
+        <p>Запреты обычно работают плохо: интерес к играм никуда не исчезает, а отношения с ребёнком портятся. Мы предлагаем другой подход — <b>сменить роль</b>: из игрока сделать создателя.</p>
+        <div class="two">
+          <div class="box"><h3>Ребёнок-игрок</h3><ul><li>получает удовольствие без усилий</li><li>проходит чужие уровни</li><li>злится, когда что-то не получается</li></ul></div>
+          <div class="box box--good"><h3>Ребёнок-создатель</h3><ul><li>придумывает правила и механику</li><li>пишет код, ищет и исправляет ошибки</li><li>гордится результатом и показывает его другим</li></ul></div>
+        </div>
+        <p>На уроках «Уникума» это выглядит так: любитель Minecraft программирует черепашку, которая строит за него дом; фанат Roblox собирает свой уровень в Roblox Studio и пишет скрипты на Lua. Любимый мир остаётся тем же — но голова работает совсем по-другому.</p>
+      </section>
+
+      <section class="ch" id="ages">
+        <span class="num">Глава 4</span>
+        <h2>План по возрастам</h2>
+        <p>Найдите возраст ребёнка — и посмотрите, на что обратить внимание прямо сейчас. Возраст ориентировочный: курс подбираем по итогам пробного урока.</p>
+        <div class="ages">
+          <div class="age">
+            <div class="age__tag">7–9 лет<small>Курс Junior</small></div>
+            <div>
+              <p><b>Задача — полюбить компьютер как инструмент и научиться думать по шагам.</b> Текстовый код пока рано: работаем с блоками, как с конструктором.</p>
+              <div class="tools"><span>ScratchJr</span><span>Scratch</span><span>Minecraft</span><span>Tinkercad</span><span>Kodu Game Lab</span></div>
+              <p>Что закладывается: последовательность действий, циклы и условия, система координат, уверенная работа с мышью и клавиатурой. Ровно эти понятия потом встречаются в задачах ЕГЭ.</p>
+            </div>
+          </div>
+          <div class="age">
+            <div class="age__tag">10–12 лет<small>Курсы Junior → Middle</small></div>
+            <div>
+              <p><b>Задача — перейти от блоков к настоящему коду и сделать первые серьёзные проекты.</b> Это самый важный возраст: здесь интерес к технике либо закрепляется, либо гаснет.</p>
+              <div class="tools"><span>Stencyl</span><span>App Inventor</span><span>Roblox Studio (Lua)</span><span>JavaScript</span><span>Blender</span></div>
+              <p>Что закладывается: переменные, функции, отладка, умение разбить большую задачу на части. Появляется портфолио — игры, приложения, 3D-модели, которые не стыдно показать друзьям.</p>
+            </div>
+          </div>
+          <div class="age">
+            <div class="age__tag">13–14 лет<small>Курсы Middle → High</small></div>
+            <div>
+              <p><b>Задача — взрослые инструменты и выбор направления.</b> Подросток пробует разное и понимает, что ему ближе: игры, веб, данные, приложения.</p>
+              <div class="tools"><span>Python</span><span>Unity (C#)</span><span>Unreal Engine</span><span>HTML · CSS · JS</span><span>Java · Android</span></div>
+              <p>Что закладывается: Python — основной язык для ЕГЭ и многих олимпиад; первые задачи олимпиадного типа; привычка доводить проект до конца. К 9 классу ОГЭ по информатике перестаёт быть проблемой.</p>
+            </div>
+          </div>
+          <div class="age">
+            <div class="age__tag">15–16 лет<small>Подготовка к экзаменам</small></div>
+            <div>
+              <p><b>Задача — довести навыки до скорости.</b> Разбор демоверсий ФИПИ, тренировка по типам задач, участие в олимпиадах. Тем, кто программирует несколько лет, этот этап даётся заметно легче — экзамен становится ещё одним набором задач.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="ch" id="olymp">
+        <span class="num">Глава 5</span>
+        <h2>Как поступить в вуз без экзаменов — честно</h2>
+        <p>Кроме ЕГЭ есть второй путь в сильные вузы — <b>олимпиады</b>. О нём часто говорят «поступить без экзаменов», и это правда, но с важными деталями.</p>
+        <h3>Что дают олимпиады</h3>
+        <ul>
+          <li><b>Всероссийская олимпиада школьников (ВсОШ).</b> Победители и призёры заключительного этапа поступают <b>без вступительных испытаний (БВИ)</b> на направления, соответствующие профилю олимпиады.</li>
+          <li><b>Олимпиады из перечня Минобрнауки (РСОШ)</b> — например, «Высшая проба», НТО, «Ломоносов», Открытая олимпиада школьников по программированию. Вуз сам решает, какую льготу дать их победителям и призёрам: зачисление без экзаменов или 100 баллов по профильному предмету.</li>
+          <li><b>Подтверждение ЕГЭ.</b> Чтобы воспользоваться льготой по перечневой олимпиаде, обычно нужно сдать профильный ЕГЭ не ниже порога, который устанавливает вуз (как правило, от 75 баллов). Так что ЕГЭ всё равно важен.</li>
+        </ul>
+        <div class="note"><b>Важно.</b> Перечень олимпиад и правила приёма обновляются каждый год, а каждый вуз публикует свои условия. Проверяйте их на сайте вуза и в перечне олимпиад на сайте РСОШ, когда ребёнку будет 13–14 лет.</div>
+        <h3>Почему начинать стоит в 7–14 лет</h3>
+        <p>Олимпиадное программирование — это навык вроде спорта или музыки: результат даёт регулярная тренировка в течение нескольких лет. Ребёнок, который в начальной школе научился мыслить алгоритмами, а к 12–13 годам пишет на Python, к старшим классам приходит к олимпиадам подготовленным — а не начинает с нуля в 10 классе.</p>
+        <p>В «Уникуме» мы помогаем с этим: даём мини-задачи олимпиадного типа, проводим мастер-классы и подсказываем, когда и на какие олимпиады зарегистрироваться. Гарантировать диплом не может никто — но дать ребёнку базу и привычку решать сложное можем.</p>
+      </section>
+
+      <section class="ch" id="home">
+        <span class="num">Глава 6</span>
+        <h2>Что делать дома — без нагрузки и скандалов</h2>
+        <ul class="check">
+          <li><b>Спрашивайте «что ты сегодня создал?»</b> вместо «что тебе задали?». Попросите показать проект — дети расцветают, когда их работа кому-то интересна.</li>
+          <li><b>Хвалите за упорство, а не за «талант».</b> «Ты долго искал ошибку и нашёл — круто» работает лучше, чем «ты у меня гений».</li>
+          <li><b>Договоритесь о балансе</b>: часть экранного времени — на игры, часть — на создание своих проектов.</li>
+          <li><b>Поддержите английский.</b> Команды в коде — английские слова, и они запоминаются сами, если ребёнок регулярно программирует.</li>
+          <li><b>Не торопите с выбором профессии.</b> До 14 лет важнее попробовать разное: игры, сайты, 3D, ботов.</li>
+        </ul>
+      </section>
+
+      <section class="ch faq" id="faq">
+        <span class="num">Глава 7</span>
+        <h2>Частые сомнения родителей</h2>
+        <details><summary>«Мой ребёнок — гуманитарий»</summary><p>В 7–12 лет склонности только формируются. Программирование — это ещё и творчество: сюжет игры, персонажи, дизайн уровня. Многие «гуманитарии» загораются, когда видят, что код оживляет их идеи.</p></details>
+        <details><summary>«У него и так большая нагрузка в школе»</summary><p>Урок в мини-группе — это смена деятельности, а не ещё одна контрольная. Здесь нет оценок и двоек, а результат каждого занятия — работающий проект, которым хочется похвастаться.</p></details>
+        <details><summary>«А если ему станет неинтересно?»</summary><p>Поэтому в курсах «Уникума» каждый модуль — новая среда: от Scratch и Minecraft до Unity и Python. Ребёнок не застревает в одном инструменте и пробует разные направления.</p></details>
+        <details><summary>«С какого возраста начинать?»</summary><p>С 7 лет. Младшим подходят визуальные среды, где программа собирается из блоков. Если ребёнку 12–14 и он раньше не программировал — это не поздно: курс подберём по уровню на пробном уроке.</p></details>
+      </section>
+
+      <section class="ch" id="next">
+        <span class="num">Глава 8</span>
+        <h2>Перед пробным уроком</h2>
+        <p>Вы уже оставили заявку — спасибо! В ближайшее время вам позвонит менеджер: уточнит, чем увлекается ребёнок, и предложит удобное время урока. Пожалуйста, держите телефон рядом — вечерние и выходные слоты разбирают быстрее всего.</p>
+        <h3>Что подготовить</h3>
+        <ul class="check">
+          <li><b>Компьютер или ноутбук.</b> На планшете и телефоне создавать программы неудобно.</li>
+          <li><b>Мышку.</b> С тачпадом ребёнку сложнее, а с мышкой всё получается быстрее.</li>
+          <li><b>Наушники с микрофоном</b> — чтобы хорошо слышать преподавателя и задавать вопросы.</li>
+          <li><b>5 минут вашего внимания в начале и в конце.</b> Помогите открыть ссылку на урок, а в финале загляните — ребёнок покажет свой первый проект.</li>
+        </ul>
+        <h3>Что сказать ребёнку</h3>
+        <p>Не «завтра у тебя урок, будь внимателен», а что-нибудь вроде: «Я нашла занятие, где за урок делают свою игру. Хочешь посмотреть, что у тебя получится?». Любопытство работает лучше обязательств.</p>
+      </section>
+
+      <section class="ch final">
+        <h2>До встречи на пробном уроке!</h2>
+        <p>Если заявка ещё не оставлена или хотите выбрать другое время — запишитесь на сайте или напишите нашему боту в Telegram.</p>
+        <p><a class="btn" href="index.html#trial">Записаться на пробный урок ↗</a></p>
+        <p class="small" style="color:#C9B9F5;margin-top:14px">Команда онлайн-школы программирования «Уникум»</p>
+      </section>
+    </article>
+  </div>
+
+  <footer>
+    <p>© Онлайн-школа программирования «Уникум» · ООО «Точка Роста», ИНН 7838092605 · <a href="politika.html">Политика конфиденциальности</a></p>
+    <p>Сведения об экзаменах и олимпиадах приведены для ориентира. Актуальные правила публикуют ФИПИ, Минобрнауки и приёмные комиссии вузов.</p>
+  </footer>
+</div>
+</body>
+</html>
