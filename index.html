@@ -12,7 +12,7 @@
 <script>try{var n=navigator,c=n.connection;if((n.hardwareConcurrency&&n.hardwareConcurrency<=4)||(n.deviceMemory&&n.deviceMemory<=4)||(c&&c.saveData))document.documentElement.classList.add('perf-lite')}catch(e){}</script>
 <script>try{if(localStorage.getItem('unikum-theme')!=='light')document.documentElement.dataset.theme='dark'}catch(e){document.documentElement.dataset.theme='dark'}</script>
 <link rel="icon" type="image/png" href="img/favicon.png">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"EducationalOrganization","name":"Уникум","legalName":"ООО «Точка Роста»","email":"Sk.Unikum@yandex.com","taxID":"7838092605","identifier":"ОГРН 1207800098593","address":{"@type":"PostalAddress","postalCode":"190031","addressLocality":"Санкт-Петербург","streetAddress":"Московский пр-кт, д. 2/6, литер А, пом. 2-Н/100","addressCountry":"RU"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"EducationalOrganization","name":"Уникум","legalName":"ООО «Точка Роста»","hasCredential":{"@type":"EducationalOccupationalCredential","credentialCategory":"Лицензия на образовательную деятельность","identifier":"Л035-01271-78/01652586","dateCreated":"2024-12-20","recognizedBy":{"@type":"GovernmentOrganization","name":"Комитет по образованию Санкт-Петербурга"}},"email":"Sk.Unikum@yandex.com","taxID":"7838092605","identifier":"ОГРН 1207800098593","address":{"@type":"PostalAddress","postalCode":"190031","addressLocality":"Санкт-Петербург","streetAddress":"Московский пр-кт, д. 2/6, литер А, пом. 2-Н/100","addressCountry":"RU"}}</script>
 <link rel="apple-touch-icon" href="img/logo-brain-lg.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1205,6 +1205,20 @@ dialog#docWin{max-width:min(860px,calc(100% - 24px))}
 #docWin .doc-body{padding:0}
 #docWin iframe{display:block;width:100%;height:min(78vh,820px);border:0;background:transparent}
 @media (max-width:600px){#docWin iframe{height:80vh}}
+
+/* окно лицензии: реквизиты, страницы выписки, ссылки */
+#license .lic-body{display:grid;gap:14px}
+#license .lic-head{display:grid;gap:4px;font-size:14px;line-height:1.45}
+#license .lic-head b{font-size:16px}
+#license .lic-head span{opacity:.85}
+#license .lic-pages{display:grid;gap:10px;max-height:min(56vh,560px);overflow:auto;border-radius:14px;padding:8px;background:rgba(255,255,255,.08)}
+#license .lic-pages img{width:100%;height:auto;border-radius:8px;background:#fff}
+#license .lic-act{display:flex;flex-wrap:wrap;gap:10px}
+#license .lic-note{margin:0;font-size:12.5px;opacity:.75}
+dialog#license{max-width:min(760px,calc(100% - 24px))}
+
+/* сертификат — вторая плашка под «Юникоинами» */
+.coins + .coins{margin-top:14px}
 </style>
 </head>
 <body>
@@ -1426,18 +1440,21 @@ dialog#docWin{max-width:min(860px,calc(100% - 24px))}
       <span data-pix="coin"></span>
       <p><b>Юникоины за успехи.</b> За домашние задания и проекты ученики получают внутреннюю валюту и <strong class="hl">обменивают её на призы</strong>.</p>
     </div>
+    <div class="coins coins--cert reveal">
+      <span data-pix="star"></span>
+      <p><b>Сертификат об окончании обучения.</b> По итогам курса ребёнок получает сертификат школы «Уникум» — организации с лицензией на образовательную деятельность. Сведения о сертификате вносятся в федеральный реестр документов об образовании (ФИС ФРДО), поэтому он <strong class="hl">отображается в личном кабинете на Госуслугах</strong>.</p>
+    </div>
   </div>
 </section>
 
 <!-- ===================== ЛИЦЕНЗИЯ ===================== -->
 <section class="sec" id="license-block">
   <div class="wrap">
-    <!-- ЗАМЕНИТЕ номер лицензии или удалите блок, если лицензии нет -->
     <div class="license reveal">
       <span data-pix="shield"></span>
       <div>
         <h3>Образовательная лицензия</h3>
-        <p>№ 00000-00-00/0000000 — обучение по нормам законодательства РФ</p>
+        <p>№&nbsp;Л035-01271-78/01652586 от&nbsp;20.12.2024 · выдана Комитетом по образованию Санкт&#8209;Петербурга · дополнительное образование детей и взрослых</p>
       </div>
       <button class="btn btn--sm" data-open="license">Посмотреть</button>
     </div>
@@ -1503,6 +1520,7 @@ dialog#docWin{max-width:min(860px,calc(100% - 24px))}
         <a class="logo" href="#top" aria-label="Уникум — наверх"><img class="logo__brain" src="img/logo-brain.png" width="320" height="263" alt="" loading="lazy"><img class="logo__word" src="img/logo-word.png" width="520" height="89" alt="Уникум" loading="lazy"></a>
         <small>ООО «Точка Роста»</small>
         <small>ИНН 7838092605 · КПП 783801001<br>ОГРН 1207800098593</small>
+        <small>Лицензия на образовательную деятельность № Л035-01271-78/01652586 от 20.12.2024</small>
         <small>Юридический адрес: 190031, г.&nbsp;Санкт&#8209;Петербург, Московский пр-кт, д.&nbsp;2/6, литер&nbsp;А, пом.&nbsp;2-Н/100</small>
       </div>
       <div class="fcol"><h4>Контакты <span>01</span></h4>
@@ -1588,9 +1606,23 @@ dialog#docWin{max-width:min(860px,calc(100% - 24px))}
 <!-- ===================== МОДАЛКА: ЛИЦЕНЗИЯ ===================== -->
 <dialog id="license" aria-label="Лицензия">
   <div class="win">
-    <div class="win__bar"><span class="dots"><i></i><i></i><i></i></span>license.pdf</div>
+    <div class="win__bar"><span class="dots"><i></i><i></i><i></i></span>licenziya.pdf</div>
     <button class="x" data-close aria-label="Закрыть">✕</button>
-    <div class="win__body"><div class="lic-doc">Вставьте сюда изображение лицензии:<br>&lt;img src="license.jpg" alt="Лицензия"&gt;</div></div>
+    <div class="win__body lic-body">
+      <div class="lic-head">
+        <b>Лицензия на образовательную деятельность</b>
+        <span>№&nbsp;Л035-01271-78/01652586 от&nbsp;20.12.2024 · статус: действует</span>
+        <span>Выдана Комитетом по образованию Санкт&#8209;Петербурга (приказ №&nbsp;913-п от&nbsp;20.12.2024) ООО «Точка Роста», ИНН&nbsp;7838092605</span>
+        <span>Виды: дополнительное образование детей и взрослых; профессиональное обучение</span>
+      </div>
+      <div class="lic-pages">
+        <img src="img/license/licenziya-1.webp" width="1431" height="1871" alt="Выписка из реестра лицензий, страница 1" loading="lazy">
+        <img src="img/license/licenziya-2.webp" width="1440" height="1561" alt="Выписка из реестра лицензий, страница 2" loading="lazy">
+      </div>
+      <div class="lic-act">
+        <a class="btn btn--sm" href="docs/licenziya-L035-01271-78-01652586.pdf" target="_blank" rel="noopener">Открыть PDF</a>
+      </div>
+    </div>
   </div>
 </dialog>
 

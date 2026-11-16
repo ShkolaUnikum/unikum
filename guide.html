@@ -9,6 +9,7 @@
 <meta property="og:description" content="Что делать в 7, 10 и 13 лет, чтобы к выпускному информатика была сильной стороной, а не стрессом.">
 <meta property="og:image" content="img/hero-kids.webp">
 <meta name="theme-color" content="#2A0A73">
+<script>addEventListener('beforeprint',()=>document.querySelectorAll('details').forEach(d=>d.open=true));if(matchMedia('print').matches)addEventListener('DOMContentLoaded',()=>document.querySelectorAll('details').forEach(d=>d.open=true));</script>
 <script>try{if(localStorage.getItem('unikum-theme')!=='light')document.documentElement.dataset.theme='dark'}catch(e){document.documentElement.dataset.theme='dark'}</script>
 <link rel="icon" type="image/png" href="img/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -95,6 +96,34 @@ li{margin:5px 0}
 footer{padding-block:0 40px;font-size:13px;color:var(--muted)}
 @media (max-width:980px){.layout{grid-template-columns:1fr}.toc{position:static}.facts{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:760px){.hero{grid-template-columns:1fr}.hero__pic{order:-1}.two{grid-template-columns:1fr}.age{grid-template-columns:1fr;gap:6px}.top a.cta{display:none}}
+
+/* печать и PDF: светлая тема, одна колонка, главы не рвутся посередине */
+@page{size:A4;margin:14mm 12mm}
+@media print{
+  :root,html[data-theme="dark"]{--bg:#fff;--card:#fff;--card2:#F6F1FF;--text:#1F0B42;--muted:#56407F;--line:rgba(91,26,181,.18);--accent:#5B1AB5;--pink:#C82A82;--mint:#0E7A5A;--head:#2A0A73;--shadow:none;color-scheme:light}
+  html,body,html[data-theme="dark"] body{background:#fff!important}
+  body{font-size:12.5pt;line-height:1.55;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .wrap{max-width:none;padding:0}
+  .top a.cta{display:none}
+  .hero{grid-template-columns:1fr 0.8fr;gap:24px;padding-block:6px 18px}
+  h1{font-size:30pt}
+  .layout{grid-template-columns:1fr;gap:16px;padding-bottom:0}
+  .toc{position:static;break-inside:avoid}
+  section.ch{box-shadow:none;break-inside:auto;margin-bottom:14px;padding:18px 20px}
+  .age,.box,.fact,.note,.faq details,h2,h3{break-inside:avoid}
+  h2,h3{break-after:avoid}
+  .faq details{display:block}.faq details>*{display:block}
+  .faq summary::after,.faq details[open] summary::after{content:none!important}
+  section.ch{break-before:page}
+  section.ch#why,section.ch.final{break-before:auto}
+  .num{display:block;break-after:avoid}
+  .hero{break-after:avoid}
+  .final{margin-bottom:6px}
+  footer{padding:0;font-size:8.5pt;line-height:1.35;break-before:avoid}
+  footer p{margin:0 0 2px}
+  .final{background:linear-gradient(135deg,#5B1AB5,#2A0A73)!important;break-inside:avoid}
+  a{text-decoration:none}
+}
 </style>
 </head>
 <body>
