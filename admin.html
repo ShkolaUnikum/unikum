@@ -302,6 +302,29 @@ dialog:has(.sale-sec){width:min(680px,calc(100% - 24px))}
 .sale-bar span,.sale-bar b{position:relative;z-index:1}
 .sale-bar i{position:absolute;inset:0 auto 0 0;background:rgba(255,95,168,.18)}
 @media (max-width:900px){.kpis[style*="repeat(5"]{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+
+/* новые лиды */
+.nl-item{align-items:center;gap:10px}
+.nl-note{display:block;margin-top:4px;color:var(--text)!important}
+.nl-groups{display:grid;gap:8px}
+.nl-g{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;background:var(--soft);box-shadow:inset 0 0 0 1px var(--line);cursor:pointer}
+.nl-g:has(input:checked){box-shadow:inset 0 0 0 2px var(--accent,#ff5fa8)}
+.nl-g span{display:grid;gap:2px;min-width:0}
+.nl-g small{color:var(--muted);font-size:12.5px}
+.nl-g em{font-style:normal;font-size:12px;color:var(--muted);white-space:nowrap}
+.nl-g--full{opacity:.55}
+@media (max-width:900px){.kpis[style*="repeat(5"]{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+
+/* база учеников */
+.content>*{min-width:0}
+.db-tools{gap:10px;margin-bottom:12px;align-items:center}
+.db-tools .input{flex:1 1 280px;min-width:0}
+.db-count{margin:0 0 8px;color:var(--muted);font-size:13px}
+.db-tbl td small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
+.db-tbl td{vertical-align:top}
+.db-tbl code{font-size:12.5px}
+.db-copy{border:0;background:none;cursor:pointer;padding:2px 4px;font-size:13px;color:var(--muted)}
+.db-copy:hover{color:var(--text)}
 </style>
 </head>
 <body>
@@ -317,6 +340,7 @@ dialog:has(.sale-sec){width:min(680px,calc(100% - 24px))}
   <symbol id="i-cal" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18M7.5 14h3M13.5 14h3M7.5 17.5h3"/></g></symbol>
   <symbol id="i-target" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></g></symbol>
   <symbol id="i-chart" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></g></symbol>
+  <symbol id="i-db" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><ellipse cx="12" cy="5.5" rx="8" ry="3"/><path d="M4 5.5v13c0 1.7 3.6 3 8 3s8-1.3 8-3v-13M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></g></symbol>
   <symbol id="i-log" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></g></symbol>
   <symbol id="i-search" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></g></symbol>
   <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
@@ -372,14 +396,14 @@ const EXTRA={english:'Английский язык',ai:'Нейросети'};
 const ROLES={
   /* Администратор — всё. Преподаватель — группы, расписание и уроки купивших.
      Первая линия — заявки и запись на вводный урок. МВУ — проводит вводные уроки и продаёт. */
-  admin:{t:'Администратор',name:'Администратор',routes:['dash','clients','groups','schedule','requests','intro','sales','homework','payments','integrations','log']},
-  line1:{t:'Первая линия',name:'Ольга (первая линия)',routes:['dash','requests','intro']},
+  admin:{t:'Администратор',name:'Администратор',routes:['dash','clients','db','groups','schedule','requests','newleads','intro','sales','homework','payments','integrations','log']},
+  line1:{t:'Первая линия',name:'Ольга (первая линия)',routes:['dash','requests','newleads','intro']},
   mvu:{t:'МВУ',name:'Анна (МВУ)',routes:['dash','intro','sales']},
   teacher:{t:'Преподаватель',name:'Мария Викторовна',routes:['dash','groups','schedule','homework']}
 };
 const ROUTES=[
-  {id:'dash',t:'Сводка',i:'i-dash'},{id:'clients',t:'Клиенты',i:'i-users'},{id:'groups',t:'Группы и журнал',i:'i-group'},{id:'schedule',t:'Расписание групп',i:'i-cal'},{id:'intro',t:'Вводные уроки',i:'i-target'},{id:'sales',t:'Продажи',i:'i-chart'},
-  {id:'requests',t:'Заявки',i:'i-inbox'},{id:'homework',t:'Проверка заданий',i:'i-hw'},{id:'payments',t:'Рассрочки',i:'i-pay'},
+  {id:'dash',t:'Сводка',i:'i-dash'},{id:'clients',t:'Клиенты',i:'i-users'},{id:'db',t:'База учеников',i:'i-db'},{id:'groups',t:'Группы и журнал',i:'i-group'},{id:'schedule',t:'Расписание групп',i:'i-cal'},{id:'intro',t:'Вводные уроки',i:'i-target'},{id:'sales',t:'Продажи',i:'i-chart'},
+  {id:'requests',t:'Заявки',i:'i-inbox'},{id:'newleads',t:'Новые лиды',i:'i-users'},{id:'homework',t:'Проверка заданий',i:'i-hw'},{id:'payments',t:'Рассрочки',i:'i-pay'},
   {id:'integrations',t:'Битрикс24',i:'i-plug'},{id:'log',t:'Журнал действий',i:'i-log'}
 ];
 
@@ -488,7 +512,8 @@ function log(text,who){D.log.unshift({t:iso(Date.now()),who:who||ROLES[role].nam
 const client=id=>D.clients.find(c=>c.id===id);
 const student=id=>D.students.find(s=>s.id===id);
 const kidsOf=fid=>D.students.filter(s=>s.fid===fid);
-const groupOf=id=>D.groups.find(g=>g.id===id);
+const NO_GROUP={id:'',name:'Без группы',program:'',teacher:'',wd:0,time:'',solo:true};
+const groupOf=id=>D.groups.find(g=>g.id===id)||(id?undefined:NO_GROUP);
 const openUpTo=s=>PAYS[s.payment].full?PLANS[s.plan].n:s.paid;
 function payState(s){
   if(PAYS[s.payment].full)return null;
@@ -536,7 +561,7 @@ const noAccess=()=>D.clients.filter(c=>c.access.status==='none').length;
 
 /* ---------- навигация ---------- */
 function renderNav(cur){
-  const badge={requests:pendingReq(),homework:pendingHw(),payments:overdue(),clients:noAccess()};
+  const badge={newleads:(D.sales||[]).filter(x=>!x.placed).length,requests:pendingReq(),homework:pendingHw(),payments:overdue(),clients:noAccess()};
   $('#nav').innerHTML=ROUTES.filter(r=>ROLES[role].routes.includes(r.id)).map(r=>
     `<a href="#${r.id}" ${r.id===cur?'aria-current="page"':''}>${icon(r.i)}<span>${r.t}</span>${badge[r.id]?`<span class="cnt">${badge[r.id]}</span>`:''}</a>`).join('');
 }
@@ -565,7 +590,8 @@ dash(){
     const contacted=TRIALS.filter(x=>x.status==='contacted'&&!intro.some(l=>l.leadId===x.id)).length;
     const ws=weekStart(now), booked=intro.filter(l=>l.created&&new Date(l.created)>=ws).length;
     return `<div class="vhead"><div><h1>Здравствуйте!</h1><p>${esc(r.t)} · ${now.toLocaleDateString('ru-RU',{weekday:'long',day:'numeric',month:'long'})}</p></div><button class="btn" id="dashBook">＋ Записать на вводный</button></div>
-    <div class="kpis" style="grid-template-columns:repeat(4,minmax(0,1fr))">
+    <div class="kpis" style="grid-template-columns:repeat(5,minmax(0,1fr))">
+      <a class="kpi ${newLeads().length?'kpi--warn':''}" href="#newleads"><b>${newLeads().length}</b><span>купили — записать в группу</span></a>
       <a class="kpi ${trialNew()?'kpi--warn':''}" href="#requests"><b>${trialNew()}</b><span>новых заявок — позвонить</span></a>
       <a class="kpi" href="#requests"><b>${contacted}</b><span>связались, ещё не записаны</span></a>
       <a class="kpi" href="#intro"><b>${today.length}</b><span>вводных сегодня</span></a>
@@ -906,7 +932,7 @@ function openClient(id){
   <div class="drawer__body">
     <section class="card"><div class="card__h"><h2>Личный кабинет</h2>${accessPill(a)}</div>
       ${a.status==='none'?`<p style="color:var(--muted);margin-bottom:12px">У семьи ещё нет логина. Создайте доступ — система придумает логин и пароль и отправит их клиенту.</p>${canEdit?'<button class="btn" id="aCreate">Создать доступ</button>':''}`
-      :`<div class="access"><span>Логин <code>${esc(a.login)}</code></span><span style="color:var(--muted);font-size:12px">${a.status==='active'?'последний вход '+ago(a.last):a.status==='blocked'?'вход запрещён':'выдан '+ago(a.issued)+', ещё не входили'}</span></div>
+      :`<div class="access"><span>Логин <code>${esc(a.login)}</code>${a.pass&&role==='admin'?` · пароль <code>${esc(a.pass)}</code>`:''}</span><span style="color:var(--muted);font-size:12px">${a.status==='active'?'последний вход '+ago(a.last):a.status==='blocked'?'вход запрещён':'выдан '+ago(a.issued)+', ещё не входили'}</span></div>
         ${canEdit?`<div class="row" style="margin-top:12px"><button class="btn btn--ghost btn--xs" id="aReset">Сбросить пароль</button>${a.status==='blocked'?'<button class="btn btn--ghost btn--xs" id="aUnblock">Разблокировать</button>':'<button class="btn btn--danger btn--xs" id="aBlock">Заблокировать</button>'}</div>`:''}`}
     </section>
     ${kids.map(k=>{const tot=PLANS[k.plan].n,open=openUpTo(k),p=payState(k);
@@ -972,11 +998,11 @@ function accessDialog(c,mode){
     }
     const ch=document.querySelector('[name=acCh]:checked').value;
     if(ch==='copy'){try{await navigator.clipboard.writeText(text())}catch(e){}}
-    c.access={status:'issued',login:l,issued:iso(Date.now()),last:null};
+    c.access={status:'issued',login:l,pass,issued:iso(Date.now()),last:null};
     log(`${mode==='create'?'Выдан доступ':'Сброшен пароль'}: ${c.parent} (логин ${l}) — ${ch==='sms'?'отправлено SMS':ch==='telegram'?'отправлено в Telegram':'сообщение скопировано'}`);
     save();$('#dlg').close();
     toast(ch==='copy'?'Сообщение с логином и паролем скопировано':`Логин и пароль отправлены ${ch==='sms'?'по SMS':'в Telegram'} (демо)`);
-    openClient(c.id);refresh();
+    if((location.hash||'').startsWith('#db'))route();else{openClient(c.id);refresh()}
   };
   $('#dlg').showModal();
 }
@@ -1014,7 +1040,7 @@ function newClient(){
   $('#dlg').showModal();
 }
 function addClient(o){
-  const fid='f'+(Date.now().toString(36));
+  const fid='f'+Date.now().toString(36)+Math.random().toString(36).slice(2,5);
   const c={id:fid,parent:o.parent,phone:o.phone,email:'',deal:o.deal,created:iso(Date.now()),access:{status:'none'}};
   D.clients.unshift(c);
   const inst=o.payment==='internal';
@@ -1058,7 +1084,7 @@ async function simulateDeal(){
   await step(`Создан клиент и ученик ${esc(kid)}, группа «${esc(g.name)}»${payment==='internal'?', открыто первые 10 занятий':', открыт весь курс'}`,'Система');
   if(D.b24.auto){
     const login=uniqueLogin(translit(parent.split(' ')[0]));
-    c.access={status:'issued',login,issued:iso(Date.now()),last:null};
+    c.access={status:'issued',login,pass:genPass(),issued:iso(Date.now()),last:null};
     log(`Выдан доступ: ${parent} (логин ${login}) — ${D.b24.channel==='manual'?'ждёт отправки менеджером':D.b24.channel==='sms'?'отправлено SMS':'отправлено в Telegram'}`,'Система');
     await step(`Выдан доступ: логин <code>${login}</code>, временный пароль сгенерирован. ${D.b24.channel==='manual'?'Менеджеру поставлена задача отправить его клиенту':D.b24.channel==='sms'?'Отправлено SMS':'Отправлено в Telegram'}`,'Система');
     await step(`В сделку ${deal} записаны логин и статус «Доступ выдан»`);
@@ -1352,7 +1378,20 @@ function groupScheduleCard(g){
 const BANKS=['ОТП Банк','Т-Банк','МТС Банк','Ренессанс Банк'];
 const rub=n=>(Math.round(+n||0)).toLocaleString('ru-RU')+' ₽';
 const PLAN_LABEL=k=>{const p=PLANS[k];return `${p.n} ${plural(p.n,'урок','урока','уроков')} · ${p.t}`};
-function ensureSales(){if(!D.sales)D.sales=[]}
+function ensureSales(){
+  if(!D.sales)D.sales=[];
+  if(!D.nlSeeded){D.nlSeeded=true;
+    [['Белова Ксения','+7 900 222-33-41','Полина','2015-05-14','Middle','y2','bank',189000,'Анна (МВУ)',2],
+     ['Гусев Олег','+7 900 222-33-42','Тимофей','2012-02-03','High','y1','full',112000,'Кирилл (МВУ)',1]].forEach(([parent,phone,kid,birth,program,plan,payment,price,mvu,daysAgo])=>{
+      const c=addClient({parent,phone,deal:'',kid,birth,program,plan,payment,group:''});
+      c.access={status:'issued',login:translit(parent.split(' ')[0]),pass:genPass(),issued:iso(Date.now()-daysAgo*DAY),last:null};
+      const s=D.students.find(x=>x.fid===c.id);
+      D.sales.unshift({id:uid('sale'),date:iso(Date.now()-daysAgo*DAY),mvu,lessonId:'',leadId:'',fid:c.id,sid:s.id,parent,kid,program,plan,lessons:PLANS[plan].n,price,promo:'',payment,
+        bank:payment==='bank'?'Т-Банк':'',months:payment==='bank'?24:0,bankRef:'',first:0,monthly:0,group:'',placed:null,
+        contact:daysAgo===1?{at:iso(Date.now()-3*3600e3),when:'будни после 18:00',note:'',by:'Ольга (первая линия)'}:null});
+    });
+  }
+}
 
 function openSaleDlg(lesson){
   ensureSales();
@@ -1385,9 +1424,7 @@ function openSaleDlg(lesson){
           <label class="field"><span>Сколько уроков открыть сейчас</span><input class="input" name="opened" type="number" min="1" value="10"></label>
           <label class="field"><span>Следующий платёж</span><input class="input" name="next" type="date" value="${ymd(new Date(Date.now()+30*DAY))}"></label></div>
         <p class="sale-sum" id="saleSum"></p></div>
-      <div class="sale-sec"><b>4. Группа</b>
-        <label class="field"><span>В какую группу</span><select name="group">${groups().map(g=>`<option value="${g.id}" data-p="${g.program}">${esc(g.name)} · ${esc(g.teacher)}${g.solo?'':' · '+groupDays(g)}</option>`).join('')}</select></label></div>
-      <div class="sale-sec"><b>5. Доступ в личный кабинет</b>
+      <div class="sale-sec"><b>4. Доступ в личный кабинет</b>
         <label class="check"><input type="checkbox" name="give" checked> Выдать доступ сейчас</label>
         <div class="fgrid" id="accBox"><label class="field"><span>Логин</span><input class="input" name="login" value="${esc(login0)}" autocapitalize="none" spellcheck="false"></label>
           <div class="field"><span>Временный пароль</span><div class="row" style="flex-wrap:nowrap"><input class="input" name="pass" value="${esc(pass)}" readonly><button class="btn btn--ghost btn--xs" type="button" id="passGen" title="Другой пароль">↻</button></div></div>
@@ -1406,25 +1443,25 @@ function openSaleDlg(lesson){
     const login=v('login').toLowerCase();
     if(f.give.checked){if(login.length<3)return 'Логин — от 3 символов латиницей';if(D.clients.some(c=>c.access.login===login))return 'Такой логин уже занят'}
     const birth=v('birth')||(age?birthGuess:`${new Date().getFullYear()-10}-01-01`);
-    const c=addClient({parent:v('parent'),phone:v('phone'),deal:'',kid:v('kid'),birth,program,plan,payment,group:v('group')});
+    const c=addClient({parent:v('parent'),phone:v('phone'),deal:'',kid:v('kid'),birth,program,plan,payment,group:''});
     const s=D.students.find(x=>x.fid===c.id);
     if(payment==='internal'){s.paid=Math.min(PLANS[plan].n,Math.max(1,+v('opened')||10));s.payStep=s.paid;s.nextPay=atLocal(v('next')||ymd(new Date(Date.now()+30*DAY)),'12:00').toISOString()}
     const sale={id:uid('sale'),date:iso(Date.now()),mvu:meMvu()||(f.mvu&&f.mvu.value)||trialOwner(l)||ROLES[role].name,lessonId:l.id||'',leadId:l.leadId||'',fid:c.id,sid:s.id,
       parent:c.parent,kid:s.name,program,plan,lessons:PLANS[plan].n,price,promo:v('promo'),payment,
       bank:payment==='bank'?v('bank'):'',months:payment==='bank'?+v('months'):0,bankRef:v('bankRef'),
-      first:payment==='internal'?num('first'):0,monthly:payment==='internal'?num('monthly'):0,group:s.group};
+      first:payment==='internal'?num('first'):0,monthly:payment==='internal'?num('monthly'):0,group:'',placed:null,contact:null};
     D.sales.unshift(sale);
     if(l.id){l.sale='sold';l.status='came';l.saleId=sale.id;l.rec=program}
     let msg='';
     if(f.give.checked){
-      const ch=val('ch');c.access={status:'issued',login,issued:iso(Date.now()),last:null};
+      const ch=val('ch');c.access={status:'issued',login,pass:v('pass'),issued:iso(Date.now()),last:null};
       msg=`Здравствуйте, ${c.parent.split(' ')[1]||c.parent}! Доступ в личный кабинет «Уникума»:\n${CABINET_URL}\nЛогин: ${login}\nПароль: ${v('pass')}\nПри первом входе пароль можно сменить.`;
       if(ch==='copy'){try{navigator.clipboard.writeText(msg).catch(()=>{})}catch(e){}}
       log(`Выдан доступ: ${c.parent} (логин ${login}) — ${ch==='sms'?'SMS':ch==='telegram'?'Telegram':'сообщение скопировано'}`);
     }
-    log(`Продажа: ${c.parent} — ${program}, ${PLAN_LABEL(plan)}, ${rub(price)}, ${PAYS[payment].t}${sale.bank?' ('+sale.bank+')':''}; группа «${groupOf(s.group).name}»`);
+    log(`Продажа: ${c.parent} — ${program}, ${PLAN_LABEL(plan)}, ${rub(price)}, ${PAYS[payment].t}${sale.bank?' ('+sale.bank+')':''}. Передано первой линии — записать в группу`);
     save();
-    toast(`Продажа оформлена 🎉 ${s.name} — в группе «${groupOf(s.group).name}»${f.give.checked?(val('ch')==='copy'?', логин и пароль скопированы':', доступ отправлен (демо)'):''}`);
+    toast(`Продажа оформлена 🎉 Первая линия запишет ${s.name} в группу${f.give.checked?(val('ch')==='copy'?', логин и пароль скопированы':', доступ отправлен (демо)'):''}`);
     if(l.leadId&&typeof trialApi==='function')trialApi('/'+encodeURIComponent(l.leadId),{status:'sold',note:`Продажа ${dt(sale.date)} (${sale.mvu}): ${program}, ${PLAN_LABEL(plan)}, ${rub(price)}, ${PAYS[payment].t}`})
       .then(r=>{const i=TRIALS.findIndex(x=>x.id===r.lead.id);if(i>=0)TRIALS[i]=r.lead}).catch(()=>{});
   },
@@ -1432,8 +1469,6 @@ function openSaleDlg(lesson){
     const sync=()=>{
       const pay=(f.querySelector('[name=payment]:checked')||{}).value, prog=(f.querySelector('[name=program]:checked')||{}).value;
       $('#payBank').hidden=pay!=='bank';$('#payInt').hidden=pay!=='internal';$('#accBox').hidden=!f.give.checked;
-      const sel=f.group;[...sel.options].forEach(o=>o.hidden=o.dataset.p!==prog);
-      if(sel.selectedOptions[0]&&sel.selectedOptions[0].hidden){const o=[...sel.options].find(o=>!o.hidden);if(o)sel.value=o.value}
       const price=+f.price.value.replace(/\D/g,'')||0, plan=(f.querySelector('[name=plan]:checked')||{}).value;
       const per=price&&plan?Math.round(price/PLANS[plan].n):0;
       $('#saleSum').textContent=price?`${rub(price)} · ${rub(per)} за урок`+(pay==='bank'?` · ≈ ${rub(price/(+f.months.value||1))} в месяц`:''):'';
@@ -1490,7 +1525,7 @@ VIEWS.sales=function(){
   <div class="grid2" style="margin-top:20px">
     <section class="card"><div class="card__h"><h2>Продажи за период</h2></div><div class="list">${list.map(s=>`<div class="item"><div class="item__main">
       <b>${esc(s.parent)} · ${esc(s.kid)}</b><small>${dt(s.date)} · ${s.program}, ${PLAN_LABEL(s.plan)} · ${PAYS[s.payment].t}${s.bank?' ('+esc(s.bank)+', '+s.months+' мес.)':''}${s.payment==='internal'&&s.monthly?' · '+rub(s.monthly)+'/мес':''}${me?'':' · '+esc(s.mvu)}</small>
-      <small>Группа: ${esc((groupOf(s.group)||{}).name||'—')}${s.promo?' · '+esc(s.promo):''}</small></div><b class="sale-price">${rub(s.price)}</b></div>`).join('')||'<p class="empty">Продаж за этот период пока нет</p>'}</div></section>
+      <small>Группа: ${s.placed?esc((groupOf(s.group)||{}).name||'—'):'<span class="pill p-new">ждёт записи</span>'}${s.promo?' · '+esc(s.promo):''}</small></div><b class="sale-price">${rub(s.price)}</b></div>`).join('')||'<p class="empty">Продаж за этот период пока нет</p>'}</div></section>
     <section class="card"><div class="card__h"><h2>Что покупают</h2></div>
       <div class="list">${byPlan.map(([k,n])=>`<div class="sale-bar"><span>${PLAN_LABEL(k)}</span><b>${n}</b><i style="width:${Math.round(n/list.length*100)}%"></i></div>`).join('')||'<p class="empty">—</p>'}</div>
       <div class="card__h" style="margin-top:18px"><h2>Как платят</h2></div>
@@ -1527,19 +1562,139 @@ function openGroupDlg(){
     f.name.oninput=()=>{f.name.dataset.touched=1};f.querySelectorAll('[name=program]').forEach(x=>x.onchange=sync);sync()});
 }
 
+
+/* =====================================================================
+   НОВЫЕ ЛИДЫ — купили у МВУ, первая линия записывает в группу
+   ===================================================================== */
+const newLeads=()=>{ensureSales();return D.sales.filter(x=>!x.placed)};
+function seatsOf(g){return D.students.filter(x=>x.group===g.id).length}
+function groupFits(g){const n=seatsOf(g),max=g.max||6;return {n,max,free:Math.max(0,max-n)}}
+function saleStudent(x){return D.students.find(s=>s.id===x.sid)||{}}
+function saleClient(x){return D.clients.find(c=>c.id===x.fid)||{}}
+VIEWS.newleads=function(){
+  const list=newLeads(), done=D.sales.filter(x=>x.placed).sort((a,b)=>new Date(b.placed)-new Date(a.placed)).slice(0,8);
+  const card=x=>{const st=saleStudent(x), c=saleClient(x), age=st.birth?Math.floor((Date.now()-new Date(st.birth))/(365.25*DAY)):'';
+    return `<div class="item item--wrap nl-item"><div class="item__main"><b>${esc(x.kid)}${age?', '+age+' лет':''} · ${esc(x.program)}</b>
+      <small>${esc(x.parent)} · <a class="link" href="tel:${esc((c.phone||'').replace(/[^\d+]/g,''))}">${esc(c.phone||'')}</a> · ${PLAN_LABEL(x.plan)} · продажа ${dt(x.date)}, ${esc(x.mvu)}</small>
+      ${x.contact?`<small class="nl-note">📞 Связались ${dt(x.contact.at)}${x.contact.when?' · удобно: <b>'+esc(x.contact.when)+'</b>':''}${x.contact.note?' · '+esc(x.contact.note):''}</small>`:''}</div>
+      <span class="pill ${x.contact?'p-lilac':'p-new'}">${x.contact?'связались':'новый'}</span>
+      <button class="btn btn--ghost btn--xs" data-nl-contact="${x.id}">${x.contact?'Изменить заметку':'Связались'}</button>
+      <button class="btn btn--xs" data-nl-place="${x.id}">Записать в группу</button></div>`};
+  return `<div class="vhead"><div><h1>Новые лиды</h1><p>Семьи, которые купили обучение на вводном уроке. Позвоните, узнайте удобные дни и время и запишите ребёнка в подходящую группу.</p></div></div>
+    <section class="card"><div class="card__h"><h2>Ждут записи в группу · ${list.length}</h2></div>
+      <div class="list">${list.map(card).join('')||'<p class="empty">Все купившие записаны в группы 🎉</p>'}</div></section>
+    ${done.length?`<section class="card" style="margin-top:16px"><div class="card__h"><h2>Недавно записаны</h2></div><div class="list">
+      ${done.map(x=>{const g=groupOf(x.group)||NO_GROUP;return `<div class="item"><div class="item__main"><b>${esc(x.kid)} · ${esc(g.name)}</b><small>${esc(x.parent)} · ${esc(g.teacher)}${g.solo?'':' · '+groupDays(g)} · записан ${dt(x.placed)}${x.placedBy?' ('+esc(x.placedBy)+')':''}</small></div><span class="pill p-ok">в группе</span></div>`}).join('')}</div></section>`:''}`;
+};
+BIND.newleads=function(){
+  document.querySelectorAll('[data-nl-contact]').forEach(b=>b.onclick=()=>openContactDlg(D.sales.find(x=>x.id===b.dataset.nlContact)));
+  document.querySelectorAll('[data-nl-place]').forEach(b=>b.onclick=()=>openPlaceDlg(D.sales.find(x=>x.id===b.dataset.nlPlace)));
+};
+function openContactDlg(x){
+  const c=x.contact||{};
+  showDlg(`<h2>Связались с семьёй</h2><p>${esc(x.parent)} · ${esc(x.kid)}, ${esc(x.program)}</p>
+    <form class="dlg" style="padding:0;gap:12px" novalidate>
+      <label class="field"><span>Когда удобно заниматься</span><input class="input" name="when" value="${esc(c.when||'')}" placeholder="Например: будни после 18:00, суббота днём"></label>
+      <label class="field"><span>Заметка — необязательно</span><input class="input" name="note" value="${esc(c.note||'')}" placeholder="Например: перезвонить в пятницу"></label>
+      <p class="err"></p>
+      <div class="dlg__act"><button type="button" class="btn btn--ghost" data-dlg-close>Отмена</button><button class="btn">Сохранить</button></div></form>`,
+  f=>{x.contact={at:iso(Date.now()),when:f.when.value.trim(),note:f.note.value.trim(),by:ROLES[role].name};
+    log(`Связались с семьёй ${x.parent} (${x.kid})${x.contact.when?': удобно '+x.contact.when:''}`);save();toast('Заметка сохранена ✓')});
+}
+function openPlaceDlg(x){
+  const st=saleStudent(x), when=(x.contact&&x.contact.when)||'';
+  const opts=D.groups.filter(g=>g.program===x.program||g.solo).map(g=>{const s=groupFits(g);return {g,s}})
+    .sort((a,b)=>(a.g.program===x.program?0:1)-(b.g.program===x.program?0:1)||(b.s.free>0)-(a.s.free>0));
+  showDlg(`<h2>Записать в группу</h2><p>${esc(x.kid)} · ${esc(x.program)} · ${PLAN_LABEL(x.plan)}${when?' · удобно: <b>'+esc(when)+'</b>':''}</p>
+    <form class="dlg" style="padding:0;gap:12px" novalidate>
+      <div class="field"><span>Группа — день и время занятий</span><div class="nl-groups">
+        ${opts.map(({g,s},i)=>`<label class="nl-g ${s.free?'':'nl-g--full'}"><input type="radio" name="gid" value="${g.id}" ${i===0&&s.free?'checked':''}>
+          <span><b>${esc(g.name)}</b><small>${g.solo?'индивидуально, время по договорённости':esc(groupDays(g))} · ${esc(g.teacher)}</small></span>
+          <em>${g.solo?'инд.':s.free?`мест: ${s.free} из ${s.max}`:'мест нет'}</em></label>`).join('')||'<p class="empty">Групп по этой программе пока нет — попросите преподавателя создать группу.</p>'}
+      </div></div>
+      <label class="check"><input type="checkbox" name="notify" checked> Сообщить семье расписание (SMS / Telegram)</label>
+      <p class="err"></p>
+      <div class="dlg__act"><button type="button" class="btn btn--ghost" data-dlg-close>Отмена</button><button class="btn btn--ok">Записать</button></div></form>`,
+  f=>{const gid=(f.querySelector('[name=gid]:checked')||{}).value;if(!gid)return 'Выберите группу';
+    const g=groupOf(gid);
+    if(st.id)st.group=gid;x.group=gid;x.placed=iso(Date.now());x.placedBy=ROLES[role].name;
+    log(`${x.kid} записан(а) в группу «${g.name}»${g.solo?'':' ('+groupDays(g)+')'} — ${ROLES[role].name}`);
+    save();toast(`${x.kid} — в группе «${g.name}» ✓${f.notify.checked?' Расписание отправлено семье (демо)':''}`)});
+}
+
+
+/* =====================================================================
+   БАЗА УЧЕНИКОВ — все ученики, группы, логины и пароли (только администратор)
+   ===================================================================== */
+function ensurePasswords(){
+  let ch=false;
+  D.clients.forEach(c=>{if(c.access&&c.access.login&&!c.access.pass){c.access.pass=genPass();ch=true}});
+  if(ch)save();
+}
+let dbQ='', dbGroup='', dbShow=false;
+const ACC_T={issued:['выдан, не входил','p-new'],active:['входит в кабинет','p-ok'],blocked:['заблокирован','p-mute'],none:['нет доступа','p-mute']};
+function dbRows(){
+  ensurePasswords();
+  const q=dbQ.trim().toLowerCase();
+  return D.students.map(s=>{const c=client(s.fid)||{access:{status:'none'}},g=groupOf(s.group)||NO_GROUP;return {s,c,g}})
+    .filter(({s,c,g})=>(!dbGroup||(dbGroup==='-'?!s.group:s.group===dbGroup))&&(!q||[s.name,c.parent,c.phone,c.access.login,g.name].join(' ').toLowerCase().includes(q)))
+    .sort((a,b)=>(a.g.name||'я').localeCompare(b.g.name||'я','ru')||a.s.name.localeCompare(b.s.name,'ru'));
+}
+VIEWS.db=function(){
+  const groups=D.groups.map(g=>`<option value="${g.id}" ${dbGroup===g.id?'selected':''}>${esc(g.name)}</option>`).join('');
+  return `<div class="vhead"><div><h1>База учеников</h1><p>Все ученики школы: группа, родитель и доступ в личный кабинет. Пароль — временный, который выдали семье. Если родитель сменил его в кабинете, нажмите «Сбросить» и отправьте новый.</p></div>
+    <button class="btn btn--ghost" id="dbCsv">Скачать таблицу (CSV)</button></div>
+    <div class="row db-tools"><input class="input" id="dbQ" placeholder="Поиск: ученик, родитель, телефон, логин, группа" value="${esc(dbQ)}">
+      <select id="dbGroup"><option value="">Все группы</option>${groups}<option value="-" ${dbGroup==='-'?'selected':''}>Без группы</option></select>
+      <label class="check"><input type="checkbox" id="dbShow" ${dbShow?'checked':''}> Показать пароли</label></div>
+    <div id="dbBox"></div>`;
+};
+function drawDb(){
+  const rows=dbRows();
+  $('#dbBox').innerHTML=`<p class="db-count">${rows.length} ${plural(rows.length,'ученик','ученика','учеников')}</p>
+  <div class="tbl-wrap"><table class="db-tbl"><thead><tr><th>Ученик</th><th>Группа</th><th>Родитель</th><th>Программа</th><th>Логин</th><th>Пароль</th><th>Доступ</th><th></th></tr></thead><tbody>
+  ${rows.map(({s,c,g})=>{const a=c.access||{status:'none'},st=ACC_T[a.status]||ACC_T.none,age=s.birth?Math.floor((Date.now()-new Date(s.birth))/(365.25*DAY)):'';
+    return `<tr><td><b>${esc(s.name)}</b>${age?`<small>${age} лет</small>`:''}</td>
+      <td>${s.group?`<b>${esc(g.name)}</b><small>${g.solo?'индивидуально':esc(groupDays(g))} · ${esc(g.teacher)}</small>`:'<span class="pill p-new">ждёт записи</span>'}</td>
+      <td>${esc(c.parent||'—')}<small>${esc(c.phone||'')}</small></td>
+      <td>${esc(s.program)}<small>${PLAN_LABEL(s.plan)}</small></td>
+      <td>${a.login?`<code>${esc(a.login)}</code> <button class="db-copy" data-copy="${esc(a.login)}" title="Скопировать логин">⧉</button>`:'—'}</td>
+      <td>${a.pass?`<code class="db-pass">${dbShow?esc(a.pass):'••••••••'}</code> <button class="db-copy" data-reveal="${c.id}" title="Показать">👁</button><button class="db-copy" data-copy="${esc(a.pass)}" title="Скопировать пароль">⧉</button>`:'—'}</td>
+      <td><span class="pill ${st[1]}">${st[0]}</span></td>
+      <td><button class="btn btn--ghost btn--xs" data-db-acc="${c.id}">${a.login?'Сбросить':'Выдать'}</button></td></tr>`}).join('')||'<tr><td colspan="8"><p class="empty">Никого не нашли</p></td></tr>'}
+  </tbody></table></div>`;
+  $('#dbBox').querySelectorAll('[data-copy]').forEach(b=>b.onclick=()=>{try{navigator.clipboard.writeText(b.dataset.copy).then(()=>toast('Скопировано ✓'),()=>toast('Не удалось скопировать'))}catch(e){}});
+  $('#dbBox').querySelectorAll('[data-reveal]').forEach(b=>b.onclick=()=>{const code=b.previousElementSibling,c=client(b.dataset.reveal);code.textContent=code.textContent.startsWith('•')?c.access.pass:'••••••••'});
+  $('#dbBox').querySelectorAll('[data-db-acc]').forEach(b=>b.onclick=()=>{const c=client(b.dataset.dbAcc);accessDialog(c,c.access&&c.access.login?'reset':'create')});
+}
+BIND.db=function(){
+  drawDb();
+  $('#dbQ').oninput=e=>{dbQ=e.target.value;drawDb()};
+  $('#dbGroup').onchange=e=>{dbGroup=e.target.value;drawDb()};
+  $('#dbShow').onchange=e=>{dbShow=e.target.checked;drawDb()};
+  $('#dbCsv').onclick=()=>{
+    const cell=v=>'"'+String(v??'').replace(/"/g,'""')+'"';
+    const head=['Ученик','Дата рождения','Группа','Расписание','Преподаватель','Родитель','Телефон','Программа','Тариф','Логин','Пароль','Доступ'];
+    const lines=dbRows().map(({s,c,g})=>{const a=c.access||{};return [s.name,s.birth,s.group?g.name:'без группы',s.group&&!g.solo?groupDays(g):'',g.teacher,c.parent,c.phone,s.program,PLAN_LABEL(s.plan),a.login||'',a.pass||'',(ACC_T[a.status]||ACC_T.none)[0]].map(cell).join(';')});
+    const blob=new Blob(['﻿'+[head.map(cell).join(';'),...lines].join('\r\n')],{type:'text/csv;charset=utf-8'});
+    const u=URL.createObjectURL(blob),x=document.createElement('a');x.href=u;x.download=`uniqum-uchenniki-${ymd(new Date())}.csv`;document.body.appendChild(x);x.click();x.remove();setTimeout(()=>URL.revokeObjectURL(u),2000);
+    log('Скачана база учеников (CSV)');
+  };
+};
+
 /* =====================================================================
    СТАРТ
    ===================================================================== */
 try{D=JSON.parse(localStorage.getItem(KEY))}catch(e){}
 if(!D||!D.clients)D=seed();
-ensureSchedule();ensureSales();
+ensureSchedule();ensureSales();ensurePasswords();
 $('#roleSel').value=role;
 $('#roleSel').onchange=e=>{role=e.target.value;try{localStorage.setItem(KEY+'-role',role)}catch(err){}closeDrawer();toast('Вы смотрите админку как: '+ROLES[role].t);route()};
 $('#menuBtn').onclick=()=>$('#side').classList.toggle('open');
 $('#q').addEventListener('keydown',e=>{if(e.key==='Enter'&&!location.hash.startsWith('#clients')){Q=$('#q').value;location.hash='clients'}});
 $('#q').addEventListener('input',()=>{Q=$('#q').value});
 $('#logout').onclick=()=>{try{sessionStorage.removeItem('unikum-admin-auth');localStorage.removeItem('unikum-admin-auth')}catch(e){}location.replace('cabinet.html')};
-$('#resetDemo').onclick=()=>{D=seed();ensureSchedule();ensureSales();save();toast('Демо-данные сброшены');route()};
+$('#resetDemo').onclick=()=>{D=seed();ensureSchedule();ensureSales();ensurePasswords();save();toast('Демо-данные сброшены');route()};
 $('#dlg').addEventListener('click',e=>{if(e.target===e.currentTarget)e.currentTarget.close()});
 window.addEventListener('hashchange',route);
 route();
