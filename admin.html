@@ -325,6 +325,18 @@ dialog:has(.sale-sec){width:min(680px,calc(100% - 24px))}
 .db-tbl code{font-size:12.5px}
 .db-copy{border:0;background:none;cursor:pointer;padding:2px 4px;font-size:13px;color:var(--muted)}
 .db-copy:hover{color:var(--text)}
+
+/* дожим */
+.dz-item{display:grid;grid-template-columns:96px minmax(0,1fr) auto;align-items:start;gap:12px}
+.dz-when{display:grid;gap:2px}
+.dz-when b{font-family:var(--display);font-size:13px}
+.dz-when small{color:var(--muted);font-size:12px}
+.dz-late .dz-when b{color:#ff6b8b}
+.dz-today .dz-when b{color:#ffb02e}
+.dz-c{display:block;margin-top:4px;color:var(--text)!important;font-size:12.5px}
+.dz-act{display:flex;flex-wrap:wrap;gap:6px;justify-content:flex-end;max-width:260px}
+.dz-hist{display:grid;gap:6px;margin:0 0 12px;padding:10px 12px;border-radius:12px;background:var(--soft);font-size:12.5px}
+@media (max-width:700px){.dz-item{grid-template-columns:1fr}.dz-act{justify-content:flex-start;max-width:none}}
 </style>
 </head>
 <body>
@@ -341,6 +353,7 @@ dialog:has(.sale-sec){width:min(680px,calc(100% - 24px))}
   <symbol id="i-target" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></g></symbol>
   <symbol id="i-chart" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></g></symbol>
   <symbol id="i-db" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><ellipse cx="12" cy="5.5" rx="8" ry="3"/><path d="M4 5.5v13c0 1.7 3.6 3 8 3s8-1.3 8-3v-13M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></g></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2z"/></symbol>
   <symbol id="i-log" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></g></symbol>
   <symbol id="i-search" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></g></symbol>
   <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
@@ -396,13 +409,13 @@ const EXTRA={english:'Английский язык',ai:'Нейросети'};
 const ROLES={
   /* Администратор — всё. Преподаватель — группы, расписание и уроки купивших.
      Первая линия — заявки и запись на вводный урок. МВУ — проводит вводные уроки и продаёт. */
-  admin:{t:'Администратор',name:'Администратор',routes:['dash','clients','db','groups','schedule','requests','newleads','intro','sales','homework','payments','integrations','log']},
+  admin:{t:'Администратор',name:'Администратор',routes:['dash','clients','db','groups','schedule','requests','newleads','intro','dozhim','sales','homework','payments','integrations','log']},
   line1:{t:'Первая линия',name:'Ольга (первая линия)',routes:['dash','requests','newleads','intro']},
-  mvu:{t:'МВУ',name:'Анна (МВУ)',routes:['dash','intro','sales']},
+  mvu:{t:'МВУ',name:'Анна (МВУ)',routes:['dash','intro','dozhim','sales']},
   teacher:{t:'Преподаватель',name:'Мария Викторовна',routes:['dash','groups','schedule','homework']}
 };
 const ROUTES=[
-  {id:'dash',t:'Сводка',i:'i-dash'},{id:'clients',t:'Клиенты',i:'i-users'},{id:'db',t:'База учеников',i:'i-db'},{id:'groups',t:'Группы и журнал',i:'i-group'},{id:'schedule',t:'Расписание групп',i:'i-cal'},{id:'intro',t:'Вводные уроки',i:'i-target'},{id:'sales',t:'Продажи',i:'i-chart'},
+  {id:'dash',t:'Сводка',i:'i-dash'},{id:'clients',t:'Клиенты',i:'i-users'},{id:'db',t:'База учеников',i:'i-db'},{id:'groups',t:'Группы и журнал',i:'i-group'},{id:'schedule',t:'Расписание групп',i:'i-cal'},{id:'intro',t:'Вводные уроки',i:'i-target'},{id:'dozhim',t:'Дожим',i:'i-phone'},{id:'sales',t:'Продажи',i:'i-chart'},
   {id:'requests',t:'Заявки',i:'i-inbox'},{id:'newleads',t:'Новые лиды',i:'i-users'},{id:'homework',t:'Проверка заданий',i:'i-hw'},{id:'payments',t:'Рассрочки',i:'i-pay'},
   {id:'integrations',t:'Битрикс24',i:'i-plug'},{id:'log',t:'Журнал действий',i:'i-log'}
 ];
@@ -561,7 +574,7 @@ const noAccess=()=>D.clients.filter(c=>c.access.status==='none').length;
 
 /* ---------- навигация ---------- */
 function renderNav(cur){
-  const badge={newleads:(D.sales||[]).filter(x=>!x.placed).length,requests:pendingReq(),homework:pendingHw(),payments:overdue(),clients:noAccess()};
+  const badge={dozhim:dozhimDue(),newleads:(D.sales||[]).filter(x=>!x.placed).length,requests:pendingReq(),homework:pendingHw(),payments:overdue(),clients:noAccess()};
   $('#nav').innerHTML=ROUTES.filter(r=>ROLES[role].routes.includes(r.id)).map(r=>
     `<a href="#${r.id}" ${r.id===cur?'aria-current="page"':''}>${icon(r.i)}<span>${r.t}</span>${badge[r.id]?`<span class="cnt">${badge[r.id]}</span>`:''}</a>`).join('');
 }
@@ -1152,6 +1165,7 @@ function lessonRow(l,withDate){
     <div class="item__main"><b>${l.kind==='trial'?'🎯 ':''}${lessonTitle(l)}</b>${extra}</div>${pill}
     ${l.link?`<a class="btn btn--ghost btn--xs" href="${esc(l.link)}" target="_blank" rel="noopener">Ссылка</a>`:''}
     ${l.kind==='trial'&&canSell()&&(l.status==='planned'||(l.status==='came'&&!l.sale))&&new Date(l.date)<=new Date(Date.now()+3600e3)?`<button class="btn btn--ok btn--xs" data-trial-res="${l.id}">Итог урока</button>`:''}
+    ${l.kind==='trial'&&l.sale==='thinking'&&canSell()?`<a class="btn btn--ghost btn--xs" href="#dozhim">В дожиме</a>`:''}
     ${l.kind==='trial'&&l.sale==='sold'?(l.saleId?'<span class="pill p-ok">✓ продажа оформлена</span>':canSell()?`<button class="btn btn--xs" data-sale="${l.id}">Оформить продажу</button>`:'<span class="pill p-ok">купили</span>'):''}
     <button class="btn btn--ghost btn--xs" data-edit-lesson="${l.id}">Изменить</button></div>`;
 }
@@ -1337,6 +1351,8 @@ function openTrialResultDlg(l){
     <form class="dlg" style="padding:0;gap:12px" novalidate>
       <div class="field"><span>Урок</span><div class="seg">${['came','noshow','cancelled'].map(k=>`<label><input type="radio" name="st" value="${k}" ${l.status===k||(!['came','noshow','cancelled'].includes(l.status)&&k==='came')?'checked':''}><span>${TRIAL_RES[k][0]}</span></label>`).join('')}</div></div>
       <div class="field" id="saleBox"><span>Итог продажи</span><div class="seg">${Object.entries(SALE_RES).map(([k,v])=>`<label><input type="radio" name="sale" value="${k}" ${l.sale===k?'checked':''}><span>${v[0]}</span></label>`).join('')}</div></div>
+      <div class="fgrid" id="fuBox"><label class="field"><span>Когда перезвонить</span><input class="input" type="date" name="fuDay" value="${ymd(new Date(l.fu&&l.fu.next||Date.now()+DAY))}"></label>
+        <label class="field"><span>Время</span><input class="input" type="time" name="fuTime" value="${l.fu&&l.fu.next?hm(new Date(l.fu.next)):'18:00'}"></label></div>
       <div class="field" id="recBox"><span>Программа</span><div class="seg">${PROGRAMS.map(p=>`<label><input type="radio" name="rec" value="${p}" ${l.rec===p?'checked':''}><span>${p}</span></label>`).join('')}</div></div>
       <label class="field"><span>Комментарий</span><textarea class="input" name="result" rows="3" placeholder="Что понравилось ребёнку, вопросы и возражения родителя, когда перезвонить…">${esc(l.result||'')}</textarea></label>
       <p class="err"></p>
@@ -1347,9 +1363,10 @@ function openTrialResultDlg(l){
     if(st==='came'&&!sale)return 'Отметьте итог продажи: купили, думают или отказ';
     if(sale==='sold'&&!rec)return 'Укажите, какую программу купили';
     Object.assign(l,{status:st,sale,rec,result:f.result.value.trim()});
+    if(sale==='thinking'){l.fu=l.fu||{notes:[]};l.fu.next=atLocal(f.fuDay.value||ymd(new Date(Date.now()+DAY)),f.fuTime.value||'18:00').toISOString();l.fu.since=l.fu.since||iso(Date.now())}
     const what=st==='came'?SALE_RES[sale][0].toLowerCase():TRIAL_RES[st][0].toLowerCase();
     log(`Итог вводного урока: ${l.child} — ${what}${rec?', программа '+rec:''}`);
-    save();toast(sale==='sold'?'Отлично! Оформите продажу: тариф, оплата, доступ и группа':'Итог сохранён ✓');
+    save();toast(sale==='sold'?'Отлично! Оформите продажу: тариф, оплата и доступ':sale==='thinking'?`Лид перенесён в «Дожим» — перезвонить ${dtt(l.fu.next)}`:'Итог сохранён ✓');
     if(sale==='sold'&&!l.saleId)setTimeout(()=>openSaleDlg(l),60);
     if(l.leadId&&typeof trialApi==='function'){
       const status=sale==='sold'?'sold':sale==='refused'||st==='cancelled'?'refused':st==='noshow'||sale==='thinking'?'contacted':undefined;
@@ -1357,8 +1374,9 @@ function openTrialResultDlg(l){
         .then(r=>{const i=TRIALS.findIndex(x=>x.id===r.lead.id);if(i>=0)TRIALS[i]=r.lead;renderNav(curRoute())}).catch(()=>{});
     }
   },
-  f=>{const sync=()=>{const came=(f.querySelector('[name=st]:checked')||{}).value==='came';$('#saleBox').hidden=!came;$('#recBox').hidden=!came};
-    f.querySelectorAll('[name=st]').forEach(x=>x.onchange=sync);sync()});
+  f=>{const sync=()=>{const came=(f.querySelector('[name=st]:checked')||{}).value==='came';$('#saleBox').hidden=!came;$('#recBox').hidden=!came;
+      $('#fuBox').hidden=!(came&&(f.querySelector('[name=sale]:checked')||{}).value==='thinking')};
+    f.querySelectorAll('[name=st],[name=sale]').forEach(x=>x.onchange=sync);sync()});
 }
 
 /* расписание на странице группы */
@@ -1682,19 +1700,112 @@ BIND.db=function(){
   };
 };
 
+
+/* =====================================================================
+   ДОЖИМ — родители «думают»: МВУ перезванивает, пишет комментарии и закрывает в продажу или отказ
+   ===================================================================== */
+function ensureDozhim(){
+  if(!D.sched)return;
+  let ch=false;
+  const tr=D.sched.lessons.filter(l=>l.kind==='trial');
+  tr.filter(l=>l.sale==='thinking'&&!l.fu).forEach(l=>{const d=new Date(new Date(l.date).getTime()+2*DAY);l.fu={next:atLocal(ymd(d),'18:00').toISOString(),since:l.date,notes:[]};ch=true});
+  if(!D.dzSeeded){D.dzSeeded=true;ch=true;
+    if(!tr.some(l=>l.sale==='thinking')){
+      [['Даша','9','Смирнова Татьяна','+7 900 333-44-51','Junior',MVUS[0],-3,-1,'Понравилось, но хотят посоветоваться с папой. Вопрос по рассрочке.'],
+       ['Ярослав','12','Кузьмин Денис','+7 900 333-44-52','High',MVUS[0],-2,0,'Сравнивают с другой школой, просили прислать программу.'],
+       ['Мирон','10','Егорова Алина','+7 900 333-44-53','Middle',MVUS[1],-1,2,'Ребёнок в восторге, мама думает о времени занятий.']]
+      .forEach(([child,age,parent,phone,rec,mvu,ago,next,result])=>{
+        const d=new Date(Date.now()+ago*DAY);d.setHours(17,0,0,0);const n=new Date(Date.now()+next*DAY);
+        D.sched.lessons.push({id:uid('t'),kind:'trial',date:d.toISOString(),dur:60,mvu,child,age,parent,phone,link:'',note:'',status:'came',sale:'thinking',rec,result,leadId:'',created:iso(d.getTime()-2*DAY),
+          fu:{next:atLocal(ymd(n),next<0?'12:00':'18:30').toISOString(),since:d.toISOString(),notes:[]}})});
+    }
+  }
+  if(ch)save();
+}
+const dozhimList=()=>{ensureDozhim();const me=meMvu();return D.sched.lessons.filter(l=>l.kind==='trial'&&l.sale==='thinking'&&(!me||trialOwner(l)===me))};
+const dozhimDue=()=>{if(!D.sched)return 0;const end=new Date();end.setHours(23,59,59,999);return dozhimList().filter(l=>l.fu&&new Date(l.fu.next)<=end).length};
+let dzMvu='';
+VIEWS.dozhim=function(){
+  const all=dozhimList(), me=meMvu();
+  const list=all.filter(l=>!dzMvu||trialOwner(l)===dzMvu).sort((a,b)=>new Date(a.fu.next)-new Date(b.fu.next));
+  const now=new Date(), end=new Date();end.setHours(23,59,59,999);
+  const over=list.filter(l=>new Date(l.fu.next)<now).length, today=list.filter(l=>{const t=new Date(l.fu.next);return t>=now&&t<=end}).length;
+  const closed=D.sched.lessons.filter(l=>l.kind==='trial'&&l.fu&&l.fu.closed&&(!me||trialOwner(l)===me));
+  const won=closed.filter(l=>l.sale==='sold').length;
+  const card=l=>{const t=new Date(l.fu.next), late=t<now, isToday=!late&&t<=end, notes=(l.fu.notes||[]);
+    return `<div class="item item--wrap dz-item ${late?'dz-late':isToday?'dz-today':''}">
+      <div class="dz-when"><b>${late?'просрочено':isToday?'сегодня':dt(l.fu.next)}</b><small>${hm(t)}${late?' · '+dt(l.fu.next):''}</small></div>
+      <div class="item__main"><b>${esc(l.child)}${l.age?', '+esc(l.age)+' лет':''}${l.rec?' · '+esc(l.rec):''}</b>
+        <small>${esc(l.parent||'')}${l.phone?` · <a class="link" href="tel:${esc(l.phone.replace(/[^\d+]/g,''))}">${esc(l.phone)}</a>`:''} · вводный ${dt(l.date)}${me?'':' · '+esc(trialOwner(l))}</small>
+        ${l.result?`<small class="dz-c">💬 ${esc(l.result)}</small>`:''}
+        ${notes.slice(-3).map(n=>`<small class="dz-c">📞 ${dt(n.at)}: ${esc(n.text)}</small>`).join('')}</div>
+      <div class="dz-act"><button class="btn btn--ghost btn--xs" data-dz="${l.id}">Звонок / комментарий</button>
+        <button class="btn btn--ok btn--xs" data-dz-sold="${l.id}">Продажа</button>
+        <button class="btn btn--ghost btn--xs" data-dz-ref="${l.id}">Отказ</button></div></div>`};
+  const mvus=[...new Set(all.map(trialOwner))];
+  return `<div class="vhead"><div><h1>Дожим</h1><p>${me?'Ваши лиды, которые думают после вводного урока.':'Лиды всех МВУ, которые думают после вводного урока.'} Перезванивайте в назначенное время, записывайте итог разговора и закрывайте в продажу или отказ.</p></div>
+    ${me?'':`<select id="dzMvu"><option value="">Все МВУ</option>${mvus.map(m=>`<option ${m===dzMvu?'selected':''}>${esc(m)}</option>`).join('')}</select>`}</div>
+    <div class="kpis" style="grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:16px">
+      <div class="kpi"><b>${list.length}</b><span>в дожиме</span></div>
+      <div class="kpi ${over?'kpi--warn':''}"><b>${over}</b><span>просрочено звонков</span></div>
+      <div class="kpi ${today?'kpi--warn':''}"><b>${today}</b><span>позвонить сегодня</span></div>
+      <div class="kpi"><b>${won}/${closed.length}</b><span>дожато в продажу</span></div></div>
+    <section class="card"><div class="list">${list.map(card).join('')||'<p class="empty">В дожиме пусто — все решили 🎉</p>'}</div></section>`;
+};
+BIND.dozhim=function(){
+  const f=id=>D.sched.lessons.find(x=>x.id===id);
+  const sel=$('#dzMvu');if(sel)sel.onchange=e=>{dzMvu=e.target.value;route()};
+  document.querySelectorAll('[data-dz]').forEach(b=>b.onclick=()=>openDozhimDlg(f(b.dataset.dz)));
+  document.querySelectorAll('[data-dz-sold]').forEach(b=>b.onclick=()=>openDozhimDlg(f(b.dataset.dzSold),'sold'));
+  document.querySelectorAll('[data-dz-ref]').forEach(b=>b.onclick=()=>openDozhimDlg(f(b.dataset.dzRef),'refused'));
+};
+function openDozhimDlg(l,pre){
+  const next=new Date(l.fu.next), tm=new Date(Date.now()+DAY);
+  const st0=pre||'thinking';
+  showDlg(`<h2>${esc(l.child)} · дожим</h2><p>${esc(l.parent||'')}${l.phone?' · '+esc(l.phone):''} · вводный ${dt(l.date)}, ${esc(trialOwner(l))}</p>
+    ${(l.fu.notes||[]).length||l.result?`<div class="dz-hist">${l.result?`<small><b>После урока:</b> ${esc(l.result)}</small>`:''}${(l.fu.notes||[]).map(n=>`<small><b>${dtt(n.at)}</b> · ${esc(n.text)}</small>`).join('')}</div>`:''}
+    <form class="dlg" style="padding:0;gap:12px" novalidate>
+      <div class="field"><span>Статус</span><div class="seg">${[['thinking','Думают'],['sold','Продажа'],['refused','Отказ']].map(([k,t])=>`<label><input type="radio" name="st" value="${k}" ${k===st0?'checked':''}><span>${t}</span></label>`).join('')}</div></div>
+      <label class="field"><span>Комментарий к звонку</span><textarea class="input" name="note" rows="3" placeholder="О чём договорились, какие вопросы и возражения"></textarea></label>
+      <div class="fgrid" id="dzNext"><label class="field"><span>Перезвонить</span><input class="input" type="date" name="day" value="${ymd(next<new Date()?tm:next)}"></label>
+        <label class="field"><span>Время</span><input class="input" type="time" name="time" value="${hm(next)}"></label></div>
+      <div class="field" id="dzRec"><span>Программа</span><div class="seg">${PROGRAMS.map(p=>`<label><input type="radio" name="rec" value="${p}" ${(l.rec||'Middle')===p?'checked':''}><span>${p}</span></label>`).join('')}</div></div>
+      <p class="err"></p>
+      <div class="dlg__act"><button type="button" class="btn btn--ghost" data-dlg-close>Отмена</button><button class="btn btn--ok" id="dzOk">Сохранить</button></div></form>`,
+  f=>{
+    const st=(f.querySelector('[name=st]:checked')||{}).value, note=f.note.value.trim();
+    if(st==='refused'&&!note)return 'Напишите причину отказа';
+    if(note)(l.fu.notes=l.fu.notes||[]).push({at:iso(Date.now()),text:note,by:ROLES[role].name});
+    if(st==='thinking'){
+      if(!f.day.value)return 'Укажите, когда перезвонить';
+      l.fu.next=atLocal(f.day.value,f.time.value||'18:00').toISOString();
+      log(`Дожим: ${l.child} — перезвонить ${dtt(l.fu.next)}${note?'. '+note:''}`);save();toast(`Перезвонить ${dtt(l.fu.next)} ✓`);return;
+    }
+    l.sale=st;l.fu.closed=iso(Date.now());
+    if(st==='sold')l.rec=(f.querySelector('[name=rec]:checked')||{}).value||l.rec||'Middle';
+    log(`Дожим закрыт: ${l.child} — ${st==='sold'?'продажа':'отказ'}${note?'. '+note:''}`);save();
+    if(l.leadId&&typeof trialApi==='function')trialApi('/'+encodeURIComponent(l.leadId),{status:st==='sold'?'sold':'refused',note:`Дожим (${trialOwner(l)}): ${st==='sold'?'купили':'отказ'}${note?'. '+note:''}`}).catch(()=>{});
+    if(st==='sold'){toast('Отлично! Оформите продажу: тариф, оплата и доступ');setTimeout(()=>openSaleDlg(l),60)}else toast('Отказ сохранён');
+  },
+  f=>{const sync=()=>{const st=(f.querySelector('[name=st]:checked')||{}).value;$('#dzNext').hidden=st!=='thinking';$('#dzRec').hidden=st!=='sold';
+      $('#dzOk').textContent=st==='sold'?'Продажа → оформить':st==='refused'?'Закрыть отказом':'Сохранить';
+      f.note.placeholder=st==='refused'?'Причина отказа: дорого, далеко по времени, выбрали другую школу…':'О чём договорились, какие вопросы и возражения'};
+    f.querySelectorAll('[name=st]').forEach(x=>x.onchange=sync);sync()});
+}
+
 /* =====================================================================
    СТАРТ
    ===================================================================== */
 try{D=JSON.parse(localStorage.getItem(KEY))}catch(e){}
 if(!D||!D.clients)D=seed();
-ensureSchedule();ensureSales();ensurePasswords();
+ensureSchedule();ensureSales();ensurePasswords();ensureDozhim();
 $('#roleSel').value=role;
 $('#roleSel').onchange=e=>{role=e.target.value;try{localStorage.setItem(KEY+'-role',role)}catch(err){}closeDrawer();toast('Вы смотрите админку как: '+ROLES[role].t);route()};
 $('#menuBtn').onclick=()=>$('#side').classList.toggle('open');
 $('#q').addEventListener('keydown',e=>{if(e.key==='Enter'&&!location.hash.startsWith('#clients')){Q=$('#q').value;location.hash='clients'}});
 $('#q').addEventListener('input',()=>{Q=$('#q').value});
 $('#logout').onclick=()=>{try{sessionStorage.removeItem('unikum-admin-auth');localStorage.removeItem('unikum-admin-auth')}catch(e){}location.replace('cabinet.html')};
-$('#resetDemo').onclick=()=>{D=seed();ensureSchedule();ensureSales();ensurePasswords();save();toast('Демо-данные сброшены');route()};
+$('#resetDemo').onclick=()=>{D=seed();ensureSchedule();ensureSales();ensurePasswords();ensureDozhim();save();toast('Демо-данные сброшены');route()};
 $('#dlg').addEventListener('click',e=>{if(e.target===e.currentTarget)e.currentTarget.close()});
 window.addEventListener('hashchange',route);
 route();
